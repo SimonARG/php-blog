@@ -18,7 +18,7 @@ class UserSeeder
 
     public function run()
     {
-        for ($i = 0; $i < 10; $i++) {
+        for ($i = 0; $i < 12; $i++) {
             $user = UserFactory::create();
             $sql = "INSERT INTO users (name, email, password, avatar) VALUES (:name, :email, :password, :avatar)";
             $this->db->query($sql, $user);

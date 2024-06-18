@@ -19,12 +19,15 @@ class Post
     {
         $offset = ($currentPage - 1) * $this->postsPerPage;
         $sql = "SELECT posts.*,
-                    users.name AS username
-                FROM posts
-                INNER JOIN users ON posts.user_id = users.id
-                ORDER BY created_at DESC
-                LIMIT :offset,
-                    :limit;";
+                users.name AS username,
+                COUNT(comments.id) AS comments
+            FROM posts
+            INNER JOIN users ON posts.user_id = users.id
+            LEFT JOIN comments ON posts.id = comments.post_id AND comments.deleted_at IS NULL
+            WHERE posts.deleted_at IS NULL
+            GROUP BY posts.id, users.name
+            ORDER BY created_at DESC
+            LIMIT :offset, :limit;";
         
         // Bind parameters with explicit data types
         return $this->db->fetchAll($sql, [
@@ -36,17 +39,20 @@ class Post
         ]);
     }
 
-    public function getAllPosts()
+    public function getPostCount()
     {
-        $sql = "SELECT COUNT(*) FROM posts";
+        $sql = "SELECT COUNT(*) FROM posts WHERE deleted_at IS NULL";
         return $this->db->fetch($sql)['COUNT(*)'];
     }
 
-    public function getPost($id)
+    public function getPostById($id)
     {
-        $sql = "SELECT posts.*, users.name AS username 
+        $sql = "SELECT posts.*,
+            users.name AS username,
+            COUNT(comments.id) AS comments
         FROM posts 
-        INNER JOIN users ON posts.user_id = users.id 
+        INNER JOIN users ON posts.user_id = users.id
+        LEFT JOIN comments ON posts.id = comments.post_id AND comments.deleted_at IS NULL
         WHERE posts.id = :id";
         
         // Bind parameters with explicit data types
@@ -54,6 +60,59 @@ class Post
             ':id' => $id
         ], [
             ':id' => \PDO::PARAM_INT
+        ]);
+    }
+
+    public function getPostByTitle($title)
+    {
+        $sql = "SELECT posts.*, users.name AS username 
+        FROM posts 
+        INNER JOIN users ON posts.user_id = users.id
+        WHERE title = :title";
+        
+        $result = $this->db->fetch($sql, [
+            ':title' => $title
+        ]);
+
+        if ($result) {
+            return $result;
+        } else {
+            return 0;
+        }
+    }
+
+    public function create($data)
+    {
+        $sql = "INSERT INTO posts (title, subtitle, thumb, body, user_id) VALUES (:title, :subtitle, :thumb, :body, :user_id)";
+        return $this->db->query($sql, [
+            ':title' => $data['title'],
+            ':subtitle' => $data['subtitle'],
+            ':thumb' => $data['thumb'],
+            ':body' => $data['body'],
+            ':user_id' => $data['user_id']
+        ]);
+    }
+
+    public function update($data, $id)
+    {
+        $sql = "UPDATE posts SET title = :title, subtitle = :subtitle, thumb = :thumb, body = :body WHERE id = :id";
+        return $this->db->query($sql, [
+            ':title' => $data['title'],
+            ':subtitle' => $data['subtitle'],
+            ':thumb' => $data['thumb'],
+            ':body' => $data['body'],
+            ':id' => $id,
+        ]);
+    }
+
+    public function softDelete($id)
+    {
+        $currentTime = date('Y-m-d H:i:s');
+
+        $sql = "UPDATE posts SET deleted_at = :deleted_at WHERE id = :id";
+        return $this->db->query($sql, [
+            ':deleted_at' => $currentTime,
+            ':id' => $id
         ]);
     }
 }

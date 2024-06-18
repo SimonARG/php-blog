@@ -14,7 +14,7 @@ class UserFactory
             'name' => $faker->unique()->userName(),
             'email' => $faker->unique()->safeEmail(),
             'password' => password_hash('password', PASSWORD_BCRYPT),
-            'avatar' => 'avatar.jpg'
+            'avatar' => rand(1, 7) . '.webp',
         ];
     }
 }

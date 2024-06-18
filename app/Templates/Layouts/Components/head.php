@@ -17,9 +17,15 @@ $baseUrl = $GLOBALS['config']['base_url'];
 
   <link href="https://fonts.googleapis.com/css2?family=Noto+Sans:ital,wdth,wght@0,62.5..100,100..900;1,62.5..100,100..900&display=swap" rel="stylesheet">
 
-  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Rounded:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200" />
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Rounded:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200&display=block" />
 
-  <link rel="stylesheet" href="<?= $baseUrl ?>/css/index.css">
+  <link rel="stylesheet" href="<?= $baseUrl ?>css/index.css">
+
+  <?php if(isset($posts) && $posts): ?>
+    <?php foreach($posts as $key => $post): ?>
+      <link rel="preload" as="image" href="<?= $baseUrl . 'imgs/thumbs/' . htmlspecialchars($post['thumb']) ?>">
+    <?php endforeach; ?>
+  <?php endif; ?>
 
   <title>Blog</title>
 </head>

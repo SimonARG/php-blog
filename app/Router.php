@@ -15,7 +15,7 @@ class Router
     {
         // Check if the request URI matches a defined route exactly
         if (array_key_exists($requestUri, $this->routes)) {
-            $this->callControllerAction($this->routes[$requestUri]);
+            $this->callControllerAction($this->routes[$requestUri], [$_POST]);
         } else {
             // Check if the request URI matches a route with parameters
             foreach ($this->routes as $route => $controller) {
@@ -23,7 +23,8 @@ class Router
                 $pattern = str_replace('/', '\/', $pattern);
                 if (preg_match('/^' . $pattern . '$/', $requestUri, $matches)) {
                     array_shift($matches); // Remove the full match
-                    $this->callControllerAction($controller, $matches);
+                    $params = array_merge($matches, [$_POST]); // Add POST data as the last parameter
+                    $this->callControllerAction($controller, $params);
                     return;
                 }
             }
@@ -38,7 +39,7 @@ class Router
         $controllerAction = explode('@', $controllerAction);
         $controllerName = $controllerAction[0];
         $actionName = $controllerAction[1];
-
+    
         $controller = new $controllerName();
         // Call the controller action with parameters if provided
         if (!empty($params)) {
@@ -46,5 +47,5 @@ class Router
         } else {
             $controller->$actionName();
         }
-    }
+    }    
 }

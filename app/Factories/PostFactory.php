@@ -13,9 +13,9 @@ class PostFactory
         return [
             'title' => $faker->sentence,
             'subtitle' => $faker->sentence,
-            'thumb' => 'thumb.avif',
-            'body' => $faker->paragraphs(3, true),
-            'user_id' => rand(1, 10)
+            'thumb' => rand(1, 7) . '.webp',
+            'body' => $faker->paragraphs(7, true),
+            'user_id' => rand(1, 12)
         ];
     }
 }

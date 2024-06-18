@@ -17,4 +17,174 @@ class User
         $sql = "SELECT * FROM users";
         return $this->db->fetchAll($sql);
     }
+
+    public function getUserByEmail($email)
+    {
+        $sql = "SELECT * FROM users
+        WHERE users.email = :email";
+
+        $result = $this->db->fetch($sql, [
+            ':email' => $email
+        ]);
+
+        if ($result) {
+            return $result;
+        } else {
+            return 0;
+        }
+    }
+
+    public function getUserByEmailWithRole($email)
+    {
+        $sql = "SELECT users.*, roles.role AS role 
+        FROM users
+        INNER JOIN role_user ON users.id = role_user.user_id
+        INNER JOIN roles ON role_user.role_id = roles.id
+        WHERE users.email = :email";
+
+        $result = $this->db->fetch($sql, [
+            ':email' => $email
+        ]);
+
+        if ($result) {
+            return $result;
+        } else {
+            return 0;
+        }
+    }
+
+    public function getUserById($id)
+    {
+        $sql = "SELECT 
+                users.*, 
+                roles.role AS role, 
+                (SELECT COUNT(*) FROM posts WHERE posts.user_id = users.id AND posts.deleted_at IS NULL) AS posts, 
+                (SELECT COUNT(*) FROM comments WHERE comments.user_id = users.id AND comments.deleted_at IS NULL) AS comments
+            FROM users
+            LEFT JOIN role_user ON users.id = role_user.user_id
+            LEFT JOIN roles ON role_user.role_id = roles.id
+            WHERE users.id = :id
+            AND users.deleted_at IS NULL";
+
+        $result = $this->db->fetch($sql, [
+            ':id' => $id
+        ]);
+
+        if ($result) {
+            return $result;
+        } else {
+            return 0;
+        }
+    }
+
+    public function create($data)
+    {
+        $sql = "INSERT INTO users (name, email, password, avatar) VALUES (:name, :email, :password, 'avatar.jpg')";
+        return $this->db->query($sql, [
+            ':name' => $data['name'],
+            ':email' => $data['email'],
+            ':password' => $data['password'],
+        ]);
+    }
+
+    public function setRole($user_id, $roleName)
+    {
+        $sql = "SELECT id FROM roles
+        WHERE roles.role = :role";
+
+        $role = $this->db->fetch($sql, [
+            ':role' => $roleName
+        ]);
+        
+        $sql = "INSERT INTO role_user (user_id, role_id) VALUES (:user_id, :role_id)";
+        return $this->db->query($sql, [
+            ':user_id' => $user_id,
+            ':role_id' => $role['id']
+        ]);
+    }
+
+    public function getUserPosts($id)
+    {
+        $sql = "SELECT * FROM posts
+                WHERE user_id = :id
+                AND deleted_at IS NULL
+                ORDER BY created_at DESC";
+        
+        $result = $this->db->fetchAll($sql, [':id' => $id]);
+
+        return $result ? $result : 0;
+    }
+
+    public function getLatestUserPostId($id)
+    {
+        $sql = "SELECT id FROM posts
+                WHERE user_id = :id
+                AND deleted_at IS NULL
+                ORDER BY created_at DESC
+                LIMIT 1";
+        
+        $result = $this->db->fetch($sql, [':id' => $id]);
+
+        return $result ? $result : 0;
+    }
+
+    public function getUserComments($id)
+    {
+        $sql = "SELECT * FROM comments
+                WHERE user_id = :id
+                AND deleted_at IS NULL
+                ORDER BY created_at DESC
+                LIMIT 1";
+        
+        $result = $this->db->fetchAll($sql, [':id' => $id]);
+
+        return $result ? $result : 0;
+    }
+
+    public function getLatestUserCommentId($id)
+    {
+        $sql = "SELECT id FROM comments
+                WHERE user_id = :id
+                AND deleted_at IS NULL
+                ORDER BY created_at DESC
+                LIMIT 1";
+        
+        $result = $this->db->fetch($sql, [':id' => $id]);
+
+        return $result ? $result : ['id' => 0];
+    }
+
+    public function update($data, $id)
+    {
+        $sql = "UPDATE users SET ";
+        $params = NULL;
+
+        if($data['name']) {
+            $sql .= "name = :name";
+            $params['name'] = $data['name'];
+        }
+
+        if($data['email']) {
+            $sql .= " ,email = :email";
+            $params['email'] = $data['email'];
+        }
+
+        if($data['avatar']) {
+            $sql .= " ,avatar = :avatar";
+            $params['avatar'] = $data['avatar'];
+        }
+
+        if($data['password']) {
+            $sql .= " ,password = :password";
+            $params['password'] = $data['password'];
+        }
+
+        $params['id'] = (int)$id;
+
+        $sql .= " WHERE id = :id";
+
+        return $this->db->query($sql, $params, [
+            ':id' => \PDO::PARAM_INT
+        ]);
+    }
 }

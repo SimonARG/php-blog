@@ -8,7 +8,10 @@ $choice = trim(fgets($handle));
 
 $migrations = [
     'CreateUsersTable' => __DIR__ . '/migrations/1_create_users_table.php',
-    'CreatePostsTable' => __DIR__ . '/migrations/2_create_posts_table.php'
+    'CreatePostsTable' => __DIR__ . '/migrations/2_create_posts_table.php',
+    'CreateRolesTable' => __DIR__ . '/migrations/3_create_roles_table.php',
+    'CreateRoleUserTable' => __DIR__ . '/migrations/4_create_role_user_table.php',
+    'CreateCommentsTable' => __DIR__ . '/migrations/5_create_comments_table.php'
 ];
 
 foreach ($migrations as $migrationClass => $filePath) {

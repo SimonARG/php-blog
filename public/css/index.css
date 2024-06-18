@@ -1,10 +1,18 @@
 :root {
   font-size: 16px;
   --panel-bg: rgba(0, 0, 0, 0.555);
-  --panel-h: rgba(166, 166, 166, 0.24);
+  --panel-h: rgba(146, 146, 146, 0.24);
+  --panel-a: rgba(175, 175, 175, 0.24);
   --pag-h: rgba(50, 50, 50, 0.622);
   --pag-a: rgba(86, 86, 86, 0.668);
   --text-2: rgb(196, 196, 196);
+  --solid-h: rgb(70, 70, 70);
+  --blue: rgb(45, 45, 180);
+  --red: rgb(178, 46, 46);
+  --yellow: rgb(205, 184, 21);
+  --orange: rgb(185, 105, 14);
+  --purple: rgb(149, 45, 180);
+  --green: rgb(39, 132, 62);
 }
 
 /*
@@ -401,6 +409,42 @@ body::-webkit-scrollbar-thumb {
   display: none;
 }
 
+input[type=text],
+input[type=password],
+input[type=email],
+textarea {
+  background-color: transparent;
+  border: 1px solid white;
+  outline: none;
+}
+
+input[type=text]:hover,
+input[type=password]:hover,
+textarea:hover {
+  background-color: var(--panel-h);
+}
+
+.btn {
+  cursor: pointer;
+  transform-origin: center;
+}
+
+.btn:hover {
+  background-color: var(--panel-h);
+}
+
+.btn:active {
+  transform: scale(95%);
+}
+
+.ph-error {
+  border-color: red !important;
+}
+
+.ph-error::placeholder {
+  color: red;
+}
+
 /*
 |------------------------------------------------------------
 | Body
@@ -409,7 +453,8 @@ body::-webkit-scrollbar-thumb {
 
 body {
   font-family: "Noto Sans", sans-serif;
-  background-image: url('../imgs/bg.avif');
+  /* background-image: url('../imgs/bg.avif'); */
+  background-color: blue;
   background-position: center;
   background-repeat: no-repeat;
   background-size: cover;
@@ -421,7 +466,27 @@ body {
   color: white;
   min-height: 100vh;
   padding: 2px;
+  overflow-y: hidden;
 }
+
+.body-container {
+  position: fixed;
+  overflow-y: scroll;
+  max-height: calc(100% - 4.8rem - 4px);
+  transition: bottom .2s, transform .2s;
+  bottom: 0;
+  max-width: 100%;
+  min-width: calc(100% - 2px);
+}
+
+.body-container::-webkit-scrollbar {
+  background-color: transparent;
+  width: 2px;
+}
+
+.body-container::-webkit-scrollbar-thumb {
+  background-color: white;
+} 
 
 .material-symbols-rounded {
   font-variation-settings:
@@ -450,6 +515,13 @@ header {
   transform: translateY(-50%);
 }
 
+.sidebar-btn {
+  font-size: 3.7rem;
+  top: 51%;
+  right: 3%;
+  transform: translateY(-50%);
+}
+
 .page-title {
   font-size: 2rem;
   padding: 1rem;
@@ -461,9 +533,6 @@ header {
   position: absolute;
   margin-top: 2px;
   transition: transform .2s;
-}
-
-.nav-menu {
   width: 100%;
 }
 
@@ -473,31 +542,28 @@ header {
   justify-content: center;
   background-color: var(--panel-bg);
   margin-bottom: 2px;
-  padding: .6rem 0;
   font-size: 1.1rem;
+}
+
+.nav-menu > ul li a {
+  padding: .6rem 0;
+  width: 100%;
+  height: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.nav-menu > ul li a:hover {
+  background-color: var(--panel-h);
+  text-decoration: underline;
 }
 
 /*
 |------------------------------------------------------------
-| Content
+| Index
 |------------------------------------------------------------
 */
-
-.index-container {
-  position: fixed;
-  overflow-y: scroll;
-  max-height: calc(100% - 4.8rem - 4px);
-  transition: bottom .2s;
-}
-
-.index-container::-webkit-scrollbar {
-  background-color: transparent;
-  width: 2px;
-}
-
-.index-container::-webkit-scrollbar-thumb {
-  background-color: white;
-} 
 
 .index > .post {
   background-color: var(--panel-bg);
@@ -507,6 +573,51 @@ header {
 
 .index > .post > * {
   text-align: center;
+}
+
+.index > .post > .menu {
+  position: absolute;
+  left: 5%;
+  display: flex;
+  margin: -.6rem;
+}
+
+.index > .post > .menu > .arrow {
+  font-size: 1.6rem;
+  user-select: none;
+  cursor: pointer;
+  color: var(--text-2);
+  transform-origin: center;
+  transition: transform .15s;
+}
+
+.index > .post > .menu > .arrow:hover {
+  color: white;
+}
+
+.index > .post > .menu > .dropdown {
+  position: absolute;
+  background-color: black;
+  border: 1px solid white;
+  transform-origin: top;
+  transform: scaleY(0);
+  transition: transform .15s;
+  user-select: none;
+  left: 140%;
+  top: 30%;
+  font-size: 1.6rem;
+}
+
+.index > .post > .menu > .dropdown * {
+  cursor: pointer;
+}
+
+.index > .post > .menu > .dropdown > li {
+  padding: .3rem .8rem;
+}
+
+.index > .post > .menu > .dropdown > li:hover {
+  background-color: var(--solid-h);
 }
 
 .index > .post > .post-container .title {
@@ -525,13 +636,16 @@ header {
   text-wrap: balance;
 }
 
-.index > .post > .post-container .poster > span {
+.index > .post > .post-container .poster span {
   color: var(--text-2);
+}
+
+.index > .post > .post-container .poster .link:hover {
+  text-decoration: underline;
 }
 
 .index > .post > .post-container .body {
   margin-bottom: .5rem;
-  text-wrap: balance;
 }
 
 .index > .post > .post-container .thumb {
@@ -553,6 +667,31 @@ header {
   color: var(--text-2);
 }
 
+.index .comment-count {
+  display: flex;
+  position: absolute;
+  right: 1.5rem;
+  align-items: flex-end;
+  margin: -1rem;
+  user-select: none;
+  cursor: pointer;
+  border: 1px solid transparent;
+  gap: .4rem;
+  padding-right: .2rem;
+}
+
+.index .comment-count:hover {
+  border: 1px solid white;
+}
+
+.index .comment-count span {
+  font-size: 2rem;
+}
+
+.index .comment-count div {
+  font-size: 1.5rem;
+}
+
 /*
 |------------------------------------------------------------
 | Pagination
@@ -564,6 +703,7 @@ header {
   background-color: var(--panel-bg);
   display: flex;
   justify-content: center;
+  margin-bottom: 2px;
 }
 
 .pagination > a {
@@ -592,31 +732,47 @@ header {
 
 /*
 |------------------------------------------------------------
-| Post
+| Single
 |------------------------------------------------------------
 */
-
-.single-container {
-  position: fixed;
-  overflow-y: scroll;
-  max-height: calc(100% - 4.8rem - 4px);
-  transition: bottom .2s;
-}
-
-.single-container::-webkit-scrollbar {
-  background-color: transparent;
-  width: 2px;
-}
-
-.single-container::-webkit-scrollbar-thumb {
-  background-color: white;
-} 
 
 .single > .post {
   background-color: var(--panel-bg);
   margin-bottom: 2px;
-  padding: .6rem 1rem 1.6rem 1rem;
-  min-height: 100svh;
+  padding: .6rem 1rem 1rem 1rem;
+  min-height: 92svh;
+}
+
+.single > .post .title {
+  text-align: center;
+  font-size: 1.5rem;
+  font-weight: 600;
+  text-wrap: balance;
+  margin-bottom: .5rem;
+}
+
+.single > .post .subtitle {
+  text-align: center;
+  font-size: 1.2rem;
+  font-weight: 300;
+  text-wrap: balance;
+  margin-bottom: .3rem;
+}
+
+.single > .post .poster {
+  text-align: center;
+  font-size: 1rem;
+  font-weight: 200;
+  text-wrap: balance;
+  color: var(--text-2);
+}
+
+.single > .post .poster a {
+  color: white;
+}
+
+.single > .post .poster a:hover {
+  text-decoration: underline;
 }
 
 .single > .post > .thumb {
@@ -627,4 +783,633 @@ header {
 
 .single > .post > .thumb >  img {
   width: 100%;
+}
+
+.single > .post > .body {
+  margin-bottom: 2rem;
+}
+
+.single > .post > .body > p {
+  text-indent: 1rem;
+  hyphens: auto;
+}
+
+.single > .post hr {
+  background-color: white;
+  margin-bottom: 1rem;
+}
+
+.single > .post .comment-count {
+  display: flex;
+  justify-content: center;
+}
+
+/*
+|------------------------------------------------------------
+| Single - New Comment
+|------------------------------------------------------------
+*/
+
+.single > .comments > .new-comment {
+  background-color: var(--panel-bg);
+  margin-bottom: 2px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: .2rem 1rem .5rem 1rem;
+}
+
+.single > .comments > .new-comment label {
+  text-align: center;
+  margin-bottom: .2rem;
+}
+
+.single > .comments > .new-comment textarea {
+  padding: .2rem .4rem;
+  width: 100%;
+  min-height: 2.8rem;
+  margin-bottom: .6rem;
+  max-height: 38vh;
+}
+
+.single > .comments > .new-comment input[type=submit] {
+  border: 1px solid white;
+  padding: .2rem .4rem;
+}
+
+/*
+|------------------------------------------------------------
+| Single - Comments
+|------------------------------------------------------------
+*/
+
+.single > .comments > div {
+  background-color: var(--panel-bg);
+  margin-bottom: 2px;
+  overflow: hidden;
+  position: relative;
+}
+
+.single > .comments > .comment > .arrow {
+  position: absolute;
+  right: .3rem;
+  font-size: 1.5rem;
+  user-select: none;
+  line-height: 1;
+  color: var(--text-2);
+  cursor: pointer;
+  transform-origin: center;
+  transition: transform .2s;
+}
+
+.single > .comments > .comment > .arrow:hover {
+  color: white;
+}
+
+.single > .comments > .comment > .dropdown {
+  background-color: black;
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  transform: translateY(-100%);
+  transition: transform .1s ease-in-out;
+  padding: 1.2rem;
+}
+
+.single > .comments > .comment > .dropdown form {
+  max-height: 100%;
+}
+
+.single > .comments .comment-header {
+  padding: .2rem 1rem;
+  background-color: var(--panel-bg);
+  font-weight: 200;
+  text-align: center;
+}
+
+.single > .comments .comment-header a {
+  font-weight: 400;
+}
+
+.single > .comments .comment-header a:hover {
+  text-decoration: underline;
+}
+
+.single > .comments .comment-content {
+  hyphens: auto;
+}
+
+.single .comment-avatar {
+  border: 1px solid white;
+  width: 5rem;
+  height: 5rem;
+  margin-right: 1rem;
+  float: left;
+}
+
+.single .comment-avatar > img {
+  object-fit: cover;
+  object-position: center;
+  width: 100%;
+  height: 100%;
+}
+
+.single .comment .body-col {
+  padding: .2rem .5rem .6rem .5rem;
+  min-height: 5rem;
+}
+
+.single > .comments .comment-footer {
+  padding: .2rem 1rem;
+  background-color: var(--panel-bg);
+  font-weight: 200;
+  text-align: center;
+}
+
+.comment-footer > div {
+  min-height: 1.4rem;
+}
+
+/*
+|------------------------------------------------------------
+| Single - Comment Dropdown
+|------------------------------------------------------------
+*/
+
+.single > .comments .dropdown textarea {
+  padding: .2rem .4rem;
+  width: 100%;
+  background-color: var(--panel-h);
+  margin-bottom: .4rem;
+  min-height: 4rem;
+  resize: none;
+}
+
+.single > .comments .dropdown textarea::-webkit-scrollbar,
+.single > .comments > .new-comment textarea::-webkit-scrollbar {
+  width: 1rem;
+}
+
+.single > .comments .dropdown textarea::-webkit-scrollbar-track,
+.single > .comments > .new-comment textarea::-webkit-scrollbar-track {
+  background-color: transparent;
+}
+
+.single > .comments .dropdown textarea::-webkit-scrollbar-thumb,
+.single > .comments > .new-comment textarea::-webkit-scrollbar-thumb {
+  background-color: var(--panel-a);
+  border-radius: 10px;
+  background-clip: padding-box;
+  border: 3px solid transparent;
+}
+
+.single > .comments .dropdown textarea::-webkit-scrollbar-corner,
+.single > .comments > .new-comment textarea::-webkit-scrollbar-corner {
+  background-color: transparent;
+}
+
+.single > .comments .dropdown form input[type=submit] {
+  border: 1px solid white;
+  padding: .4rem .6rem;
+}
+
+.single > .comments .dropdown .edit input[type=submit] {
+  float: left;
+}
+
+.single > .comments .dropdown .del {
+  float: right;
+}
+
+/*
+|------------------------------------------------------------
+| Sidebar
+|------------------------------------------------------------
+*/
+
+.sidebar {
+  transform: scalex(0%);
+  transform-origin: right;
+  position: fixed;
+  transition: transform .2s, bottom .2s;
+  background-color: var(--panel-bg);
+  width: 80%;
+  right: 2px;
+  padding: 1.2rem;
+  min-height: 100%;
+  bottom: calc(-4.8rem - 4px);
+}
+
+.sidebar .side-btns {
+  display: flex;
+  flex-direction: column;
+  gap: .6rem;
+  user-select: none;
+  margin-bottom: .6rem;
+}
+
+.form-btn {
+  width: 100%;
+}
+
+.side-btns a,
+.form-btn {
+  border: 1px solid white;
+  padding: .8rem;
+  text-align: center;
+  font-size: 1.2rem;
+  cursor: pointer;
+}
+
+.side-btns a:hover,
+.form-btn:hover {
+  background-color: var(--panel-h);
+}
+
+.side-btns a:active
+.form-btn:active {
+  background-color: var(--panel-h);
+}
+
+.search {
+  display: flex;
+}
+
+.searchbar {
+  background-color: transparent;
+  border: 1px solid white;
+  padding: .7rem .5rem;
+  font-size: 1.2rem;
+  width: 100%;
+}
+
+.search-btn {
+  border: 1px solid white;
+  border-left: none;
+  font-size: 1.2rem;
+  padding: .7rem .5rem;
+  cursor: pointer;
+  width: calc(1.2rem + (1.2rem / 10 * 4) + .7rem * 2 + 2px);
+}
+
+.searchbar:hover,
+.search-btn:hover {
+  background-color: var(--panel-h);
+}
+
+/*
+|------------------------------------------------------------
+| Auth
+|------------------------------------------------------------
+*/
+
+.auth-container {
+  padding: 1rem 1rem 1.6rem 1rem;
+  background-color: var(--panel-bg);
+  height: 100vh;
+}
+
+.auth label {
+  display:inline-block;
+  width: 100%;
+  text-align: center;
+  margin-bottom: .3rem;
+  font-size: 1.2rem;
+}
+
+.auth input {
+  margin-bottom: .2rem;
+  width: 100%;
+  font-size: 1.3rem;
+  padding: .7rem .4rem;
+  text-align: center;
+}
+
+.auth span {
+  margin-bottom: 1.8rem;
+  display: block;
+  text-align: center;
+}
+
+.auth input[type=submit] {
+  border: 1px solid white;
+  margin-top: 2rem;
+}
+
+.login input {
+  margin-bottom: 2rem;
+}
+
+/*
+|------------------------------------------------------------
+| Create/edit post
+|------------------------------------------------------------
+*/
+
+.create-post,
+.edit-post {
+  padding: 1rem 1rem 1.6rem 1rem;
+  background-color: var(--panel-bg);
+  min-height: 100vh;
+}
+
+.new-post-form > label,
+.update-post-form > label {
+  display:inline-block;
+  width: 100%;
+  text-align: center;
+  margin-bottom: .3rem;
+}
+
+.new-post-form > input[type=text],
+.update-post-form > input[type=text] {
+  margin-bottom: 2rem;
+  font-size: 1.1rem;
+  padding: .5rem .4rem;
+  width: 100%;
+}
+
+.new-post-form .title,
+.new-post-form .subtitle,
+.update-post-form .title,
+.update-post-form .subtitle {
+  text-align: center;
+}
+
+.file-up {
+  display: flex;
+  margin-bottom: 2rem;
+}
+
+.file-up-btn {
+  padding: .1rem .7rem;
+  border: 1px solid white;
+  border-right: none;
+  font-size: 1.7rem;
+}
+
+.file-up-field {
+  border-left: none;
+  width: 100%;
+  padding: .5rem .4rem;
+  font-size: 1.1rem;
+}
+
+.editor-tabs {
+  display: flex;
+}
+
+.tab {
+  display: inline-block;
+  border: 1px solid white;
+  cursor: pointer;
+}
+
+.tab:hover {
+  background-color: var(--panel-h);
+}
+
+.tab.active {
+  background-color: var(--panel-a);
+}
+
+.tab > label,
+.tab > span {
+  display: inline-block;
+  padding: .6rem .4rem;
+  cursor: pointer;
+}
+
+.tab-content {
+  margin-bottom: 2rem;
+}
+
+.tab-pane {
+  display: none;
+}
+
+.tab-pane.active {
+  display: flex;
+}
+
+.new-post-form textarea,
+.update-post-form textarea {
+  min-height: 200px;
+  font-size: 1.1rem;
+  padding: .5rem .4rem;
+  width: 100%;
+}
+
+.preview.body-preview {
+  font-size: 1.1rem;
+  padding: .5rem .4rem;
+  min-height: 200px;
+  border: 1px solid white;
+  width: 100%;
+  max-width: 100%;
+  z-index: 2;
+}
+
+.new-post-form > input[type=submit],
+.update-post-form > input[type=submit] {
+  border: 1px solid white;
+  font-size: 1.1rem;
+  padding: .5rem .4rem;
+  width: 100%;
+}
+
+input:-webkit-autofill,
+input:-webkit-autofill:hover, 
+input:-webkit-autofill:focus, 
+input:-webkit-autofill:active{
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: #ffffff;
+    transition: background-color 5000s ease-in-out 0s;
+    box-shadow: inset 0 0 20px 20px #23232329;
+}
+
+/*
+|------------------------------------------------------------
+| Popup
+|------------------------------------------------------------
+*/
+
+.popup-container {
+  position: absolute;
+  top: 110%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  background-color: black;
+  border: 1px solid white;
+  box-shadow: 0 0 10px 7px rgba(0, 0, 0, 0.644);
+  font-size: 1.7rem;
+  padding: 1rem 1rem;
+  transition: top .3s ease-in-out;
+}
+
+.popup {
+  width: 60vw;
+  text-align: center;
+}
+
+/*
+|------------------------------------------------------------
+| User
+|------------------------------------------------------------
+*/
+
+.single > .user {
+  background-color: var(--panel-bg);
+  margin-bottom: 2px;
+  padding: .6rem 1rem 1rem 1rem;
+  min-height: 92svh;
+  display: block;
+}
+
+.single > .user > .role {
+  display: flex;
+  justify-content: center;
+}
+
+.single > .user > .role > span {
+  padding: .1rem .2rem;
+  font-size: .9rem;
+  font-weight: 500;
+}
+
+.single > .user > .role > .user {
+  background-color: var(--blue);
+}
+
+.single > .user > .role > .poster {
+  background-color: var(--green);
+}
+
+.single > .user > .role > .mod {
+  background-color: var(--purple);
+}
+
+.single > .user > .role > .admin {
+  background-color: var(--yellow);
+}
+
+.single > .user > .role > .restricted {
+  background-color: var(--orange);
+}
+
+.single > .user > .role > .banned {
+  background-color: var(--red);
+}
+
+.single > .user > h1 {
+  font-size: 1.5rem;
+  width: 100%;
+  text-align: center;
+}
+
+.single > .user > h2 {
+  font-size: 1rem;
+  font-weight: 100;
+  width: 100%;
+  text-align: center;
+  margin-bottom: .4rem;
+}
+
+.single .user-avatar {
+  border: 1px solid white;
+  width: 50vw;
+  height: 50vw;
+  margin: 0 auto 0 auto;
+}
+
+.single .user-avatar > img {
+  object-fit: cover;
+  object-position: center;
+  width: 100%;
+  height: 100%;
+}
+
+.single > .user .avatar-label-holder {
+  display: flex;
+  justify-content: center;
+  margin-bottom: .6rem;
+}
+
+.single > .user .avatar-label {
+  width: 50vw;
+  border: 1px solid white;
+  border-top: none;
+  text-align: center;
+  padding: .4rem 0;
+}
+
+.single > .user > .posts {
+  margin-top: .6rem;
+}
+
+.single > .user > .posts > a,
+.single > .user > .comments > a {
+  margin-bottom: .4rem;
+  cursor: pointer;
+}
+
+.single > .user > .posts > a:hover,
+.single > .user > .comments > a:hover {
+  text-decoration: underline 1px;
+  color: white;
+}
+
+.single > .user > .posts,
+.single > .user > .comments {
+  display: flex;
+  justify-content: space-between;
+}
+
+.single > .user form {
+  display: flex;
+  flex-direction: column;
+  text-align: center;
+}
+
+.single > .user form input[type=text],
+.single > .user form input[type=email],
+.single > .user form input[type=password] {
+  margin-bottom: .4rem;
+  padding: .3rem .5rem;
+  text-align: center;
+}
+
+.single > .user form > div {
+  display: flex;
+  justify-content: center;
+}
+
+.single > .user form input[type=submit] {
+  border: 1px solid white;
+  width: fit-content;
+  padding: .3rem .5rem;
+  margin-top: 1rem;
+}
+
+/*
+|------------------------------------------------------------
+| Footer
+|------------------------------------------------------------
+*/
+
+footer {
+  background-color: var(--panel-bg);
+  padding: 1rem;
+  margin-bottom: 2px;
+  display: flex;
+  justify-content: center;
+  gap: .7rem;
+}
+
+footer span {
+  user-select: none;
+}
+
+footer a:hover {
+  text-decoration: underline;
 }

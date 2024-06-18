@@ -5,6 +5,8 @@ require_once __DIR__ . '/../app/bootstrap.php';
 
 use App\Router;
 
+session_start();
+
 // Initialize Router
 $router = new Router();
 

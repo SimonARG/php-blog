@@ -1,15 +1,76 @@
-<div class="index-container">
-  <div class="single">
-    <div class="post">
-      <h1 class="title"><?= htmlspecialchars($post['title']) ?></h1>
-      <h2 class="subtitle"><?= htmlspecialchars($post['subtitle']) ?></h2>
-      <div class="poster">
-        <span>Posted by </span><?= htmlspecialchars($post['username']) ?><span> on </span><?= htmlspecialchars($post['created_at']) ?>
-      </div>
-      <div class="thumb">
-        <img class="no-select" src="<?= $baseUrl . 'imgs/' . htmlspecialchars($post['thumb']) ?>" alt="">
-      </div>
-      <div class="body"><?= htmlspecialchars($post['body']) ?></div>
+<?php
+$baseUrl = $GLOBALS['config']['base_url'];
+?>
+
+<div class="single">
+  <div class="post">
+    <h1 class="title"><?= htmlspecialchars($post['title']) ?></h1>
+    <h2 class="subtitle"><?= htmlspecialchars($post['subtitle']) ?></h2>
+    <div class="poster">
+      <span>Posteado por <a href="<?= $baseUrl . 'user/' . $post['user_id'] ?>"><?= htmlspecialchars($post['username']) ?></a> el <?= htmlspecialchars($post['created_at']) ?>
     </div>
+    <div class="thumb">
+      <img class="no-select" src="<?= $baseUrl . 'imgs/thumbs/' . htmlspecialchars($post['thumb']) ?>" alt="">
+    </div>
+    <div class="body body-preview"><?= $post['body'] ?></div>
+    <hr>
+    <div class="comment-count"><?= 'Comentarios: ' . $post['comments'] ?></div>
+  </div>
+
+  <div class="comments">
+    <?php if ($_SESSION): ?>
+      <form class="new-comment" method="POST" action="<?= $baseUrl . 'comments/store' ?>">
+        <label for="body">Nuevo Comentario</label>
+        <textarea required maxlength="1600" name="body" id="body" placeholder="Comment..." autocomplete="off"<?php if (isset($errors['body_error'])): ?><?= "class='ph-error'" ?><?php endif; ?>></textarea>
+        <input class="btn" type="submit" value="Comentar">
+        <?php if ($_SESSION): ?>
+          <input type="hidden" name="user_id" value="<?= $_SESSION['user_id'] ?>">
+          <input type="hidden" name="post_id" value="<?= $post['id'] ?>">
+        <?php endif; ?>
+      </form>
+    <?php endif ?>
+
+    <?php foreach($comments as $index => $comment): ?>
+      <div class="comment" id="<?= 'comment-' . $index + 1 ?>">
+        <div class="dropdown">
+          <form class="edit" action="<?= $baseUrl . 'comments/update/' . $comment['id'] ?>" method="POST">
+            <textarea name="body" id="body"><?= $comment['body'] ?></textarea>
+            <input type="hidden" name="post_id" value="<?= $post['id'] ?>">
+            <input type="hidden" name="comment_id" value="<?= $comment['id'] ?>">
+            <input class="btn" type="submit" value="Editar">
+          </form>
+
+          <form class="del" action="<?= $baseUrl . 'comments/delete' ?>" method="POST">
+            <input type="hidden" name="post_id" value="<?= $post['id'] ?>">
+            <input type="hidden" name="comment_id" value="<?= $comment['id'] ?>">
+            <input class="btn" type="submit" value="Eliminar">
+          </form>
+        </div>
+        <?php if ($_SESSION && $_SESSION['user_id'] == $comment['user_id']): ?>
+        <div class="arrow">⯆</div>
+        <?php endif; ?>
+
+        <div class="comment-header">
+          Posteado por <a href="<?= $baseUrl . 'user/' . $comment['user_id'] ?>"><?= $comment['username'] ?></a><?= ' el ' . $comment['created_at'] ?>
+        </div>
+
+        <div class="comment-content">
+          <div class="comment-avatar">
+            <img src="<?= $baseUrl . 'imgs/avatars/' . htmlspecialchars($comment['avatar']) ?>" alt="<?= $comment['username'] . "'s avatar" ?>">
+          </div>
+          <div class="body-col">
+            <?= $comment['body'] ?>
+          </div>
+        </div>
+
+        <div class="comment-footer">
+          <div>
+            <?php if ($comment['updated_at']): ?>
+              <?= 'Actualizado en ' . $comment['updated_at'] ?>
+            <?php endif; ?>
+          </div>
+        </div>
+      </div>
+    <?php endforeach ?>
   </div>
 </div>

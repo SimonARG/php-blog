@@ -6,7 +6,7 @@ require_once __DIR__ . '/../bootstrap.php';
 
 use App\Factories\PostFactory;
 
-class PostSeeder
+class RoleUserSeeder
 {
     protected $db;
 
@@ -18,10 +18,12 @@ class PostSeeder
 
     public function run()
     {
-        for ($i = 0; $i < 60; $i++) {
-            $post = PostFactory::create();
-            $sql = "INSERT INTO posts (title, subtitle, thumb, body, user_id) VALUES (:title, :subtitle, :thumb, :body, :user_id)";
-            $this->db->query($sql, $post);
+        for ($i = 1; $i < 13; $i++) {
+            $sql = "INSERT INTO role_user (user_id, role_id) VALUES (:user_id, :role_id)";
+            $this->db->query($sql, [
+                ':user_id' => $i,
+                ':role_id' => 3
+            ]);
         }
     }
 }
