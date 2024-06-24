@@ -72,7 +72,27 @@ function truncateHTML($html_string, $length, $append = '&hellip;', $is_html = tr
             <?php else : ?>
               <li>Reportar</li>
             <?php endif; ?>
-            <li>Guardar</li>
+            <?php if(!in_array($post['id'], $_SESSION['saved_posts'])) : ?>
+                <li>
+                  <form method="POST" action="<?= $baseUrl . 'user/saved/save' ?>">
+                    <input type="hidden" name="post_id" value="<?= $post['id'] ?>">
+                    <input type="hidden" name="user_id" value="<?= $_SESSION['user_id'] ?>">
+                    <input type="hidden" name="curr_page" value="<?= $currentPage ?? 1 ?>">
+                    <input type="submit" value="Guardar">
+                  </form>
+                </li>
+              <?php endif; ?>
+              <?php if(in_array($post['id'], $_SESSION['saved_posts'])) : ?>
+                <li>
+                  <form method="POST" action="<?= $baseUrl . 'user/saved/delete' ?>">
+                    <input type="hidden" name="post_id" value="<?= $post['id'] ?>">
+                    <input type="hidden" name="user_id" value="<?= $_SESSION['user_id'] ?>">
+                    <input type="hidden" name="curr_page" value="<?= $currentPage ?? 1 ?>">
+                    <input type="hidden" name="total_pages" value="<?= $totalPages ?? 1 ?>">
+                    <input type="submit" value="Quitar de guardados">
+                  </form>
+                </li>
+              <?php endif; ?>
           </ul>
         </div>
       <?php endif; ?>

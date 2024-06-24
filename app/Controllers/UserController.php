@@ -3,18 +3,21 @@
 namespace App\Controllers;
 
 use DateTime;
+use App\Models\Post;
 use App\Models\User;
 use App\Models\Comment;
 
 class UserController
 {
     protected $userModel;
+    protected $postModel;
     protected $commentModel;
     protected $baseUrl;
 
     public function __construct()
     {
         $this->userModel = new User();
+        $this->postModel = new Post();
         $this->commentModel = new Comment();
         $this->baseUrl = $GLOBALS['config']['base_url'];
     }
@@ -253,5 +256,50 @@ class UserController
             'lastCommentPostId' => $lastCommentPostId,
             'popupContent' => $message
         ]);
+    }
+
+    public function save($request)
+    {        
+
+        $postId = $request['post_id'];
+        $userId = $request['user_id'];
+        $currPage = $request['curr_page'];
+
+        $result = $this->postModel->save($postId, $userId);
+
+        if(!$result) {
+            $message = 'Error al guardar post';
+        } else {
+            $_SESSION['saved_posts'][] = $postId;
+
+            $message = 'Post guardado';
+        }
+
+        return header('Location: ' . $this->baseUrl . '?page=' . $currPage . "&popup_content=" . $message);
+    }
+
+    public function deleteSaved($request)
+    {
+        $postId = $request['post_id'];
+        $userId = $request['user_id'];
+        $currPage = $request['curr_page'];
+        $totalPages = $request['total_pages'];
+
+        $result = $this->postModel->deleteSaved($postId, $userId);
+
+        if(!$result) {
+            $message = 'Error';
+        } else {
+            if (($key = array_search($postId, $_SESSION['saved_posts'])) !== false) {
+                unset($_SESSION['saved_posts'][$key]);
+            }
+            $message = 'Post removido de guardados';
+        }
+
+        if ($totalPages > 1) {
+            return header('Location: ' . $this->baseUrl . 'search/user/saved/' . $userId . '/?page=' . $currPage . "&popup_content=" . $message);
+        } else {
+            return header('Location: ' . $this->baseUrl . 'search/user/saved/' . $userId . "?popup_content=" . $message);
+        }
     }
 } 

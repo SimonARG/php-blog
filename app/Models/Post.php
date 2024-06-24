@@ -186,4 +186,22 @@ class Post
             return 0;
         }
     }
+
+    public function deleteSaved($postId, $userId)
+    {
+        $sql = "DELETE FROM saved_posts
+                WHERE user_id = :user_id
+                AND post_id = :post_id";
+
+        $result = $this->db->query($sql, [
+            ':user_id' => $userId,
+            ':post_id' => $postId
+        ]);
+
+        if($result) {
+            return 1;
+        } else {
+            return 0;
+        }
+    }
 }

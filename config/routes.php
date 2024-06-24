@@ -11,6 +11,8 @@ return [
     // Users
     '/user/{id}' => UserController::class . '@show',
     '/user/update/{id}' => UserController::class . '@update',
+    '/user/saved/save' => UserController::class . '@save',
+    '/user/saved/delete' => UserController::class . '@deleteSaved',
     // Auth
     '/register' => UserController::class . '@create',
     '/users/store' => UserController::class . '@store',

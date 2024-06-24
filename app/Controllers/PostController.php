@@ -328,4 +328,21 @@ class PostController
 
         return header('Location: ' . $this->baseUrl . '?page=' . $currPage . "&popup_content=" . $message);
     }
+
+    public function deleteSaved($request)
+    {
+        $postId = $request['post_id'];
+        $userId = $request['user_id'];
+        $currPage = $request['curr_page'];
+
+        $result = $this->postModel->save($postId, $userId);
+
+        if(!$result) {
+            $message = 'Error al guardar post';
+        } else {
+            $message = 'Post guardado';
+        }
+
+        return header('Location: ' . $this->baseUrl . '?page=' . $currPage . "&popup_content=" . $message);
+    }
 }
