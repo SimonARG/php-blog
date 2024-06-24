@@ -1356,14 +1356,20 @@ input:-webkit-autofill:active{
   margin-top: .6rem;
 }
 
+.single > .user > .saved-posts {
+  display: flex;
+}
+
 .single > .user > .posts > a,
-.single > .user > .comments > a {
+.single > .user > .comments > a,
+.single > .user > .saved-posts {
   margin-bottom: .4rem;
   cursor: pointer;
 }
 
 .single > .user > .posts > a:hover,
-.single > .user > .comments > a:hover {
+.single > .user > .comments > a:hover,
+.single > .user > .saved-posts:hover {
   text-decoration: underline 1px;
   color: white;
 }

@@ -83,6 +83,7 @@ class User
     public function create($data)
     {
         $sql = "INSERT INTO users (name, email, password, avatar) VALUES (:name, :email, :password, 'avatar.jpg')";
+
         return $this->db->query($sql, [
             ':name' => $data['name'],
             ':email' => $data['email'],
@@ -188,6 +189,70 @@ class User
         $result = $this->db->fetch($sql, [':id' => $id]);
 
         return $result ? $result : ['id' => 0];
+    }
+
+    public function getSavedPostsCount($id)
+    {
+        $sql = "SELECT COUNT(user_id) as posts FROM saved_posts
+                WHERE user_id = :id";
+        
+        $result = $this->db->fetch($sql, [':id' => $id]);
+
+        return $result ? $result : ['posts' => 0];
+    }
+
+    public function getSavedPostsIds($id)
+    {
+        $sql = "SELECT post_id as post FROM saved_posts
+                WHERE user_id = :id";
+        
+        $result = $this->db->fetchAll($sql, [':id' => $id]);
+
+        return $result ? $result : ['saved_posts' => 0];
+    }
+
+    public function getSavedPosts($id, $currentPage = 1)
+    {
+        $offset = ($currentPage - 1) * $this->postsPerPage;
+
+        $sql = "SELECT posts.*,
+                users.name AS username,
+                COUNT(comments.id) AS comments
+            FROM posts
+            JOIN saved_posts ON posts.id = saved_posts.post_id
+            INNER JOIN users ON posts.user_id = users.id
+            LEFT JOIN comments ON posts.id = comments.post_id AND comments.deleted_at IS NULL
+            WHERE posts.deleted_at IS NULL
+                AND saved_posts.user_id = :id
+            GROUP BY posts.id
+            ORDER BY created_at DESC
+            LIMIT :offset, :limit";
+
+        // Bind parameters with explicit data types
+        $result = $this->db->fetchAll($sql, [
+            ':limit' => $this->postsPerPage,
+            ':offset' => $offset,
+            ':id' => $id
+        ], [
+            ':limit' => \PDO::PARAM_INT,
+            ':offset' => \PDO::PARAM_INT
+        ]);
+
+        $sql = "SELECT COUNT(user_id) as posts FROM saved_posts
+                WHERE user_id = :id";
+        
+        $count = $this->db->fetch($sql, [
+            ':id' => $id
+        ])['posts'];
+
+        if($result) {
+            return [
+                'count' => $count,
+                'posts' => $result
+            ];
+        } else {
+            return 0;
+        }
     }
 
     public function update($data, $id)

@@ -28,6 +28,7 @@ return [
     // Search
     '/search' => SearchController::class . '@search',
     '/search/user/posts/{id}' => SearchController::class . '@getUserPosts',
+    '/search/user/saved/{id}' => SearchController::class . '@saved',
     // Comments
     '/comments/store' => CommentController::class . '@store',
     '/comments/update/{id}' => CommentController::class . '@update',

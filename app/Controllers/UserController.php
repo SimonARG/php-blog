@@ -100,6 +100,8 @@ class UserController
         
         $lastCommentPostId = $this->commentModel->getPostIdForComment($lastCommentId['id']);
 
+        $savedPosts = $this->userModel->getSavedPostsCount($id)['posts'];
+
         $userDate = new DateTime($user['created_at']);
         $userStrdate = $userDate->format('Y/m/d H:i');
         $user['created_at'] = $userStrdate;
@@ -113,7 +115,8 @@ class UserController
         return view('users.single', [
             'user' => $user,
             'lastPostId' => $lastPostId,
-            'lastCommentPostId' => $lastCommentPostId
+            'lastCommentPostId' => $lastCommentPostId,
+            'savedPosts' => $savedPosts
         ]);
     }
 

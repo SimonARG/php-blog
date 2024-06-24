@@ -52,6 +52,8 @@ function truncateHTML($html_string, $length, $append = '&hellip;', $is_html = tr
       <?= $totalPosts . " resultado" . ($totalPosts > 1 ? "s" : "") . " de busqueda para: '" . $_GET['query'] . "'" ?>
     <?php elseif (isset($user)) : ?>
       <?= 'Mostrando pots del usuario: ' . $user['name'] ?>
+    <?php else: ?>
+      <?= 'Mostrando ' . $totalPosts . ' posts guardados' ?>
     <?php endif; ?>
   </div>
   <?php foreach ($posts as $index => $post) : ?>

@@ -33,9 +33,16 @@ class AuthController
             if (password_verify($password, $result['password'])) {
                 session_start();
 
+                $savedPostsArr = $this->user->getSavedPostsIds($result['id']);
+                $savedPosts = [];
+                foreach ($savedPostsArr as $key => $post) {
+                    array_push($savedPosts, $savedPostsArr[$key]['post']);
+                };
+
                 $_SESSION['user_id'] = $result['id'];
                 $_SESSION['username'] = $result['name'];
                 $_SESSION['role'] = $result['role'];
+                $_SESSION['saved_posts'] = $savedPosts;
 
                 return route('/', ['popup_content' => 'Sesion iniciada']);
             } else {

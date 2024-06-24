@@ -42,6 +42,12 @@ $color = $classes[$role];
       <?php endif ?>
     </div>
 
+    <?php if ($_SESSION): ?>
+      <?php if ($_SESSION['user_id'] == $user['id'] && $savedPosts > 0): ?>
+        <a class="saved-posts" href="<?= '/search/user/saved/' . $user['id'] ?>"><?= 'Posts guardados: ' . $savedPosts ?></a>
+      <?php endif; ?>
+    <?php endif; ?>
+
     <div class="comments">
       <div><?= 'Comentarios: ' . $user['comments'] ?></div>
       <?php if ($lastCommentPostId) : ?>
