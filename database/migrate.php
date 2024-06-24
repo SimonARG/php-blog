@@ -11,7 +11,8 @@ $migrations = [
     'CreatePostsTable' => __DIR__ . '/migrations/2_create_posts_table.php',
     'CreateRolesTable' => __DIR__ . '/migrations/3_create_roles_table.php',
     'CreateRoleUserTable' => __DIR__ . '/migrations/4_create_role_user_table.php',
-    'CreateCommentsTable' => __DIR__ . '/migrations/5_create_comments_table.php'
+    'CreateCommentsTable' => __DIR__ . '/migrations/5_create_comments_table.php',
+    'CreateSavedPostsTable' => __DIR__ . '/migrations/6_create_saved_posts_table.php'
 ];
 
 foreach ($migrations as $migrationClass => $filePath) {

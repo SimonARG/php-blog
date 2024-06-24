@@ -32,7 +32,7 @@
         <?php elseif (isset($user)): ?>
           <a href="<?= '/search/user/posts/' . $user['id'] . '?page=' . $page ?>" <?= $page == $currentPage ? ' class="active"' : '' ?>><?= $page ?></a>
         <?php else: ?>
-          <a href="?page<?= $page ?>" <?= $page == $currentPage ? ' class="active"' : '' ?>><?= $page ?></a>
+          <a href="<?= '?page=' . $page ?>" <?= $page == $currentPage ? ' class="active"' : '' ?>><?= $page ?></a>
         <?php endif; ?>
 
         <?php if ($page > $currentPage + 1): ?>
@@ -54,7 +54,7 @@
         <?php elseif (isset($user)): ?>
           <a href="<?= '/search/user/posts/' . $user['id'] . '?page=' . $currentPage + 1 ?>">🞂</a>
         <?php else: ?>
-          <a href="?page=<?= $currentPage + 1 ?>">🞂</a>
+          <a href="<?= '?page=' . $currentPage + 1 ?>">🞂</a>
         <?php endif; ?>
       <?php endif; ?>
   </ul>

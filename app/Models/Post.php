@@ -84,6 +84,7 @@ class Post
     public function create($data)
     {
         $sql = "INSERT INTO posts (title, subtitle, thumb, body, user_id) VALUES (:title, :subtitle, :thumb, :body, :user_id)";
+
         return $this->db->query($sql, [
             ':title' => $data['title'],
             ':subtitle' => $data['subtitle'],
@@ -96,6 +97,7 @@ class Post
     public function update($data, $id)
     {
         $sql = "UPDATE posts SET title = :title, subtitle = :subtitle, thumb = :thumb, body = :body WHERE id = :id";
+
         return $this->db->query($sql, [
             ':title' => $data['title'],
             ':subtitle' => $data['subtitle'],
@@ -163,6 +165,23 @@ class Post
                 'count' => $count,
                 'posts' => $result
             ];
+        } else {
+            return 0;
+        }
+    }
+
+    public function save($postId, $userId)
+    {
+        $sql = "INSERT INTO saved_posts (user_id, post_id)
+        VALUES (:user_id, :post_id)";
+
+        $result = $this->db->query($sql, [
+            ':user_id' => $userId,
+            ':post_id' => $postId
+        ]);
+
+        if($result) {
+            return 1;
         } else {
             return 0;
         }

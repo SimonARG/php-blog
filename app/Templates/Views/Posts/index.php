@@ -43,6 +43,8 @@ function truncateHTML($html_string, $length, $append = '&hellip;', $is_html = tr
 
   return $output;
 }
+
+$currUrl = $actual_link = (empty($_SERVER['HTTPS']) ? 'http' : 'https') . "://$_SERVER[HTTP_HOST]$_SERVER[REQUEST_URI]";
 ?>
 
 <div class="index">
@@ -62,7 +64,14 @@ function truncateHTML($html_string, $length, $append = '&hellip;', $is_html = tr
               <?php else: ?>
                 <li>Reportar</li>
               <?php endif; ?>
-              <li>Guardar</li>
+              <li>
+                <form method="POST" action="<?= $baseUrl . 'post/save' ?>">
+                  <input type="hidden" name="post_id" value="<?= $post['id'] ?>">
+                  <input type="hidden" name="user_id" value="<?= $_SESSION['user_id'] ?>">
+                  <input type="hidden" name="curr_page" value="<?= $currentPage ?? 1 ?>">
+                  <input type="submit" value="Guardar">
+                </form>
+              </li>
             </ul>
           </div>
         <?php endif; ?>

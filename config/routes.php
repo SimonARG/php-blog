@@ -24,6 +24,7 @@ return [
     '/post/edit/{id}' => PostController::class . '@edit',
     '/post/update/{id}' => PostController::class . '@update',
     '/post/delete' => PostController::class . '@delete',
+    '/post/save' => PostController::class . '@save',
     // Search
     '/search' => SearchController::class . '@search',
     '/search/user/posts/{id}' => SearchController::class . '@getUserPosts',
