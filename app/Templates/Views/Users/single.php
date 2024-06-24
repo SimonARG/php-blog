@@ -18,7 +18,7 @@ $color = $classes[$role];
       <span class="<?= $color ?>">[<?= strtoupper($role) ?>]</span>
     </div>
     <h1><?= $user['name'] ?></h1>
-    <h2><?= 'Registered since ' . $user['created_at'] ?></h2>
+    <h2><?= 'Registrado desde ' . $user['created_at'] ?></h2>
 
     <div class="user-avatar">
       <img src="<?= $baseUrl . 'imgs/avatars/' . htmlspecialchars($user['avatar']) ?>" alt="Your avatar">
@@ -26,32 +26,32 @@ $color = $classes[$role];
     <?php if ($_SESSION): ?>
       <?php if ($_SESSION['user_id'] == $user['id']): ?>
         <div class="avatar-label-holder">
-          <label class="avatar-label btn" for="avatar">Change Avatar 🡅</label>
+          <label class="avatar-label btn" for="avatar">Cambiar avatar 🡅</label>
         </div>
       <?php endif; ?>
     <?php endif; ?>
 
     <?php if ($user['updated_at']) : ?>
-      <h2><?= 'Last edited at ' . $user['updated_at'] ?></h2>
+      <h2><?= 'Actualizado en ' . $user['updated_at'] ?></h2>
     <?php endif ?>
 
     <div class="posts">
-      <a><?= 'Posts: ' . $user['posts'] ?></a>
+      <a href="<?= '/search/user/posts/' . $user['id'] ?>"><?= 'Posts: ' . $user['posts'] ?></a>
       <?php if ($lastPostId) : ?>
-        <a href="/post/<?= $lastPostId['id'] ?>">See latest post</a>
+        <a href="/post/<?= $lastPostId['id'] ?>">Ver ultimo post</a>
       <?php endif ?>
     </div>
 
     <div class="comments">
-      <div><?= 'Comments: ' . $user['comments'] ?></div>
+      <div><?= 'Comentarios: ' . $user['comments'] ?></div>
       <?php if ($lastCommentPostId) : ?>
-        <a href="<?= '/post/' . $lastCommentPostId['post_id'] . '#comment-1' ?>">See latest comment</a>
+        <a href="<?= '/post/' . $lastCommentPostId['post_id'] . '#comment-1' ?>">Ver ultimo comentario</a>
       <?php endif ?>
     </div>
 
     <?php if ($_SESSION): ?>
       <?php if ($_SESSION['user_id'] == $user['id']): ?>
-        <form enctype="multipart/form-data" action="<?= $baseUrl . 'user/update/' . $user['id'] ?>" method="POST">
+        <form autocomplete="off" enctype="multipart/form-data" action="<?= $baseUrl . 'user/update/' . $user['id'] ?>" method="POST">
           <label for="name">Cambiar Nombre</label>
           <input type="text" id="name" name="name"
           <?php if (isset($errors['name_error'])): ?>
@@ -107,8 +107,10 @@ $color = $classes[$role];
           <?php endif; ?>
           >
 
+          <hr>
+
           <label for="password">Contraseña Actual</label>
-          <input type="password" id="password" name="password"
+          <input required minlength="8" type="password" id="password" name="password"
           <?php if (isset($errors['password_error'])): ?>
             <?= "placeholder='" . $errors['password_error'] . "'" ?>
             <?= "class='ph-error'" ?>

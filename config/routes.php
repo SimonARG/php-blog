@@ -4,6 +4,7 @@ use App\Controllers\CommentController;
 use App\Controllers\AuthController;
 use App\Controllers\PostController;
 use App\Controllers\UserController;
+use App\Controllers\SearchController;
 
 return [
     '/' => PostController::class . '@index',
@@ -23,6 +24,9 @@ return [
     '/post/edit/{id}' => PostController::class . '@edit',
     '/post/update/{id}' => PostController::class . '@update',
     '/post/delete' => PostController::class . '@delete',
+    // Search
+    '/search' => SearchController::class . '@search',
+    '/search/user/posts/{id}' => SearchController::class . '@getUserPosts',
     // Comments
     '/comments/store' => CommentController::class . '@store',
     '/comments/update/{id}' => CommentController::class . '@update',

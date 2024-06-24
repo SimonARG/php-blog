@@ -39,6 +39,16 @@ class PostController
         foreach ($posts as $key => $post) {
             $convertedContent = $converter->convert($post['body']);
             $posts[$key]['body'] = $convertedContent->getContent();
+
+            $postDate = new DateTime($post['created_at']);
+            $postStrdate = $postDate->format('Y/m/d H:i');
+            $posts[$key]['created_at'] = $postStrdate;
+    
+            if (isset($post['updated_at'])) {
+                $postUpDate = new DateTime($post['updated_at']);
+                $postUpStrdate = $postUpDate->format('Y/m/d H:i');
+                $posts[$key]['updated_at'] = $postUpStrdate;
+            }
         }
         
         $postsPerPage = $GLOBALS['config']['posts_per_page'];
@@ -150,6 +160,16 @@ class PostController
         $currentPage = isset($_GET['page']) ? (int)$_GET['page'] : 1;
 
         $comments = $this->commentModel->getCommentsForPost($id, $currentPage);
+
+        $postDate = new DateTime($post['created_at']);
+        $postStrdate = $postDate->format('Y/m/d H:i');
+        $post['created_at'] = $postStrdate;
+
+        if (isset($post['updated_at'])) {
+            $postUpDate = new DateTime($post['updated_at']);
+            $postUpStrdate = $postUpDate->format('Y/m/d H:i');
+            $post['updated_at'] = $postUpStrdate;
+        }
 
         if ($comments) {
             foreach ($comments as $key => $comment) {

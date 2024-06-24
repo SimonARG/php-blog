@@ -115,4 +115,56 @@ class Post
             ':id' => $id
         ]);
     }
+
+    public function search($query, $currentPage = 1)
+    {
+        $offset = ($currentPage - 1) * $this->postsPerPage;
+
+        $sql = "SELECT posts.*,
+                users.name AS username,
+                COUNT(comments.id) AS comments
+            FROM posts
+            INNER JOIN users ON posts.user_id = users.id
+            LEFT JOIN comments ON posts.id = comments.post_id AND comments.deleted_at IS NULL
+            WHERE posts.deleted_at IS NULL
+                AND (posts.title LIKE :search
+                OR posts.subtitle LIKE :search
+                OR posts.body LIKE :search
+                OR users.name LIKE :search)
+            GROUP BY posts.id, users.name
+            ORDER BY created_at DESC
+            LIMIT :offset, :limit;";
+
+        // Bind parameters with explicit data types
+        $result = $this->db->fetchAll($sql, [
+            ':limit' => $this->postsPerPage,
+            ':offset' => $offset,
+            'search' => '%' . $query . '%'
+        ], [
+            ':limit' => \PDO::PARAM_INT,
+            ':offset' => \PDO::PARAM_INT
+        ]);
+
+        $sql = "SELECT COUNT(*)
+                FROM posts
+                INNER JOIN users ON posts.user_id = users.id
+                WHERE posts.deleted_at IS NULL
+                    AND (posts.title LIKE :search
+                    OR posts.subtitle LIKE :search
+                    OR posts.body LIKE :search
+                    OR users.name LIKE :search)";
+
+        $count = $this->db->fetch($sql, [
+            'search' => '%' . $query . '%'
+        ])['COUNT(*)'];
+
+        if($result) {
+            return [
+                'count' => $count,
+                'posts' => $result
+            ];
+        } else {
+            return 0;
+        }
+    }
 }

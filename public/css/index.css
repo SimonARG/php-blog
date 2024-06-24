@@ -692,6 +692,13 @@ header {
   font-size: 1.5rem;
 }
 
+.filler {
+  height: 35vh;
+  width: 100%;
+  background-color: var(--panel-bg);
+  margin-bottom: 2px;
+}
+
 /*
 |------------------------------------------------------------
 | Pagination
@@ -1067,6 +1074,7 @@ header {
   padding: 1rem 1rem 1.6rem 1rem;
   background-color: var(--panel-bg);
   height: 100vh;
+  margin-bottom: 2px;
 }
 
 .auth label {
@@ -1111,6 +1119,7 @@ header {
   padding: 1rem 1rem 1.6rem 1rem;
   background-color: var(--panel-bg);
   min-height: 100vh;
+  margin-bottom: 2px;
 }
 
 .new-post-form > label,
@@ -1379,6 +1388,11 @@ input:-webkit-autofill:active{
   text-align: center;
 }
 
+.single > .user hr {
+  background-color: white;
+  margin: 1.6rem 0;
+}
+
 .single > .user form > div {
   display: flex;
   justify-content: center;
@@ -1389,6 +1403,18 @@ input:-webkit-autofill:active{
   width: fit-content;
   padding: .3rem .5rem;
   margin-top: 1rem;
+}
+
+/*
+|------------------------------------------------------------
+| Search
+|------------------------------------------------------------
+*/
+
+.index > .results {
+  background-color: var(--panel-bg);
+  padding: .6rem 1rem;
+  margin-bottom: 2px;
 }
 
 /*

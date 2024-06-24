@@ -5,11 +5,14 @@ namespace App\Models;
 class User
 {
     protected $db;
+    protected $postsPerPage;
 
     public function __construct()
     {
         // Use the global database instance
         $this->db = $GLOBALS['db'];
+
+        $this->postsPerPage = $GLOBALS['config']['posts_per_page'];
     }
 
     public function getAllUsers()
@@ -103,16 +106,49 @@ class User
         ]);
     }
 
-    public function getUserPosts($id)
+    public function getUserPosts($id, $currentPage = 1)
     {
-        $sql = "SELECT * FROM posts
-                WHERE user_id = :id
-                AND deleted_at IS NULL
-                ORDER BY created_at DESC";
-        
-        $result = $this->db->fetchAll($sql, [':id' => $id]);
+        $offset = ($currentPage - 1) * $this->postsPerPage;
 
-        return $result ? $result : 0;
+        $sql = "SELECT posts.*,
+                users.name AS username,
+                COUNT(comments.id) AS comments
+            FROM posts
+            INNER JOIN users ON posts.user_id = users.id
+            LEFT JOIN comments ON posts.id = comments.post_id AND comments.deleted_at IS NULL
+            WHERE posts.deleted_at IS NULL
+                AND posts.user_id = :id
+            GROUP BY posts.id
+            ORDER BY created_at DESC
+            LIMIT :offset, :limit;";
+
+        // Bind parameters with explicit data types
+        $result = $this->db->fetchAll($sql, [
+            ':limit' => $this->postsPerPage,
+            ':offset' => $offset,
+            ':id' => $id
+        ], [
+            ':limit' => \PDO::PARAM_INT,
+            ':offset' => \PDO::PARAM_INT
+        ]);
+
+        $sql = "SELECT COUNT(*)
+                FROM posts
+                WHERE posts.deleted_at IS NULL
+                AND posts.user_id = :id";
+
+        $count = $this->db->fetch($sql, [
+            ':id' => $id
+        ])['COUNT(*)'];
+
+        if($result) {
+            return [
+                'count' => $count,
+                'posts' => $result
+            ];
+        } else {
+            return 0;
+        }
     }
 
     public function getLatestUserPostId($id)
@@ -174,7 +210,7 @@ class User
             $params['avatar'] = $data['avatar'];
         }
 
-        if($data['password']) {
+        if(isset($data['password'])) {
             $sql .= " ,password = :password";
             $params['password'] = $data['password'];
         }

@@ -20,8 +20,8 @@ $baseUrl = $GLOBALS['config']['base_url'];
     <?php endif; ?>
   </div>
   
-  <form class="search" action="<?= $baseUrl ?>/search.php" method="GET">
-      <input type="text" autocomplete="off" name="search" class="searchbar" placeholder="Buscar...">
+  <form class="search" action="<?= $baseUrl . 'search' ?>" method="GET">
+      <input type="text" autocomplete="off" name="query" class="searchbar" placeholder="Buscar...">
 
       <input class="search-btn" type="submit" value="🔎︎">
   </form>

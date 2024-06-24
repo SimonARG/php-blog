@@ -179,9 +179,11 @@ class UserController
         if ($newPassword) {
             if (strlen($newPassword) < 8) {
                 $errors['new_password_error'] = 'La contraseña es demasiado corta';
-            } elseif (!preg_match('/^(?=.*[A-Z])(?=.*[a-z])(?=.*\d)(?=.*[\W_]).+$/', $password)) {
+            } elseif (!preg_match('/^(?=.*[A-Z])(?=.*[a-z])(?=.*\d)(?=.*[\W_]).+$/', $newPassword)) {
                 $errors['new_password_error'] = 'La contraseña no cumple los requisitos';
             }
+
+            $newPassword = password_hash($newPassword, PASSWORD_DEFAULT);
         }
     
         // Validate new password confirmation
@@ -233,11 +235,9 @@ class UserController
             ]);
         }
 
-        $newPassword = password_hash($newPassword, PASSWORD_DEFAULT);
-
         $dbEntry['name'] = $name;
         $dbEntry['email'] = $email;
-        $dbEntry['password'] = $newPassword;
+        $newPassword ?? $dbEntry['password'] = $newPassword;
 
         $this->userModel->update($dbEntry, $id);
         $user = $this->userModel->getUserById($id);
