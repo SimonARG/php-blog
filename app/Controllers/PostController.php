@@ -22,16 +22,14 @@ class PostController
 
     public function index()
     {
-        $postModel = new Post();
-
         // Get the current page from the query parameters, default to 1 if not set
         $currentPage = isset($_GET['page']) ? (int)$_GET['page'] : 1;
 
         // Get the posts for the current page
-        $posts = $postModel->getPosts($currentPage);
+        $posts = $this->postModel->getPosts($currentPage);
 
         // Get the total number of posts to calculate pagination
-        $totalPosts = $postModel->getPostCount();
+        $totalPosts = $this->postModel->getPostCount();
 
         $converter = new GithubFlavoredMarkdownConverter([
         ]);

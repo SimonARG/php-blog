@@ -118,6 +118,23 @@ class Post
         ]);
     }
 
+    public function hardDelete()
+    {
+        $sql = "SELECT id FROM posts WHERE deleted_at IS NOT NULL";
+
+        $deletionList = $this->db->fetchAll($sql);
+
+        $sql = "SELECT thumb FROM posts WHERE deleted_at IS NOT NULL";
+
+        $thumbList = $this->db->fetchAll($sql);
+
+        $sql = "DELETE FROM posts WHERE deleted_at IS NOT NULL";
+
+        $result = $this->db->query($sql);
+
+        return $result ? [$deletionList, $thumbList] : 0;
+    }
+
     public function search($query, $currentPage = 1)
     {
         $offset = ($currentPage - 1) * $this->postsPerPage;
