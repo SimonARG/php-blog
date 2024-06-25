@@ -54,16 +54,15 @@ $currUrl = $actual_link = (empty($_SERVER['HTTPS']) ? 'http' : 'https') . "://$_
           <div class="menu">
             <div class="arrow">⯈</div>
             <ul class="dropdown">
-              <?php if($post['username'] == $_SESSION['username']): ?>
+              <?php if(($post['username'] == $_SESSION['username']) || $_SESSION['role'] == 'admin' || $_SESSION['role'] == 'mod'): ?>
                 <li>
                   <a href="<?= $baseUrl . 'post/edit/' . $post['id'] ?>">Editar</a>
                 </li>
                 <li>
                   <form action="<?= $baseUrl ?>post/delete" method="POST"><input type="hidden" name="post_id" value="<?= $post['id'] ?>"><input type="submit" value="Eliminar"></form>
                 </li>
-              <?php else: ?>
-                <li>Reportar</li>
-              <?php endif; ?>
+                <?php endif; ?>
+              <li>Reportar</li>
               <?php if(!in_array($post['id'], $_SESSION['saved_posts'])) : ?>
                 <li>
                   <form method="POST" action="<?= $baseUrl . 'user/saved/save' ?>">

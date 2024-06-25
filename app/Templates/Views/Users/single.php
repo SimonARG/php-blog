@@ -1,11 +1,11 @@
-<?php 
+<?php
 $classes = [
-    'user' => 'user',
-    'admin' => 'admin',
-    'poster' => 'poster',
-    'restricted' => 'restricted',
-    'banned' => 'banned',
-    'mod' => 'mod'
+  'user' => 'user',
+  'admin' => 'admin',
+  'poster' => 'poster',
+  'restricted' => 'restricted',
+  'banned' => 'banned',
+  'mod' => 'mod'
 ];
 
 $role = $user['role'];
@@ -23,8 +23,9 @@ $color = $classes[$role];
     <div class="user-avatar">
       <img src="<?= $baseUrl . 'imgs/avatars/' . htmlspecialchars($user['avatar']) ?>" alt="Your avatar">
     </div>
-    <?php if ($_SESSION): ?>
-      <?php if ($_SESSION['user_id'] == $user['id']): ?>
+
+    <?php if ($_SESSION) : ?>
+      <?php if ($_SESSION['user_id'] == $user['id'] || $_SESSION['role'] == 'admin' || $_SESSION['role'] == 'mod') : ?>
         <div class="avatar-label-holder">
           <label class="avatar-label btn" for="avatar">Cambiar avatar 🡅</label>
         </div>
@@ -42,8 +43,8 @@ $color = $classes[$role];
       <?php endif ?>
     </div>
 
-    <?php if ($_SESSION): ?>
-      <?php if ($_SESSION['user_id'] == $user['id'] && $savedPosts > 0): ?>
+    <?php if ($_SESSION) : ?>
+      <?php if ($_SESSION['user_id'] == $user['id'] && $savedPosts > 0) : ?>
         <a class="saved-posts" href="<?= '/search/user/saved/' . $user['id'] ?>"><?= 'Posts guardados: ' . $savedPosts ?></a>
       <?php endif; ?>
     <?php endif; ?>
@@ -55,73 +56,25 @@ $color = $classes[$role];
       <?php endif ?>
     </div>
 
-    <?php if ($_SESSION): ?>
-      <?php if ($_SESSION['user_id'] == $user['id']): ?>
+    <?php if ($_SESSION) : ?>
+      <?php if ($_SESSION['user_id'] == $user['id'] || $_SESSION['role'] == 'admin' || $_SESSION['role'] == 'mod') : ?>
         <form autocomplete="off" enctype="multipart/form-data" action="<?= $baseUrl . 'user/update/' . $user['id'] ?>" method="POST">
           <label for="name">Cambiar Nombre</label>
-          <input type="text" id="name" name="name"
-          <?php if (isset($errors['name_error'])): ?>
-            <?= "placeholder='" . $errors['name_error'] . "'" ?>
-            <?= "class='ph-error'" ?>
-          <?php else: ?>
-            <?php if (isset($errors)): ?>
-              <?= "value='" . $old['name'] . "'" ?>
-            <?php else: ?>
-              <?= "value='" . $user['name'] . "'" ?>
-            <?php endif; ?>
-          <?php endif; ?>
-          >
+          <input type="text" id="name" name="name" <?php if (isset($errors['name_error'])) : ?> placeholder="<?= $errors['name_error'] ?>" class="ph-error" <?php else : ?> value="<?= isset($errors) ? $old['name'] : $user['name'] ?>" <?php endif; ?>>
 
           <label for="email">Cambiar Email</label>
-          <input type="email" id="email" name="email"
-          <?php if (isset($errors['email_error'])): ?>
-            <?= "placeholder='" . $errors['email_error'] . "'" ?>
-            <?= "class='ph-error'" ?>
-          <?php else: ?>
-            <?php if (isset($errors)): ?>
-              <?= "value='" . $old['email'] . "'" ?>
-            <?php else: ?>
-              <?= "value='" . $user['email'] . "'" ?>
-            <?php endif; ?>
-          <?php endif; ?>
-          >
+          <input type="email" id="email" name="email" <?php if (isset($errors['email_error'])) : ?> placeholder="<?= $errors['email_error'] ?>" class="ph-error" <?php else : ?> value="<?= isset($errors) ? $old['email'] : $user['email'] ?>" <?php endif; ?>>
 
           <label for="new-password">Nueva Contraseña</label>
-          <input type="password" id="new-password" name="new-password"
-          <?php if (isset($errors['new_password_error'])): ?>
-            <?= "placeholder='" . $errors['new_password_error'] . "'" ?>
-            <?= "class='ph-error'" ?>
-          <?php elseif (isset($errors['new_password_r_error'])): ?>
-            <?= "placeholder='" . $errors['new_password_r_error'] . "'" ?>
-            <?= "class='ph-error'" ?>
-          <?php else: ?>
-            <?php if (isset($errors)): ?>
-              <?= "value='" . $old['new-password'] . "'" ?>
-            <?php endif; ?>new-
-          <?php endif; ?>
-          >
+          <input type="password" id="new-password" name="new-password" <?php if (isset($errors['new_password_error'])) : ?> placeholder="<?= $errors['new_password_error'] ?>" class="ph-error" <?php elseif (isset($errors['new_password_r_error'])) : ?> placeholder="<?= $errors['new_password_r_error'] ?>" class="ph-error" <?php elseif (isset($errors)) : ?> value="<?= $old['new-password'] ?>" <?php endif; ?>>
 
           <label for="new-password-r">Repetir Nueva Contraseña</label>
-          <input type="password" id="new-password-r" name="new-password-r"
-          <?php if (isset($errors['new_password_r_error'])): ?>
-            <?= "placeholder='" . $errors['new_password_r_error'] . "'" ?>
-            <?= "class='ph-error'" ?>
-          <?php else: ?>
-            <?php if (isset($errors)): ?>
-              <?= "value='" . $old['new-password-r'] . "'" ?>
-            <?php endif; ?>
-          <?php endif; ?>
-          >
+          <input type="password" id="new-password-r" name="new-password-r" <?php if (isset($errors['new_password_r_error'])) : ?> placeholder="<?= $errors['new_password_r_error'] ?>" class="ph-error" <?php elseif (isset($errors)) : ?> value="<?= $old['new-password-r'] ?>" <?php endif; ?>>
 
           <hr>
 
           <label for="password">Contraseña Actual</label>
-          <input required minlength="8" type="password" id="password" name="password"
-          <?php if (isset($errors['password_error'])): ?>
-            <?= "placeholder='" . $errors['password_error'] . "'" ?>
-            <?= "class='ph-error'" ?>
-          <?php endif; ?>
-          >
+          <input required minlength="8" type="password" id="password" name="password" <?php if (isset($errors['password_error'])) : ?> placeholder="<?= $errors['password_error'] ?>" class="ph-error" <?php endif; ?>>
 
           <input type="hidden" name="method" value="PATCH">
           <input class="avatar-input" type="file" hidden name="avatar" id="avatar">

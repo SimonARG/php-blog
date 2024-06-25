@@ -62,7 +62,7 @@ $baseUrl = $GLOBALS['config']['base_url'];
             <input class="btn" type="submit" value="Eliminar">
           </form>
         </div>
-        <?php if ($_SESSION && $_SESSION['user_id'] == $comment['user_id']): ?>
+        <?php if ($_SESSION && (($_SESSION['user_id'] == $comment['user_id']) || $_SESSION['role'] == 'admin' || $_SESSION['role'] == 'mod')): ?>
         <div class="arrow">⯆</div>
         <?php endif; ?>
 
