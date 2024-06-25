@@ -66,7 +66,7 @@ class Post
     public function getPostByTitle($title)
     {
         $sql = "SELECT posts.*, users.name AS username 
-        FROM posts 
+        FROM posts
         INNER JOIN users ON posts.user_id = users.id
         WHERE title = :title";
         

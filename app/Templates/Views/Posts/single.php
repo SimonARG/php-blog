@@ -14,6 +14,22 @@ $baseUrl = $GLOBALS['config']['base_url'];
     </div>
     <div class="body body-preview"><?= $post['body'] ?></div>
     <hr>
+    <?php if ($_SESSION) : ?>
+      <div class="btns">
+        <?php if(!in_array($post['id'], $_SESSION['saved_posts'])) : ?>
+          <form class="btn" method="POST" action="<?= $baseUrl . 'user/saved/save' ?>">
+            <input type="hidden" name="post_id" value="<?= $post['id'] ?>">
+            <input type="hidden" name="user_id" value="<?= $_SESSION['user_id'] ?>">
+            <input type="submit" value="Guardar">
+          </form>
+        <?php endif; ?>
+        <div class="btn">Reportar</div>
+        <?php if (($_SESSION['user_id'] == $post['user_id']) || $_SESSION['role'] == 'admin' || $_SESSION['role'] == 'mod') : ?>
+          <a class="btn" href="<?= $baseUrl . 'post/edit/' . $post['id'] ?>">Editar</a>
+          <form class="btn" action="<?= $baseUrl ?>post/delete" method="POST"><input type="hidden" name="post_id" value="<?= $post['id'] ?>"><input type="submit" value="Eliminar"></form>
+        <?php endif; ?>
+      </div>
+    <?php endif; ?>
     <div class="comment-count"><?= 'Comentarios: ' . $post['comments'] ?></div>
   </div>
 

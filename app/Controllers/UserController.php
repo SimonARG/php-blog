@@ -6,11 +6,13 @@ use DateTime;
 use App\Models\Post;
 use App\Models\User;
 use App\Models\Comment;
+use App\Controllers\PostController;
 
 class UserController
 {
     protected $userModel;
     protected $postModel;
+    protected $postController;
     protected $commentModel;
     protected $baseUrl;
 
@@ -18,6 +20,7 @@ class UserController
     {
         $this->userModel = new User();
         $this->postModel = new Post();
+        $this->postController = new PostController();
         $this->commentModel = new Comment();
         $this->baseUrl = $GLOBALS['config']['base_url'];
     }
@@ -266,19 +269,23 @@ class UserController
 
         $postId = $request['post_id'];
         $userId = $request['user_id'];
-        $currPage = $request['curr_page'];
+        isset($request['curr_page']) ?? $currPage = $request['curr_page'];
 
-        $result = $this->postModel->save($postId, $userId);
-
-        if(!$result) {
-            $message = 'Error al guardar post';
+        if (in_array($postId, $_SESSION['saved_posts'])) {
+            $message = 'El post ya esta guardado';
         } else {
+            $this->postModel->save($postId, $userId);
+
             $_SESSION['saved_posts'][] = $postId;
 
             $message = 'Post guardado';
         }
 
-        return header('Location: ' . $this->baseUrl . '?page=' . $currPage . "&popup_content=" . $message);
+        if (isset($currPage)) {
+            return header('Location: ' . $this->baseUrl . '?page=' . $currPage . "&popup_content=" . $message);
+        } else {
+            $this->postController->show($postId, $message);
+        }
     }
 
     public function deleteSaved($request)

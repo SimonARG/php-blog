@@ -424,9 +424,11 @@ textarea:hover {
   background-color: var(--panel-h);
 }
 
-.btn {
+.btn,
+.btn * {
   cursor: pointer;
   transform-origin: center;
+  user-select: none;
 }
 
 .btn:hover {
@@ -805,6 +807,23 @@ header {
   background-color: white;
   margin-bottom: 1rem;
 }
+
+.single > .post > .btns {
+  display: flex;
+  justify-content: center;
+  margin-bottom: .8rem;
+  gap: 2px;
+}
+
+.single > .post > .btns > * {
+  border: 1px solid white;
+  padding: .3rem .6rem;
+  font-size: 1.2rem;
+}
+
+/* .single > .post > .btns > *:hover {
+  background-color: ;
+} */
 
 .single > .post .comment-count {
   display: flex;
