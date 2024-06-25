@@ -193,8 +193,10 @@ class User
 
     public function getSavedPostsCount($id)
     {
-        $sql = "SELECT COUNT(user_id) as posts FROM saved_posts
-                WHERE user_id = :id";
+        $sql = "SELECT COUNT(saved_posts.user_id) as posts 
+                FROM saved_posts 
+                JOIN posts ON saved_posts.post_id = posts.id
+                WHERE saved_posts.user_id = :id AND posts.deleted_at IS NULL";
         
         $result = $this->db->fetch($sql, [':id' => $id]);
 
@@ -203,12 +205,14 @@ class User
 
     public function getSavedPostsIds($id)
     {
-        $sql = "SELECT post_id as post FROM saved_posts
-                WHERE user_id = :id";
+        $sql = "SELECT saved_posts.post_id as post
+                FROM saved_posts
+                JOIN posts ON saved_posts.post_id = posts.id
+                WHERE saved_posts.user_id = :id AND posts.deleted_at IS NULL";
         
         $result = $this->db->fetchAll($sql, [':id' => $id]);
 
-        return $result ? $result : ['saved_posts' => 0];
+        return $result ? $result : 0;
     }
 
     public function getSavedPosts($id, $currentPage = 1)

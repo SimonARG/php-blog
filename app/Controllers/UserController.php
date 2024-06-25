@@ -144,6 +144,8 @@ class UserController
         
         $lastCommentPostId = $this->commentModel->getPostIdForComment($lastCommentId['id']);
 
+        $savedPosts = $this->userModel->getSavedPostsCount($id)['posts'];
+
         $userDate = new DateTime($user['created_at']);
         $userStrdate = $userDate->format('Y/m/d H:i');
         $user['created_at'] = $userStrdate;
@@ -254,6 +256,7 @@ class UserController
             'user' => $user,
             'lastPostId' => $lastPostId,
             'lastCommentPostId' => $lastCommentPostId,
+            'savedPosts' => $savedPosts,
             'popupContent' => $message
         ]);
     }
@@ -284,22 +287,23 @@ class UserController
         $userId = $request['user_id'];
         $currPage = $request['curr_page'];
         $totalPages = $request['total_pages'];
-
+    
         $result = $this->postModel->deleteSaved($postId, $userId);
-
-        if(!$result) {
+    
+        if (!$result) {
             $message = 'Error';
         } else {
             if (($key = array_search($postId, $_SESSION['saved_posts'])) !== false) {
                 unset($_SESSION['saved_posts'][$key]);
+                $_SESSION['saved_posts'] = array_values($_SESSION['saved_posts']);
             }
             $message = 'Post removido de guardados';
         }
-
+    
         if ($totalPages > 1) {
             return header('Location: ' . $this->baseUrl . 'search/user/saved/' . $userId . '/?page=' . $currPage . "&popup_content=" . $message);
         } else {
             return header('Location: ' . $this->baseUrl . 'search/user/saved/' . $userId . "?popup_content=" . $message);
         }
-    }
+    }    
 } 

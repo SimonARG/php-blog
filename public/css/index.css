@@ -453,8 +453,8 @@ textarea:hover {
 
 body {
   font-family: "Noto Sans", sans-serif;
-  /* background-image: url('../imgs/bg.avif'); */
-  background-color: blue;
+  background-image: url('../imgs/bg.avif');
+  /* background-color: blue; */
   background-position: center;
   background-repeat: no-repeat;
   background-size: cover;
