@@ -265,12 +265,13 @@ class UserController
     }
 
     public function save($request)
-    {        
-
+    {
         $postId = $request['post_id'];
         $userId = $request['user_id'];
+        // Check if request was made from index or single
         isset($request['curr_page']) ?? $currPage = $request['curr_page'];
 
+        // Check if post is already saved and perform action
         if (in_array($postId, $_SESSION['saved_posts'])) {
             $message = 'El post ya esta guardado';
         } else {
@@ -281,10 +282,11 @@ class UserController
             $message = 'Post guardado';
         }
 
+        // Return to index or single with message
         if (isset($currPage)) {
             return header('Location: ' . $this->baseUrl . '?page=' . $currPage . "&popup_content=" . $message);
         } else {
-            $this->postController->show($postId, $message);
+            return route('/post/' . $postId, ['popup_content' => $message]);
         }
     }
 
