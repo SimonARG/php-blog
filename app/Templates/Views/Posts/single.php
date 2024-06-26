@@ -22,6 +22,12 @@ $baseUrl = $GLOBALS['config']['base_url'];
             <input type="hidden" name="user_id" value="<?= $_SESSION['user_id'] ?>">
             <input type="submit" value="Guardar">
           </form>
+        <?php else: ?>
+          <form class="btn" method="POST" action="<?= $baseUrl . 'user/saved/delete' ?>">
+            <input type="hidden" name="post_id" value="<?= $post['id'] ?>">
+            <input type="hidden" name="user_id" value="<?= $_SESSION['user_id'] ?>">
+            <input type="submit" value="Quitar de guardados">
+          </form>
         <?php endif; ?>
         <div class="btn">Reportar</div>
         <?php if (($_SESSION['user_id'] == $post['user_id']) || $_SESSION['role'] == 'admin' || $_SESSION['role'] == 'mod') : ?>

@@ -300,10 +300,10 @@ class UserController
     {
         $postId = $request['post_id'];
         $userId = $request['user_id'];
-        $currPage = $request['curr_page'];
-        $totalPages = $request['total_pages'];
     
         $result = $this->postModel->deleteSaved($postId, $userId);
+
+        $message = '';
     
         if (!$result) {
             $message = 'Error';
@@ -315,10 +315,17 @@ class UserController
             $message = 'Post removido de guardados';
         }
     
-        if ($totalPages > 1) {
-            return header('Location: ' . $this->baseUrl . 'search/user/saved/' . $userId . '/?page=' . $currPage . "&popup_content=" . $message);
-        } else {
-            return header('Location: ' . $this->baseUrl . 'search/user/saved/' . $userId . "?popup_content=" . $message);
+        if (isset($request['curr_page'])) {
+            $currPage = $request['curr_page'];
+            $totalPages = $request['total_pages'];
+
+            if ($totalPages > 1) {
+                return header('Location: ' . $this->baseUrl . 'search/user/saved/' . $userId . '/?page=' . $currPage . "&popup_content=" . $message);
+            } else {
+                return header('Location: ' . $this->baseUrl . 'search/user/saved/' . $userId . "?popup_content=" . $message);
+            }
         }
+
+        return route('/post/' . $postId, ['popup_content' => $message]);
     }    
 } 

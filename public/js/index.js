@@ -203,7 +203,7 @@ if (avatarInput) {
 }
 
 // Submit textarea on enter, new line on shift+enter
-if (document.querySelector('textare')) {
+if (document.querySelector('textarea')) {
   document.querySelector('textarea').addEventListener("keypress", e => {
     if (e.key === "Enter" && !e.shiftKey) {
         e.preventDefault();
@@ -220,20 +220,22 @@ const formattingClose = document.querySelector('.formatting-help > span');
 
 let showFormattingHelp = false;
 
-formattingButton.addEventListener('click', () => {
-  if (showFormattingHelp) {
+if (formattingButton) {
+  formattingButton.addEventListener('click', () => {
+    if (showFormattingHelp) {
+      formattingHelp.style.opacity = '0';
+      formattingHelp.style.visibility = 'hidden';
+      showFormattingHelp = false;
+    } else {
+      formattingHelp.style.opacity = '1';
+      formattingHelp.style.visibility = 'visible';
+      showFormattingHelp = true;
+    }
+  })
+
+  formattingClose.addEventListener('click', () => {
     formattingHelp.style.opacity = '0';
     formattingHelp.style.visibility = 'hidden';
     showFormattingHelp = false;
-  } else {
-    formattingHelp.style.opacity = '1';
-    formattingHelp.style.visibility = 'visible';
-    showFormattingHelp = true;
-  }
-})
-
-formattingClose.addEventListener('click', () => {
-  formattingHelp.style.opacity = '0';
-  formattingHelp.style.visibility = 'hidden';
-  showFormattingHelp = false;
-})
+  })
+}
