@@ -23,33 +23,33 @@ class AuthController
     public function authenticate($request)
     {
         $errors = [];
-
+    
         $email = $request['email'];
         $password = $request['password'];
-
+    
         $result = $this->user->getUserByEmailWithRole($email);
-
+    
         if ($result) {
             if (password_verify($password, $result['password'])) {
-
+    
                 $savedPostsArr = $this->user->getSavedPostsIds($result['id']);
-
+    
                 $savedPosts = [];
-
+    
                 if(!$savedPostsArr) {
                     $_SESSION['saved_posts'] = [];
                 } else {
                     foreach ($savedPostsArr as $key => $post) {
                         array_push($savedPosts, $savedPostsArr[$key]['post']);
                     };
-
+    
                     $_SESSION['saved_posts'] = $savedPosts;
                 }
-
+    
                 $_SESSION['user_id'] = $result['id'];
                 $_SESSION['username'] = $result['name'];
                 $_SESSION['role'] = $result['role'];
-
+    
                 return route('/', ['popup_content' => 'Sesion iniciada']);
             } else {
                 $errors['error'] = 'Credenciales invalidas';
@@ -57,12 +57,13 @@ class AuthController
         } else {
             $errors['error'] = 'Credenciales invalidas';
         }
-
+    
         // Return errors if any
         if (!empty($errors)) {
             return view('users.login', ['request' => $request, 'errors' => $errors]);
         }
     }
+    
 
     public function logout()
     {

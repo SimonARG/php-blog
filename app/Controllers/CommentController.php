@@ -49,7 +49,7 @@ class CommentController
         $comment = $this->commentModel->getCommentById($id);
         $post = $this->postModel->getPostById($request['post_id']);
 
-        if(!($comment['user_id'] === $_SESSION['user_id'])) {
+        if(!verifyIdentity($comment['user_id'])) {
             return header('Location:' . $this->baseUrl . 'post/' . $request['post_id'] . '?popup_content=Solo puedes editar tus propios comentarios#comment-1');
         }
 
@@ -78,7 +78,7 @@ class CommentController
 
         $comment = $this->commentModel->getCommentById($id);
 
-        if(!($comment['user_id'] === $_SESSION['user_id'])) {
+        if(!verifyIdentity($comment['user_id'])) {
             return header('Location:' . $this->baseUrl . 'post/' . $request['post_id'] . '?popup_content=Solo puedes eliminar tus propios comentarios#comment-1');
         }
 

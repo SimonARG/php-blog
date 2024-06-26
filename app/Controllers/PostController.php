@@ -203,7 +203,7 @@ class PostController
     {
         $post = $this->postModel->getPostById($id);
 
-        if(!($post['user_id'] === $_SESSION['user_id'])) {
+        if(!verifyIdentity($post['user_id'])) {
             $message = 'Solo puedes editar tus propios posts';
 
             return route('/', ['popup_content' => $message]);
@@ -218,7 +218,7 @@ class PostController
     {
         $post = $this->postModel->getPostById($id);
 
-        if(!($post['user_id'] === $_SESSION['user_id'])) {
+        if(!verifyIdentity($post['user_id'])) {
             $message = 'Solo puedes editar tus propios posts';
 
             return route('/', ['popup_content' => $message]);
@@ -305,7 +305,7 @@ class PostController
 
         $post = $this->postModel->getPostById($id);
 
-        if(!($post['user_id'] === $_SESSION['user_id'])) {
+        if(!verifyIdentity($post['user_id'])) {
             $message = 'Solo puedes eliminar tus propios posts';
 
             return route('/', ['popup_content' => $message]);

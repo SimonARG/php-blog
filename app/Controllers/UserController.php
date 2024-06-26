@@ -87,6 +87,8 @@ class UserController
 
         session_start();
 
+        
+        $_SESSION['saved_posts'] = [];
         $_SESSION['user_id'] = $user['id'];
         $_SESSION['username'] = $user['name'];
         $_SESSION['role'] = $user['role'];
@@ -128,6 +130,10 @@ class UserController
 
     public function update($id, $request)
     {
+        if(!verifyIdentity($id)) {
+            return header('Location:' . $this->baseUrl . 'post/' . $request['post_id'] . '?popup_content=Solo puedes editar tu propio perfil');
+        }
+
         $user = $this->userModel->getUserById($id);
 
         $errors = [];
