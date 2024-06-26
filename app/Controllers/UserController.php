@@ -274,8 +274,6 @@ class UserController
     {
         $postId = $request['post_id'];
         $userId = $request['user_id'];
-        // Check if request was made from index or single
-        isset($request['curr_page']) ?? $currPage = $request['curr_page'];
 
         // Check if post is already saved and perform action
         if (in_array($postId, $_SESSION['saved_posts'])) {
@@ -289,7 +287,9 @@ class UserController
         }
 
         // Return to index or single with message
-        if (isset($currPage)) {
+        if (isset($request['curr_page'])) {
+            $currPage = $request['curr_page'];
+
             return header('Location: ' . $this->baseUrl . '?page=' . $currPage . "&popup_content=" . $message);
         } else {
             return route('/post/' . $postId, ['popup_content' => $message]);

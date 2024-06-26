@@ -647,7 +647,7 @@ header {
   text-align: left;
 }
 
-.index > .post > .post-container *:not(.body, .body *) {
+.index > .post *:not(.body, .body *) {
   text-align: center;
 }
 
@@ -668,6 +668,7 @@ header {
 
 .continue {
   color: var(--text-2);
+  text-align: center;
 }
 
 .index .comment-count {
