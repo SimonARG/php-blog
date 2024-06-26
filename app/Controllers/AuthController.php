@@ -68,8 +68,8 @@ class AuthController
     public function logout()
     {
         session_start();
-        session_destroy();
         $_SESSION = [];
+        session_destroy();
 
         return route('/', ['popup_content' => 'Sesion cerrada']);
     }

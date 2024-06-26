@@ -201,3 +201,39 @@ if (avatarInput) {
     }
   })
 }
+
+// Submit textarea on enter, new line on shift+enter
+if (document.querySelector('textare')) {
+  document.querySelector('textarea').addEventListener("keypress", e => {
+    if (e.key === "Enter" && !e.shiftKey) {
+        e.preventDefault();
+
+        e.currentTarget.closest("form").submit();
+    }
+  });
+}
+
+// Show and hide markdown help on click of help button
+const formattingButton = document.querySelector('.formatting-btn');
+const formattingHelp = document.querySelector('.formatting-help');
+const formattingClose = document.querySelector('.formatting-help > span');
+
+let showFormattingHelp = false;
+
+formattingButton.addEventListener('click', () => {
+  if (showFormattingHelp) {
+    formattingHelp.style.opacity = '0';
+    formattingHelp.style.visibility = 'hidden';
+    showFormattingHelp = false;
+  } else {
+    formattingHelp.style.opacity = '1';
+    formattingHelp.style.visibility = 'visible';
+    showFormattingHelp = true;
+  }
+})
+
+formattingClose.addEventListener('click', () => {
+  formattingHelp.style.opacity = '0';
+  formattingHelp.style.visibility = 'hidden';
+  showFormattingHelp = false;
+})
