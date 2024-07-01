@@ -91,6 +91,15 @@ class User
         ]);
     }
 
+    public function getUserCount()
+    {
+        $sql = "SELECT COUNT(*) as count FROM users;";
+
+        $result = $this->db->fetch($sql);
+
+        return $result ? $result : 0;
+    }
+
     public function setRole($user_id, $roleName)
     {
         $sql = "SELECT id FROM roles
@@ -291,5 +300,17 @@ class User
         return $this->db->query($sql, $params, [
             ':id' => \PDO::PARAM_INT
         ]);
+    }
+
+    public function changeRole($userId, $roleId)
+    {
+        $sql = "UPDATE role_user SET role_id = :role_id WHERE user_id = :user_id;";
+
+        $result = $this->db->query($sql, [
+            ':role_id' => $roleId,
+            ':user_id' => $userId
+        ]);
+
+        return $result ? 1 : 0;
     }
 }

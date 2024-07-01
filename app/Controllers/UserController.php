@@ -81,7 +81,13 @@ class UserController
 
         $result = $this->userModel->getUserByEmail($email);
 
-        $this->userModel->setRole($result['id'], 'user');
+        $users = $this->userModel->getUserCount();
+
+        if ($users > 0) {
+            $this->userModel->setRole($result['id'], 'user');
+        } else {
+            $this->userModel->setRole($result['id'], 'admin');
+        }
 
         $user = $this->userModel->getUserById($result['id']);
 
@@ -327,5 +333,31 @@ class UserController
         }
 
         return route('/post/' . $postId, ['popup_content' => $message]);
-    }    
+    }
+
+    public function changeRole($id, $request)
+    {
+        $newRole = $request['role'];
+
+        $url = $request['curr-url'];
+
+        $position = strpos($url, '?');
+
+        if ($position !== false) {
+            $url = substr($url, 0, $position);
+        } else {
+            $url = $url;
+        }
+
+        $result = $this->userModel->changeRole($id, $newRole);
+
+        $message = '';
+        if ($result) {
+            $message = 'User role changed';
+        } else {
+            $message = 'Error';
+        }
+
+        return header('Location: ' . $url . "?popup_content=" . $message);
+    }
 } 

@@ -239,3 +239,30 @@ if (formattingButton) {
     showFormattingHelp = false;
   })
 }
+
+// User role dropdown
+const roleArr = document.querySelector('.role-arrow');
+const roleDropdown = document.querySelector('.change-role');
+const roleList = document.querySelector('.change-role > ul');
+
+let showRoles = false;
+
+if (roleDropdown) {
+  roleArr.addEventListener('click', () => {
+    if (showRoles) {
+      roleDropdown.style.transform = 'scaleY(0%)';
+      roleArr.style.transform = 'rotateX(0deg)';
+      showRoles = false;
+    } else {
+      roleDropdown.style.transform = 'scaleY(100%)';
+      roleArr.style.transform = 'rotateX(180deg)';
+      showRoles = true;
+    }
+  })
+
+  formattingClose.addEventListener('click', () => {
+    formattingHelp.style.opacity = '0';
+    formattingHelp.style.visibility = 'hidden';
+    showRoles = false;
+  })
+}

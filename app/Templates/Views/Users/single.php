@@ -8,14 +8,44 @@ $classes = [
   'mod' => 'mod'
 ];
 
+$roleIds = [
+  'user' => '4',
+  'admin' => '1',
+  'poster' => '3',
+  'restricted' => '5',
+  'banned' => '6',
+  'mod' => '2'
+];
+
 $role = $user['role'];
 $color = $classes[$role];
+
+$currUrl = (empty($_SERVER['HTTPS']) ? 'http' : 'https') . "://$_SERVER[HTTP_HOST]$_SERVER[REQUEST_URI]";
+
 ?>
 
 <div class="single">
   <div class="user">
     <div class="role">
-      <span class="<?= $color ?>">[<?= strtoupper($role) ?>]</span>
+      <div class="<?= $color ?>">[<?= strtoupper($role) ?>]
+        <?php if ($_SESSION): ?>
+          <?php if ($_SESSION['role'] == 'admin' || $_SESSION['role'] == 'mod'): ?>
+            <div class="role-arrow arrow">⯆</div>
+          <?php endif; ?>
+        <?php endif; ?>
+      </div>
+
+      <form class="change-role" autocomplete="off" action="<?= $baseUrl . 'user/role/' . $user['id'] ?>" method="POST">
+        <ul>
+          <?php foreach ($classes as $key => $newRole): ?>
+            <?php if (!($newRole == $role)): ?>
+              <li class="<?= $newRole ?>">[<?= strtoupper($newRole) ?>]<div class="<?= $newRole ?>"><input type="radio" name="role" value="<?= $roleIds[$newRole] ?>"></div></li>
+            <?php endif; ?>
+          <?php endforeach; ?>
+        </ul>
+        <input type="hidden" name="curr-url" value="<?= $currUrl ?>">
+        <input class="btn" type="submit" value="Cambiar rol">
+      </form>
     </div>
     <h1><?= $user['name'] ?></h1>
     <h2><?= 'Registrado desde ' . $user['created_at'] ?></h2>
@@ -58,7 +88,7 @@ $color = $classes[$role];
 
     <?php if ($_SESSION) : ?>
       <?php if ($_SESSION['user_id'] == $user['id'] || $_SESSION['role'] == 'admin' || $_SESSION['role'] == 'mod') : ?>
-        <form autocomplete="off" enctype="multipart/form-data" action="<?= $baseUrl . 'user/update/' . $user['id'] ?>" method="POST">
+        <form class="user" autocomplete="off" enctype="multipart/form-data" action="<?= $baseUrl . 'user/update/' . $user['id'] ?>" method="POST">
           <label for="name">Cambiar Nombre</label>
           <input type="text" id="name" name="name" <?php if (isset($errors['name_error'])) : ?> placeholder="<?= $errors['name_error'] ?>" class="ph-error" <?php else : ?> value="<?= isset($errors) ? $old['name'] : $user['name'] ?>" <?php endif; ?>>
 

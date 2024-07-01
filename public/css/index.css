@@ -1366,36 +1366,110 @@ input:-webkit-autofill:active{
 
 .single > .user > .role {
   display: flex;
-  justify-content: center;
+  flex-direction: column;
+  align-items: center;
+  position: relative;
 }
 
-.single > .user > .role > span {
+.single > .user > .role > div {
   padding: .1rem .2rem;
   font-size: .9rem;
   font-weight: 500;
+  position: relative;
+  user-select: none;
 }
 
-.single > .user > .role > .user {
+.single > .user > .role .role-arrow {
+  position: absolute;
+  top: 0;
+  right: -40%;
+  cursor: pointer;
+  color: var(--text-2);
+  transform-origin: center;
+  font-size: 1.2rem;
+  line-height: 1;
+  transform: rotateX(0deg);
+  transition: transform .14s ease-in-out;
+}
+
+.single > .user > .role .role-arrow:hover {
+  color: white;
+}
+
+.single > .user > .role > .change-role {
+  position: absolute;
+  top: 100%;
+  transform: scaley(0);
+  transition: transform .15s ease-in-out;
+  transform-origin: top;
+}
+
+.single > .user > .role > .change-role > ul {
+  display: flex;
+  flex-direction: column;
+}
+
+.single > .user > .role > .change-role > ul > li {
+  padding: .1rem .2rem;
+  font-size: .9rem;
+  font-weight: 500;
+  user-select: none;
+  text-align: center;
+  position: relative;
+  display: flex;
+  justify-content: center;
+}
+
+.single > .user > .role > .change-role > ul > li > div {
+  position: absolute;
+  right: -15%;
+  transform: translateY(-7%);
+  width: calc(.2rem + (.9rem * 1.4));
+  height: calc(.2rem + (.9rem * 1.4));
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.single > .user > .role > .change-role > input[type='submit'] {
+  background-color: black;
+  border: 1px solid white;
+  padding: 0 .7rem;
+}
+
+.single > .user > .role > .user,
+.single > .user > .role > .change-role > ul > li.user,
+.single > .user > .role > .change-role > ul > li > div.user {
   background-color: var(--blue);
 }
 
-.single > .user > .role > .poster {
+.single > .user > .role > .poster,
+.single > .user > .role > .change-role > ul > li.poster,
+.single > .user > .role > .change-role > ul > li > div.poster {
   background-color: var(--green);
 }
 
-.single > .user > .role > .mod {
+.single > .user > .role > .mod,
+.single > .user > .role > .change-role > ul > li.mod,
+.single > .user > .role > .change-role > ul > li > div.mod {
   background-color: var(--purple);
 }
 
-.single > .user > .role > .admin {
+.single > .user > .role > .admin,
+.single > .user > .role > .change-role > ul > li.admin,
+.single > .user > .role > .change-role > ul > li > div.admin {
   background-color: var(--yellow);
 }
 
-.single > .user > .role > .restricted {
+.single > .user > .role > .restricted,
+.single > .user > .role > .change-role > ul > li.restricted,
+.single > .user > .role > .change-role > ul > li > div.restricted {
   background-color: var(--orange);
 }
 
-.single > .user > .role > .banned {
+.single > .user > .role > .banned,
+.single > .user > .role > .change-role > ul > li.banned,
+.single > .user > .role > .change-role > ul > li > div.banned {
   background-color: var(--red);
 }
 
@@ -1469,15 +1543,15 @@ input:-webkit-autofill:active{
   justify-content: space-between;
 }
 
-.single > .user form {
+.single > .user form.user {
   display: flex;
   flex-direction: column;
   text-align: center;
 }
 
-.single > .user form input[type=text],
-.single > .user form input[type=email],
-.single > .user form input[type=password] {
+.single > .user form.user input[type=text],
+.single > .user form.user input[type=email],
+.single > .user form.user input[type=password] {
   margin-bottom: .4rem;
   padding: .3rem .5rem;
   text-align: center;
@@ -1488,12 +1562,12 @@ input:-webkit-autofill:active{
   margin: 1.6rem 0;
 }
 
-.single > .user form > div {
+.single > .user form.user > div {
   display: flex;
   justify-content: center;
 }
 
-.single > .user form input[type=submit] {
+.single > .user form.user input[type=submit] {
   border: 1px solid white;
   width: fit-content;
   padding: .3rem .5rem;
