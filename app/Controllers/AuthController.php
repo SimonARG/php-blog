@@ -27,12 +27,18 @@ class AuthController
         $email = $request['email'];
         $password = $request['password'];
     
-        $result = $this->user->getUserByEmailWithRole($email);
+        $user = $this->user->getUserByEmailWithRole($email);
     
-        if ($result) {
-            if (password_verify($password, $result['password'])) {
+        if ($user) {
+            if ($user['role'] == 'banned') {
+                $message = 'Usuario banneado';
     
-                $savedPostsArr = $this->user->getSavedPostsIds($result['id']);
+                return  header('Location: ' . $this->baseUrl . 'login' . "?popup_content=" . $message);
+            }
+            
+            if (password_verify($password, $user['password'])) {
+    
+                $savedPostsArr = $this->user->getSavedPostsIds($user['id']);
     
                 $savedPosts = [];
     
@@ -46,9 +52,9 @@ class AuthController
                     $_SESSION['saved_posts'] = $savedPosts;
                 }
     
-                $_SESSION['user_id'] = $result['id'];
-                $_SESSION['username'] = $result['name'];
-                $_SESSION['role'] = $result['role'];
+                $_SESSION['user_id'] = $user['id'];
+                $_SESSION['username'] = $user['name'];
+                $_SESSION['role'] = $user['role'];
     
                 return route('/', ['popup_content' => 'Sesion iniciada']);
             } else {

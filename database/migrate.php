@@ -12,7 +12,10 @@ $migrations = [
     'CreateRolesTable' => __DIR__ . '/migrations/3_create_roles_table.php',
     'CreateRoleUserTable' => __DIR__ . '/migrations/4_create_role_user_table.php',
     'CreateCommentsTable' => __DIR__ . '/migrations/5_create_comments_table.php',
-    'CreateSavedPostsTable' => __DIR__ . '/migrations/6_create_saved_posts_table.php'
+    'CreateSavedPostsTable' => __DIR__ . '/migrations/6_create_saved_posts_table.php',
+    'CreateReportedResourcesTable' => __DIR__ . '/migrations/7_create_reported_resources_table.php',
+    'CreateReportsTable' => __DIR__ . '/migrations/8_create_reports_table.php',
+    'CreateModActionsTable' => __DIR__ . '/migrations/9_create_mod_actions_table.php'
 ];
 
 foreach ($migrations as $migrationClass => $filePath) {
