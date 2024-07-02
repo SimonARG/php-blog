@@ -9,14 +9,22 @@ class CreateReportsTable
             id INT AUTO_INCREMENT PRIMARY KEY,
             resource_id INT,
             comment VARCHAR(255),
+            reported_by INT,
             created_at DATETIME DEFAULT CURRENT_TIMESTAMP,
             reviewed BIT(1) DEFAULT 0,
             reviewed_by INT,
-            action VARCHAR(255),
+            mod_action_id INT,
             updated_at DATETIME DEFAULT NULL ON UPDATE CURRENT_TIMESTAMP,
             FOREIGN KEY (resource_id) REFERENCES reported_resources(id),
-            FOREIGN KEY (reviewed_by) REFERENCES users(id)
+            FOREIGN KEY (reviewed_by) REFERENCES users(id),
+            FOREIGN KEY (mod_action_id) REFERENCES mod_actions(id),
+            FOREIGN KEY (reported_by) REFERENCES users(id)
         )";
+
+        $db->query($sql);
+
+        $sql = "ALTER TABLE mod_actions
+                ADD CONSTRAINT FOREIGN KEY (motive_id) REFERENCES reports(id);";
 
         $db->query($sql);
     }
@@ -24,6 +32,7 @@ class CreateReportsTable
     public function down()
     {
         $db = $GLOBALS['db'];
+
         $sql = "DROP TABLE IF EXISTS reports";
         $db->query($sql);
     }

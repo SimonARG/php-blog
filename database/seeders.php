@@ -7,8 +7,9 @@ use App\Seeders\PostSeeder;
 use App\Seeders\RoleSeeder;
 use App\Seeders\CommentSeeder;
 use App\Seeders\RoleUserSeeder;
+use App\Seeders\ConsequencesSeeder;
 
-echo "Which seeder do you want to run? (1: All, 2: Users, 3: Posts, 4: Roles, 5: Comments): ";
+echo "Which seeder do you want to run? (1: All, 2: Users, 3: Posts, 4: Roles, 5: Comments, 6: Consequences): ";
 $handle = fopen("php://stdin", "r");
 $choice = trim(fgets($handle));
 
@@ -33,6 +34,10 @@ switch ($choice) {
         $commentSeeder = new CommentSeeder();
         $commentSeeder->run();
         echo "Comments seeded successfully.\n";
+
+        $consequencesSeeder = new ConsequencesSeeder();
+        $consequencesSeeder->run();
+        echo "Consequences seeded successfully.\n";
         break;
     case '2':
         $userSeeder = new UserSeeder();
@@ -58,6 +63,11 @@ switch ($choice) {
         $roleUserSeeder = new RoleUserSeeder();
         $roleUserSeeder->run();
         echo "Role_User seeded successfully.\n";
+        break;
+    case '7':
+        $consequencesSeeder = new ConsequencesSeeder();
+        $consequencesSeeder->run();
+        echo "Consequences seeded successfully.\n";
         break;
     default:
         echo "Invalid choice.\n";

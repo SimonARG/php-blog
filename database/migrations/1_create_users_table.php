@@ -22,15 +22,18 @@ class CreateUsersTable
     public function down()
     {
         $db = $GLOBALS['db'];
-        $sql = "DROP TABLE IF EXISTS reports";
+        $sql = "ALTER TABLE mod_actions
+                DROP FOREIGN KEY mod_actions_ibfk_4;";
         $db->query($sql);
-        $sql = "DROP TABLE IF EXISTS reported_resources";
+        $sql = "DROP TABLE IF EXISTS reports";
         $db->query($sql);
         $sql = "DROP TABLE IF EXISTS mod_actions";
         $db->query($sql);
-        $sql = "DROP TABLE IF EXISTS comments";
+        $sql = "DROP TABLE IF EXISTS reported_resources";
         $db->query($sql);
         $sql = "DROP TABLE IF EXISTS saved_posts";
+        $db->query($sql);
+        $sql = "DROP TABLE IF EXISTS comments";
         $db->query($sql);
         $sql = "DROP TABLE IF EXISTS posts";
         $db->query($sql);

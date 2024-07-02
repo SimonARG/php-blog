@@ -11,11 +11,12 @@ class CreateModActionsTable
             motive VARCHAR(255),
             motive_id INT,
             action_by INT,
+            consequence_id INT,
             created_at DATETIME DEFAULT CURRENT_TIMESTAMP,
             updated_at DATETIME DEFAULT NULL ON UPDATE CURRENT_TIMESTAMP,
             FOREIGN KEY (user_id) REFERENCES users(id),
             FOREIGN KEY (action_by) REFERENCES users(id),
-            FOREIGN KEY (motive_id) REFERENCES reports(id)
+            FOREIGN KEY (consequence_id) REFERENCES consequences(id)
         )";
 
         $db->query($sql);
