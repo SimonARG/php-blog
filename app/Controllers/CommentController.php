@@ -4,6 +4,7 @@ namespace App\Controllers;
 
 use App\Models\Post;
 use App\Models\Comment;
+use App\Helpers\Security;
 use League\CommonMark\GithubFlavoredMarkdownConverter;
 
 class CommentController
@@ -11,12 +12,14 @@ class CommentController
     protected $baseUrl;
     protected $commentModel;
     protected $postModel;
+    protected $security;
 
     public function __construct()
     {
         $this->baseUrl = $GLOBALS['config']['base_url'];
         $this->commentModel = new Comment();
         $this->postModel = new Post();
+        $this->security = new Security();
     }
 
     public function store($request)
@@ -49,7 +52,7 @@ class CommentController
         $comment = $this->commentModel->getCommentById($id);
         $post = $this->postModel->getPostById($request['post_id']);
 
-        if(!verifyIdentity($comment['user_id'])) {
+        if(!$this->security->verifyIdentity($comment['user_id'])) {
             return header('Location:' . $this->baseUrl . 'post/' . $request['post_id'] . '?popup_content=Solo puedes editar tus propios comentarios#comment-1');
         }
 
@@ -78,7 +81,7 @@ class CommentController
 
         $comment = $this->commentModel->getCommentById($id);
 
-        if(!verifyIdentity($comment['user_id'])) {
+        if(!$this->security->verifyIdentity($comment['user_id'])) {
             return header('Location:' . $this->baseUrl . 'post/' . $request['post_id'] . '?popup_content=Solo puedes eliminar tus propios comentarios#comment-1');
         }
 

@@ -22,11 +22,6 @@ class CreateReportsTable
         )";
 
         $db->query($sql);
-
-        $sql = "ALTER TABLE mod_actions
-                ADD CONSTRAINT FOREIGN KEY (motive_id) REFERENCES reports(id);";
-
-        $db->query($sql);
     }
 
     public function down()

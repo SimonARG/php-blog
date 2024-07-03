@@ -22,9 +22,6 @@ class CreateUsersTable
     public function down()
     {
         $db = $GLOBALS['db'];
-        $sql = "ALTER TABLE mod_actions
-                DROP FOREIGN KEY mod_actions_ibfk_4;";
-        $db->query($sql);
         $sql = "DROP TABLE IF EXISTS reports";
         $db->query($sql);
         $sql = "DROP TABLE IF EXISTS mod_actions";

@@ -13,7 +13,7 @@ class UserFactory
         return [
             'name' => $faker->unique()->userName(),
             'email' => $faker->unique()->safeEmail(),
-            'password' => password_hash('password', PASSWORD_BCRYPT),
+            'password' => password_hash('password', PASSWORD_DEFAULT),
             'avatar' => rand(1, 7) . '.webp',
         ];
     }

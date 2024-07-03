@@ -5,6 +5,7 @@ use App\Controllers\AuthController;
 use App\Controllers\PostController;
 use App\Controllers\UserController;
 use App\Controllers\SearchController;
+use App\Controllers\ReportController;
 
 return [
     '/' => PostController::class . '@index',
@@ -36,4 +37,6 @@ return [
     '/comments/store' => CommentController::class . '@store',
     '/comments/update/{id}' => CommentController::class . '@update',
     '/comments/delete' => CommentController::class . '@delete',
+    // Admin
+    '/admin/reports' => ReportController::class . '@index'
 ];

@@ -22,4 +22,3 @@ $GLOBALS['db'] = $dbConfig['database'];
 require_once __DIR__ . '/../app/Helpers/view.php';
 require_once __DIR__ . '/../app/Helpers/route.php';
 require_once __DIR__ . '/../app/Helpers/processImage.php';
-require_once __DIR__ . '/../app/Helpers/verify_identity.php';

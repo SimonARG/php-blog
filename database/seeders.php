@@ -2,19 +2,25 @@
 
 require_once __DIR__ . '/../vendor/autoload.php';
 
-use App\Seeders\UserSeeder;
 use App\Seeders\PostSeeder;
 use App\Seeders\RoleSeeder;
+use App\Seeders\UserSeeder;
 use App\Seeders\CommentSeeder;
+use App\Seeders\ReportsSeeder;
 use App\Seeders\RoleUserSeeder;
 use App\Seeders\ConsequencesSeeder;
+use App\Seeders\ReportedResourcesSeeder;
 
-echo "Which seeder do you want to run? (1: All, 2: Users, 3: Posts, 4: Roles, 5: Comments, 6: Consequences): ";
+echo "Which seeder do you want to run? (1: All, 2: Users, 3: Posts, 4: Roles, 5: Comments, 6: Role_User, 7: Consequences): ";
 $handle = fopen("php://stdin", "r");
 $choice = trim(fgets($handle));
 
 switch ($choice) {
     case '1':
+        $roleSeeder = new RoleSeeder();
+        $roleSeeder->run();
+        echo "Roles seeded successfully.\n";
+
         $userSeeder = new UserSeeder();
         $userSeeder->run();
         echo "Users seeded successfully.\n";
@@ -22,10 +28,6 @@ switch ($choice) {
         $postSeeder = new PostSeeder();
         $postSeeder->run();
         echo "Posts seeded successfully.\n";
-
-        $roleSeeder = new RoleSeeder();
-        $roleSeeder->run();
-        echo "Roles seeded successfully.\n";
 
         $roleUserSeeder = new RoleUserSeeder();
         $roleUserSeeder->run();
@@ -38,6 +40,14 @@ switch ($choice) {
         $consequencesSeeder = new ConsequencesSeeder();
         $consequencesSeeder->run();
         echo "Consequences seeded successfully.\n";
+
+        $reportedResourcesSeeder = new ReportedResourcesSeeder();
+        $reportedResourcesSeeder->run();
+        echo "Reported resources seeded successfully.\n";
+
+        $reportsSeeder = new ReportsSeeder();
+        $reportsSeeder->run();
+        echo "Reports seeded successfully.\n";
         break;
     case '2':
         $userSeeder = new UserSeeder();
@@ -68,6 +78,16 @@ switch ($choice) {
         $consequencesSeeder = new ConsequencesSeeder();
         $consequencesSeeder->run();
         echo "Consequences seeded successfully.\n";
+        break;
+    case '8':
+        $reportedResourcesSeeder = new ReportedResourcesSeeder();
+        $reportedResourcesSeeder->run();
+        echo "reported_resources seeded successfully.\n";
+        break;
+    case '9':
+        $reportsSeeder = new ReportsSeeder();
+        $reportsSeeder->run();
+        echo "reports seeded successfully.\n";
         break;
     default:
         echo "Invalid choice.\n";

@@ -17,6 +17,10 @@ $baseUrl = $GLOBALS['config']['base_url'];
       <form action="<?= $baseUrl ?>logout" method="POST">
         <input class="form-btn" type="submit" value="Cerrar Sesion">
       </form>
+
+      <?php if ($_SESSION['role'] == 'admin' || $_SESSION['role'] == 'mod'): ?>
+        <a href="<?= $baseUrl ?>admin/reports">Admin Panel</a>
+      <?php endif; ?>
     <?php endif; ?>
   </div>
   

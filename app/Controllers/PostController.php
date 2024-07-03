@@ -5,6 +5,7 @@ namespace App\Controllers;
 use DateTime;
 use App\Models\Post;
 use App\Models\Comment;
+use App\Helpers\Security;
 use League\CommonMark\GithubFlavoredMarkdownConverter;
 
 class PostController
@@ -12,12 +13,14 @@ class PostController
     protected $baseUrl;
     protected $postModel;
     protected $commentModel;
+    protected $security;
 
     public function __construct()
     {
         $this->baseUrl = $GLOBALS['config']['base_url'];
         $this->postModel = new Post();
         $this->commentModel = new Comment();
+        $this->security = new Security();
     }
 
     public function index()
@@ -203,7 +206,7 @@ class PostController
     {
         $post = $this->postModel->getPostById($id);
 
-        if(!verifyIdentity($post['user_id'])) {
+        if(!$this->security->verifyIdentity($post['user_id'])) {
             $message = 'Solo puedes editar tus propios posts';
 
             return route('/', ['popup_content' => $message]);
@@ -218,7 +221,7 @@ class PostController
     {
         $post = $this->postModel->getPostById($id);
 
-        if(!verifyIdentity($post['user_id'])) {
+        if(!$this->security->verifyIdentity($post['user_id'])) {
             $message = 'Solo puedes editar tus propios posts';
 
             return route('/', ['popup_content' => $message]);
@@ -305,7 +308,7 @@ class PostController
 
         $post = $this->postModel->getPostById($id);
 
-        if(!verifyIdentity($post['user_id'])) {
+        if(!$this->security->verifyIdentity($post['user_id'])) {
             $message = 'Solo puedes eliminar tus propios posts';
 
             return route('/', ['popup_content' => $message]);

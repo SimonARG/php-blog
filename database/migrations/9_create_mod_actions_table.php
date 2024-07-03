@@ -7,16 +7,15 @@ class CreateModActionsTable
         $db = $GLOBALS['db'];
         $sql = "CREATE TABLE IF NOT EXISTS mod_actions (
             id INT AUTO_INCREMENT PRIMARY KEY,
-            user_id INT NOT NULL,
+            reviewer_id INT NOT NULL,
             motive VARCHAR(255),
-            motive_id INT,
-            action_by INT,
+            resource_id INT,
             consequence_id INT,
             created_at DATETIME DEFAULT CURRENT_TIMESTAMP,
             updated_at DATETIME DEFAULT NULL ON UPDATE CURRENT_TIMESTAMP,
-            FOREIGN KEY (user_id) REFERENCES users(id),
-            FOREIGN KEY (action_by) REFERENCES users(id),
-            FOREIGN KEY (consequence_id) REFERENCES consequences(id)
+            FOREIGN KEY (reviewer_id) REFERENCES users(id),
+            FOREIGN KEY (consequence_id) REFERENCES consequences(id),
+            FOREIGN KEY (resource_id) REFERENCES reported_resources(id)
         )";
 
         $db->query($sql);

@@ -6,6 +6,7 @@ use DateTime;
 use App\Models\Post;
 use App\Models\User;
 use App\Models\Comment;
+use App\Helpers\Security;
 use App\Controllers\PostController;
 
 class UserController
@@ -15,6 +16,7 @@ class UserController
     protected $postController;
     protected $commentModel;
     protected $baseUrl;
+    protected $security;
 
     public function __construct()
     {
@@ -22,6 +24,7 @@ class UserController
         $this->postModel = new Post();
         $this->postController = new PostController();
         $this->commentModel = new Comment();
+        $this->security = new Security();
         $this->baseUrl = $GLOBALS['config']['base_url'];
     }
 
@@ -136,7 +139,7 @@ class UserController
 
     public function update($id, $request)
     {
-        if(!verifyIdentity($id)) {
+        if(!$this->security->verifyIdentity($id)) {
             return header('Location:' . $this->baseUrl . 'post/' . $request['post_id'] . '?popup_content=Solo puedes editar tu propio perfil');
         }
 

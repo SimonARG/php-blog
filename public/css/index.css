@@ -1576,6 +1576,76 @@ input:-webkit-autofill:active{
 
 /*
 |------------------------------------------------------------
+| Reports Index
+|------------------------------------------------------------
+*/
+
+.index > .reports-title {
+  background-color: var(--panel-bg);
+  margin-bottom: 2px;
+  padding: .6rem 1rem;
+  font-size: 1.3rem;
+  text-align: center;
+}
+
+.index > .reports-btns {
+  display: flex;
+  gap: 2px;
+  margin-bottom: 2px;
+}
+
+.index > .reports-btns > form {
+  background-color: var(--panel-bg);
+  width: 50%;
+}
+
+.index > .reports-btns > form:hover > * {
+  text-decoration: underline;
+}
+
+.index > .reports-btns > form > input[type='submit'] {
+  padding: .6rem 1rem;
+  width: 100%;
+  text-align: center;
+}
+
+.index > .reports-title > span {
+  color: red;
+}
+
+.index > .report {
+  background-color: var(--panel-bg);
+  margin-bottom: 2px;
+  padding: 1.4rem 1rem;
+  border: 6px solid red;
+}
+
+.index > .report.done {
+  border: 6px solid green;
+}
+
+.index > .report > .report-container > div {
+  display: grid;
+  grid-template-columns: 50% 50%;
+  padding: .1rem .3rem;
+  border-bottom: 1px solid white;
+}
+
+.index > .report > .report-container > div:nth-child(odd) {
+  background-color: var(--panel-h);
+}
+
+.index > .report > .report-container > div > div > a {
+  width: fit-content;
+  cursor: pointer;
+}
+
+.index > .report > .report-container > div > div > a:hover {
+  text-decoration: underline;
+}
+
+/*
+|------------------------------------------------------------
 | Search
 |------------------------------------------------------------
 */
