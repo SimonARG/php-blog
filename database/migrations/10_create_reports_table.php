@@ -13,11 +13,9 @@ class CreateReportsTable
             created_at DATETIME DEFAULT CURRENT_TIMESTAMP,
             reviewed BIT(1) DEFAULT 0,
             reviewed_by INT,
-            mod_action_id INT,
             updated_at DATETIME DEFAULT NULL ON UPDATE CURRENT_TIMESTAMP,
             FOREIGN KEY (resource_id) REFERENCES reported_resources(id),
             FOREIGN KEY (reviewed_by) REFERENCES users(id),
-            FOREIGN KEY (mod_action_id) REFERENCES mod_actions(id),
             FOREIGN KEY (reported_by) REFERENCES users(id)
         )";
 
