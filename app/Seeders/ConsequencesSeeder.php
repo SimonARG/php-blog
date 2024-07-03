@@ -19,6 +19,7 @@ class ConsequencesSeeder
         $consequences = [
             'none',
             'warning',
+            'modified resource',
             'deleted resource',
             'restricted user',
             'banned user'
