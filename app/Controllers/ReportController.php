@@ -49,6 +49,10 @@ class ReportController
                 $reportUpStrdate = $reportUpDate->format('Y/m/d H:i');
                 $reports[$key]['updated_at'] = $reportUpStrdate;
             }
+
+            if (isset($report['mod_actions'])) {
+                $reports[$key]['mod_actions'] = json_decode($report['mod_actions'], true);
+            }
         }
 
         return view('admin.reports', [

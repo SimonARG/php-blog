@@ -19,15 +19,16 @@ class Report
     {
         $offset = ($currentPage - 1) * $this->reportsPerPage;
         
-        $sql = "SELECT reports.id,
+        $sql = "SELECT 
+                    reports.id,
                     reports.comment,
                     reports.created_at,
                     reports.reviewed,
                     reports.updated_at,
-                    reporter.name reporter,
-                    reporter.id reporter_id,
-                    reviewer.name reviewer,
-                    reviewer.id reviewer_id,
+                    reporter.name AS reporter,
+                    reporter.id AS reporter_id,
+                    reviewer.name AS reviewer,
+                    reviewer.id AS reviewer_id,
                     CASE
                         WHEN rr.post_id IS NOT NULL THEN 'Post'
                         WHEN rr.comment_id IS NOT NULL THEN 'Comment'
@@ -37,13 +38,39 @@ class Report
                         WHEN rr.post_id IS NOT NULL THEN rr.post_id
                         WHEN rr.comment_id IS NOT NULL THEN rr.comment_id
                         WHEN rr.user_id IS NOT NULL THEN rr.user_id
-                    END AS resource_id
-                FROM reports
-                LEFT JOIN users reporter ON reports.reported_by = reporter.id
-                LEFT JOIN users reviewer ON reports.reviewed_by = reviewer.id
-                LEFT JOIN reported_resources rr ON reports.resource_id = rr.id
-                ORDER BY reports.created_at DESC
-                LIMIT :offset, :limit;";
+                    END AS resource_id,
+                    JSON_ARRAYAGG(
+                        JSON_OBJECT('consequence', consequences.consequence)
+                    ) AS mod_actions
+                FROM 
+                    reports
+                LEFT JOIN 
+                    users reporter ON reports.reported_by = reporter.id
+                LEFT JOIN 
+                    users reviewer ON reports.reviewed_by = reviewer.id
+                LEFT JOIN 
+                    reported_resources rr ON reports.resource_id = rr.id
+                LEFT JOIN 
+                    mod_actions ON reports.id = mod_actions.resource_id
+                LEFT JOIN 
+                    consequences ON mod_actions.consequence_id = consequences.id
+                GROUP BY
+                    reports.id,
+                    reports.comment,
+                    reports.created_at,
+                    reports.reviewed,
+                    reports.updated_at,
+                    reporter.name,
+                    reporter.id,
+                    reviewer.name,
+                    reviewer.id,
+                    rr.post_id,
+                    rr.comment_id,
+                    rr.user_id
+                ORDER BY 
+                    reports.created_at DESC
+                LIMIT 
+                    :offset, :limit;";
         
         // Bind parameters with explicit data types
         return $this->db->fetchAll($sql, [

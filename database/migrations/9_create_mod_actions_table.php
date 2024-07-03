@@ -10,12 +10,14 @@ class CreateModActionsTable
             reviewer_id INT NOT NULL,
             motive VARCHAR(255),
             resource_id INT,
+            report_id INT,
             consequence_id INT,
             created_at DATETIME DEFAULT CURRENT_TIMESTAMP,
             updated_at DATETIME DEFAULT NULL ON UPDATE CURRENT_TIMESTAMP,
             FOREIGN KEY (reviewer_id) REFERENCES users(id),
             FOREIGN KEY (consequence_id) REFERENCES consequences(id),
-            FOREIGN KEY (resource_id) REFERENCES reported_resources(id)
+            FOREIGN KEY (resource_id) REFERENCES reported_resources(id),
+            FOREIGN KEY (report_id) REFERENCES reports(id)
         )";
 
         $db->query($sql);

@@ -91,7 +91,7 @@ canvas,
 audio,
 iframe,
 embed,
-object h
+object h {
   display: block;
   vertical-align: middle;
   max-width: 100%;
@@ -1616,7 +1616,7 @@ input:-webkit-autofill:active{
 .index > .report {
   background-color: var(--panel-bg);
   margin-bottom: 2px;
-  padding: 1.4rem 1rem;
+  padding: 1.4rem 0rem;
   border: 6px solid red;
 }
 
@@ -1627,7 +1627,7 @@ input:-webkit-autofill:active{
 .index > .report > .report-container > div {
   display: grid;
   grid-template-columns: 50% 50%;
-  padding: .1rem .3rem;
+  padding: .2rem 1.2rem;
   border-bottom: 1px solid white;
 }
 

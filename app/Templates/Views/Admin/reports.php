@@ -102,6 +102,29 @@ $currUrl = $actual_link = (empty($_SERVER['HTTPS']) ? 'http' : 'https') . "://$_
             <div><a href="/user/<?= $report['reviewer_id'] ?>"><?= $report['reviewer'] ?></a></div>
           </div>
         <?php endif; ?>
+
+        <?php if ($report['reviewed']): ?>
+          <div>
+            <?php if (count($report['mod_actions']) > 1): ?>
+              <div>Actions:</div>
+              <?php else: ?>
+                <div>Action:</div>
+            <?php endif; ?>
+            <div>
+              <?php foreach ($report['mod_actions'] as $key => $action): ?>
+                <?php if (count($report['mod_actions']) > 1): ?>
+                  <?php if ($key == (count($report['mod_actions']) - 1)): ?>
+                    <div><?= '- ' . $action['consequence'] ?></div>
+                  <?php else: ?>
+                    <div><?= '- ' . $action['consequence'] . ',' ?></div>
+                  <?php endif; ?>
+                <?php else: ?>
+                  <div><?= $action['consequence'] ?></div>
+                <?php endif; ?>
+              <?php endforeach; ?>
+            </div>
+          </div>
+        <?php endif; ?>
       </div>
     </div>
   <?php endforeach; ?>
