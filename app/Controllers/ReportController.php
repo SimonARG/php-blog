@@ -38,7 +38,7 @@ class ReportController
         $totalPages = ceil($totalReports / $this->reportsPerPage);
 
         $unreviewed = $this->reportModel->getUnreviewedReportCount();
-;
+        
         foreach ($reports as $key => $report) {
             $reportDate = new DateTime($report['created_at']);
             $reportStrdate = $reportDate->format('Y/m/d H:i');
