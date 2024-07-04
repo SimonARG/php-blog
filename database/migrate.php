@@ -15,8 +15,8 @@ $migrations = [
     'CreateSavedPostsTable' => __DIR__ . '/migrations/6_create_saved_posts_table.php',
     'CreateReportedResourcesTable' => __DIR__ . '/migrations/7_create_reported_resources_table.php',
     'CreateConsequencesTable' => __DIR__ . '/migrations/8_create_consequences_table.php',
-    'CreateModActionsTable' => __DIR__ . '/migrations/9_create_mod_actions_table.php',
-    'CreateReportsTable' => __DIR__ . '/migrations/10_create_reports_table.php'
+    'CreateReportsTable' => __DIR__ . '/migrations/9_create_reports_table.php',
+    'CreateModActionsTable' => __DIR__ . '/migrations/10_create_mod_actions_table.php',
 ];
 
 foreach ($migrations as $migrationClass => $filePath) {
