@@ -266,3 +266,40 @@ if (roleDropdown) {
     showRoles = false;
   })
 }
+
+// Reports
+const reportBtns = document.querySelectorAll('.report-btn');
+
+if (reportBtns) {
+  reportBtns.forEach((btn, i) => {
+    const reportForm = document.querySelector('.report-' + (i + 1));
+    const reportCloser = document.querySelector('.report-' + (i + 1) + ' > span');
+
+    let showReport = false;
+    
+    btn.addEventListener('click', () => {
+      if (showReport == false) {
+        reportForm.style.opacity = 1;
+        reportForm.style.visibility = 'visible';
+
+        showReport = true;
+      } else {
+        reportForm.style.opacity = 0;
+        setTimeout(() => {
+          reportForm.style.visibility = 'hidden';
+        }, 200);
+
+        showReport = false;
+      }
+    })
+
+    reportCloser.addEventListener('click', () => {
+      reportForm.style.opacity = 0;
+      setTimeout(() => {
+        reportForm.style.visibility = 'hidden';
+      }, 200);
+
+      showReport = false;
+    })
+  });
+}

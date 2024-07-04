@@ -34,7 +34,12 @@ class Database
             }
         }
 
-        $stmt->execute();
+        try {
+            $stmt->execute();
+        } catch (PDOException $e) {
+            return 0;
+        }
+
         return $stmt;
     }
 

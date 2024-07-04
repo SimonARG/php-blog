@@ -70,7 +70,7 @@ function truncateHTML($html_string, $length, $append = '&hellip;', $is_html = tr
                 <form action="<?= $baseUrl ?>post/delete" method="POST"><input type="hidden" name="post_id" value="<?= $post['id'] ?>"><input type="submit" value="Eliminar"></form>
               </li>
             <?php else : ?>
-              <li>Reportar</li>
+              <li><div>Reportar</div></li>
             <?php endif; ?>
             <?php if(!in_array($post['id'], $_SESSION['saved_posts'])) : ?>
                 <li>

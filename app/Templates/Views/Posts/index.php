@@ -49,20 +49,39 @@ $currUrl = $actual_link = (empty($_SERVER['HTTPS']) ? 'http' : 'https') . "://$_
 
 <div class="index">
   <?php foreach ($posts as $index => $post) : ?>
+    <form class="report-form <?= 'report-' . ($index + 1) ?>" method="post" action="/report">
+      <span class="material-symbols-rounded btn">close</span>
+      
+      <label for="comment">Razón</label>
+      <input maxlength="40" type="text" id="comment" name="comment" placeholder="Opcional">
+
+      <input type="hidden" name="type" value="post">
+      <input type="hidden" name="id" value="<?= $post['id'] ?>">
+      <input type="hidden" name="user_id" value="<?= $_SESSION['user_id'] ?>">
+
+      <input class="btn" type="submit" value="Reportar">
+    </form>
+
     <div class="post <?= 'post-' . $index + 1 ?>">
       <?php if($_SESSION): ?>
           <div class="menu">
             <div class="arrow">⯈</div>
+
             <ul class="dropdown">
               <?php if(($post['username'] == $_SESSION['username']) || $_SESSION['role'] == 'admin' || $_SESSION['role'] == 'mod'): ?>
                 <li>
                   <a href="<?= $baseUrl . 'post/edit/' . $post['id'] ?>">Editar</a>
                 </li>
+
                 <li>
                   <form action="<?= $baseUrl ?>post/delete" method="POST"><input type="hidden" name="post_id" value="<?= $post['id'] ?>"><input type="submit" value="Eliminar"></form>
                 </li>
-                <?php endif; ?>
-              <li>Reportar</li>
+              <?php endif; ?>
+
+              <li>
+                <div class="report-btn">Reportar</div>
+              </li>
+
               <?php if(!in_array($post['id'], $_SESSION['saved_posts'])) : ?>
                 <li>
                   <form method="POST" action="<?= $baseUrl . 'user/saved/save' ?>">

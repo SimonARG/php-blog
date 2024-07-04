@@ -62,4 +62,62 @@ class ReportController
             'unreviewed' => $unreviewed
         ]);
     }
+
+    public function create($request)
+    {
+        // Sanitize
+        $comment = htmlspecialchars($request['comment'] ?? '');
+
+        $type = htmlspecialchars($request['type']);
+        $allowedTypes = ['post', 'comment', 'user'];
+        if (!in_array($type, $allowedTypes)) {
+            $message = 'Error al reportar el post';
+
+            return route('/', ['popup_content' => $message]);
+        }
+        
+        $resourceId = $request['id'];
+        $reportedBy = $request['user_id'];
+
+        $data = [
+            'type' => $type,
+            'resource_id' => $resourceId,
+            'reported_by' => $reportedBy
+        ];
+        
+        if (($comment)) {
+            $data['comment'] = $comment;
+        }
+
+        // Attempt to create the reported resource
+        $result = $this->reportModel->createReportedResource($type, $resourceId);
+
+        // Is user already reported the resource, return with error message
+        if (!$result) {
+            $message = 'Ya has reportado este ' . $type;
+
+            return route('/', ['popup_content' => $message]);
+        }
+
+        // Else, create the report
+        $result = $this->reportModel->createReport($data);
+
+        $message = '';
+
+        if (!$result) {
+            $message = 'Error al reportar el ' . $type;
+
+            return route('/', ['popup_content' => $message]);
+        }
+
+        if ($type == 'post') {
+            $message = 'Post reportado';
+        } else if ($type == 'comment') {
+            $message = 'Comentario reportado';
+        } else if ($type == 'user') {
+            $message = 'Usuario reportado';
+        }
+
+        return route('/', ['popup_content' => $message]);
+    }
 }

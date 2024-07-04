@@ -574,6 +574,41 @@ header {
   padding: .6rem 1rem 1.6rem 1rem;
 }
 
+.index > .report-form {
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  background-color: black;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: .4rem;
+  padding: .6rem;
+  border: 1px solid white;
+  visibility: hidden;
+  opacity: 0;
+  font-size: 1.5rem;
+  transition: opacity .2s;
+}
+
+.index > .report-form > span {
+  position: absolute;
+  right: 0;
+  top: 0;
+  font-size: 1.8rem;
+  line-height: 1;
+}
+
+.index > .report-form > input[type='text'] {
+  padding: .2rem .4rem;
+}
+
+.index > .report-form > input[type='submit'] {
+  border: 1px solid white;
+  padding: .2rem .4rem;
+}
+
 .index > .post > .menu {
   position: absolute;
   left: 5%;
@@ -611,8 +646,14 @@ header {
   cursor: pointer;
 }
 
-.index > .post > .menu > .dropdown > li {
+.index > .post > .menu > .dropdown > li input[type='submit'],
+.index > .post > .menu > .dropdown > li a,
+.index > .post > .menu > .dropdown > li div {
   padding: .3rem .8rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
 }
 
 .index > .post > .menu > .dropdown > li:hover {

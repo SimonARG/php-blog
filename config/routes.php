@@ -37,6 +37,7 @@ return [
     '/comments/store' => CommentController::class . '@store',
     '/comments/update/{id}' => CommentController::class . '@update',
     '/comments/delete' => CommentController::class . '@delete',
-    // Admin
-    '/admin/reports' => ReportController::class . '@index'
+    // Reports
+    '/admin/reports' => ReportController::class . '@index',
+    '/report' => ReportController::class . '@create'
 ];

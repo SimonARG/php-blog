@@ -137,4 +137,40 @@ class Report
 
         return $result ? $result : 0;
     }
+
+    public function createReportedResource(string $type, int $resourceId)
+    {
+        $columnName = $type . "_id";
+    
+        $sql = "INSERT INTO reported_resources ($columnName) VALUES (:resource_id)";
+
+        $result = $this->db->query($sql, [
+            ':resource_id' => $resourceId
+        ]);
+
+        return $result ? $result : 0;
+    }
+
+    public function createReport($data)
+    {
+        $fields = ['resource_id', 'reported_by'];
+        $placeholders = [':resource_id', ':reported_by'];
+        $params = [
+            ':resource_id' => $data['resource_id'],
+            ':reported_by' => $data['reported_by'],
+        ];
+    
+        if (isset($data['comment'])) {
+            $fields[] = 'comment';
+            $placeholders[] = ':comment';
+            $params[':comment'] = $data['comment'];
+        }
+    
+        $sql = "INSERT INTO reports (" . implode(', ', $fields) . ") 
+                VALUES (" . implode(', ', $placeholders) . ")";
+    
+        $result = $this->db->query($sql, $params);
+
+        return $result ? $result : 0;
+    }
 }
