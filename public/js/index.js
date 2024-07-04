@@ -4,6 +4,7 @@ const indexArrows = document.querySelectorAll('.post > .menu > .arrow');
 
 indexArrows.forEach((arrow, index) => {
   let menuShow = false;
+
   arrow.addEventListener('click', () => {
     if (menuShow == false) {
       indexMenus[index].style.transform = 'scaley(100%)';
@@ -15,6 +16,14 @@ indexArrows.forEach((arrow, index) => {
       menuShow = false;
     }
   })
+
+  window.addEventListener('click', (event) => {
+    if (menuShow && !indexMenus[index].contains(event.target) && event.target !== arrow) {
+      indexMenus[index].style.transform = 'scaley(0%)';
+      arrow.style.transform = 'rotate(0deg)';
+      menuShow = false;
+    }
+  });
 });
 
 const navMenu = document.querySelector('.nav-menu');
@@ -94,6 +103,7 @@ const getFileData = () => {
   child.setAttribute('value', file.name);
 }
 
+// Make text input readonly
 if (fileText) {
   child.addEventListener('keydown', (event) => {
     event.preventDefault();
@@ -300,6 +310,17 @@ if (reportBtns) {
       }, 200);
 
       showReport = false;
-    })
+    });
+
+    window.addEventListener('click', (event) => {
+      if (showReport && !reportForm.contains(event.target) && event.target !== btn) {
+        reportForm.style.opacity = 0;
+        setTimeout(() => {
+          reportForm.style.visibility = 'hidden';
+        }, 200);
+
+        showReport = false;
+      }
+    });
   });
 }

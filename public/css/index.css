@@ -590,6 +590,8 @@ header {
   opacity: 0;
   font-size: 1.5rem;
   transition: opacity .2s;
+  z-index: 40;
+  box-shadow: 0 0 10px 7px rgba(0, 0, 0, 0.644);
 }
 
 .index > .report-form > span {
@@ -640,6 +642,7 @@ header {
   left: 140%;
   top: 30%;
   font-size: 1.6rem;
+  box-shadow: 0 0 10px 7px rgba(0, 0, 0, 0.644);
 }
 
 .index > .post > .menu > .dropdown * {
