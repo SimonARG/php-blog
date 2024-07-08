@@ -37,17 +37,19 @@ $currUrl = (empty($_SERVER['HTTPS']) ? 'http' : 'https') . "://$_SERVER[HTTP_HOS
 
       <?php require __DIR__ . '/../../Layouts/Components/report.php'; ?>
 
-      <form class="change-role" autocomplete="off" action="<?= $baseUrl . 'user/role/' . $user['id'] ?>" method="POST">
-        <ul>
-          <?php foreach ($classes as $key => $newRole): ?>
-            <?php if (!($newRole == $role)): ?>
-              <li class="<?= $newRole ?>">[<?= strtoupper($newRole) ?>]<div class="<?= $newRole ?>"><input type="radio" name="role" value="<?= $roleIds[$newRole] ?>"></div></li>
-            <?php endif; ?>
-          <?php endforeach; ?>
-        </ul>
-        <input type="hidden" name="curr-url" value="<?= $currUrl ?>">
-        <input class="btn" type="submit" value="Cambiar rol">
-      </form>
+      <?php if ($_SESSION['role'] == 'admin' || $_SESSION['role'] == 'mod'): ?>
+        <form class="change-role" autocomplete="off" action="<?= $baseUrl . 'user/role/' . $user['id'] ?>" method="POST">
+          <ul>
+            <?php foreach ($classes as $key => $newRole): ?>
+              <?php if (!($newRole == $role)): ?>
+                <li class="<?= $newRole ?>">[<?= strtoupper($newRole) ?>]<div class="<?= $newRole ?>"><input type="radio" name="role" value="<?= $roleIds[$newRole] ?>"></div></li>
+              <?php endif; ?>
+            <?php endforeach; ?>
+          </ul>
+          <input type="hidden" name="curr-url" value="<?= $currUrl ?>">
+          <input class="btn" type="submit" value="Cambiar rol">
+        </form>
+      <?php endif; ?>
     </div>
     <h1><?= $user['name'] ?></h1>
     <h2><?= 'Registrado desde ' . $user['created_at'] ?></h2>
