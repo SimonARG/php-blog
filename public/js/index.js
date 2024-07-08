@@ -268,13 +268,7 @@ if (roleDropdown) {
       roleArr.style.transform = 'rotateX(180deg)';
       showRoles = true;
     }
-  })
-
-  formattingClose.addEventListener('click', () => {
-    formattingHelp.style.opacity = '0';
-    formattingHelp.style.visibility = 'hidden';
-    showRoles = false;
-  })
+  });
 }
 
 // Reports

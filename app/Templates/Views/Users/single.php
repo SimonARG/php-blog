@@ -35,6 +35,8 @@ $currUrl = (empty($_SERVER['HTTPS']) ? 'http' : 'https') . "://$_SERVER[HTTP_HOS
         <?php endif; ?>
       </div>
 
+      <?php require __DIR__ . '/../../Layouts/Components/report.php'; ?>
+
       <form class="change-role" autocomplete="off" action="<?= $baseUrl . 'user/role/' . $user['id'] ?>" method="POST">
         <ul>
           <?php foreach ($classes as $key => $newRole): ?>
@@ -49,6 +51,12 @@ $currUrl = (empty($_SERVER['HTTPS']) ? 'http' : 'https') . "://$_SERVER[HTTP_HOS
     </div>
     <h1><?= $user['name'] ?></h1>
     <h2><?= 'Registrado desde ' . $user['created_at'] ?></h2>
+
+    <?php if ($_SESSION) : ?>
+      <div class="report-holder">
+        <div class="report-btn btn">Reportar usuario</div>
+      </div>
+    <?php endif; ?>
 
     <div class="user-avatar">
       <img src="<?= $baseUrl . 'imgs/avatars/' . htmlspecialchars($user['avatar']) ?>" alt="Your avatar">

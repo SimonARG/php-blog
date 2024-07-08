@@ -1554,18 +1554,34 @@ input:-webkit-autofill:active{
   height: 100%;
 }
 
-.single > .user .avatar-label-holder {
+.single > .user .avatar-label-holder,
+.single > .user .report-holder {
   display: flex;
   justify-content: center;
+}
+
+.single > .user .avatar-label-holder {
   margin-bottom: .6rem;
 }
 
-.single > .user .avatar-label {
+.single > .user .report-holder {
+  margin-top: .6rem;
+}
+
+.single > .user .avatar-label,
+.single > .user .report-btn {
   width: 50vw;
   border: 1px solid white;
-  border-top: none;
   text-align: center;
   padding: .4rem 0;
+}
+
+.single > .user .avatar-label {
+  border-top: none;
+}
+
+.single > .user .report-btn {
+  border-bottom: none;
 }
 
 .single > .user > .posts {
