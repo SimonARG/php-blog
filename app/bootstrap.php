@@ -20,5 +20,4 @@ $GLOBALS['db'] = $dbConfig['database'];
 
 // Load helper functions
 require_once __DIR__ . '/../app/Helpers/view.php';
-require_once __DIR__ . '/../app/Helpers/route.php';
 require_once __DIR__ . '/../app/Helpers/processImage.php';
