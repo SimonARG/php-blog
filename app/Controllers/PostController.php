@@ -145,10 +145,12 @@ class PostController
         $this->postModel->create($dbEntry);
         $post = $this->postModel->getPostByTitle($request['title']);
 
-        return header('Location:' . $this->baseUrl . 'post/' . $post['id'] . '?popup_content=Post Creado');
+        $_SESSION['popup_content'] = 'Post creado';
+
+        return header('Location:' . $this->baseUrl . 'post/' . $post['id']);
     }
 
-    public function show($id, $popupContent = NULL)
+    public function show($id)
     {
         $post = $this->postModel->getPostById($id);
 
@@ -188,18 +190,10 @@ class PostController
             }
         }
 
-        if (!$popupContent) {
-            return view('posts.single', [
-                'post' => $post,
-                'comments' => $comments
-            ]);
-        } else {
-            return view('posts.single', [
-                'post' => $post,
-                'comments' => $comments,
-                'popupContent' => $popupContent
-            ]);
-        }
+        return view('posts.single', [
+            'post' => $post,
+            'comments' => $comments,
+        ]);
     }
 
     public function edit($id)
@@ -207,9 +201,9 @@ class PostController
         $post = $this->postModel->getPostById($id);
 
         if(!$this->security->verifyIdentity($post['user_id'])) {
-            $message = 'Solo puedes editar tus propios posts';
+            $_SESSION['popup_content'] = 'Solo puedes editar tus propios posts';
 
-            return route('/', ['popup_content' => $message]);
+            return header('Location: /');
         }
 
         return view('posts.edit', [
@@ -222,9 +216,9 @@ class PostController
         $post = $this->postModel->getPostById($id);
 
         if(!$this->security->verifyIdentity($post['user_id'])) {
-            $message = 'Solo puedes editar tus propios posts';
+            $_SESSION['popup_content'] = 'Solo puedes editar tus propios posts';
 
-            return route('/', ['popup_content' => $message]);
+            return header('Location: /');
         }
 
         // Sanitize
@@ -299,7 +293,9 @@ class PostController
         $this->postModel->update($dbEntry, $id);
         $post = $this->postModel->getPostById($id);
 
-        return header('Location:' . $this->baseUrl . 'post/' . $post['id'] . '?popup_content=Post Editado');
+        $_SESSION['popup_content'] = 'Post editado';
+
+        return header('Location:' . $this->baseUrl . 'post/' . $post['id']);
     }
 
     public function delete($request)
@@ -316,8 +312,8 @@ class PostController
 
         $this->postModel->softDelete($id);
 
-        $message = 'Post eliminado';
+        $_SESSION['popup_content'] = 'Post eliminado';
 
-        return route('/', ['popup_content' => $message]);
+        return header('Location: /');
     }
 }

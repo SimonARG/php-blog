@@ -102,9 +102,9 @@ class UserController
         $_SESSION['username'] = $user['name'];
         $_SESSION['role'] = $user['role'];
 
-        $message = 'Cuenta ' . $user['name'] . ' creada';
+        $_SESSION['popup_content'] = 'Cuenta ' . $user['name'] . ' creada';
 
-        return route('/', ['popup_content' => $message]);
+        return header('Location: /' . 'user/' . ($result['id']));
     }
 
     public function show($id)
@@ -140,7 +140,9 @@ class UserController
     public function update($id, $request)
     {
         if(!$this->security->verifyIdentity($id)) {
-            return header('Location:' . $this->baseUrl . 'post/' . $request['post_id'] . '?popup_content=Solo puedes editar tu propio perfil');
+            $_SESSION['popup_content'] = 'Solo puedes editar tu propio perfil';
+
+            return header('Location: /' . 'user/' . $_SESSION['user_id']);
         }
 
         $user = $this->userModel->getUserById($id);
@@ -268,14 +270,13 @@ class UserController
         $this->userModel->update($dbEntry, $id);
         $user = $this->userModel->getUserById($id);
 
-        $message = 'Perfil editado';
+        $_SESSION['popup_content'] = 'Perfil editado';
 
         return view('users.single', [
             'user' => $user,
             'lastPostId' => $lastPostId,
             'lastCommentPostId' => $lastCommentPostId,
-            'savedPosts' => $savedPosts,
-            'popupContent' => $message
+            'savedPosts' => $savedPosts
         ]);
     }
 
@@ -286,22 +287,22 @@ class UserController
 
         // Check if post is already saved and perform action
         if (in_array($postId, $_SESSION['saved_posts'])) {
-            $message = 'El post ya esta guardado';
+            $_SESSION['popup_content'] = 'El post ya esta guardado';
         } else {
             $this->postModel->save($postId, $userId);
 
             $_SESSION['saved_posts'][] = $postId;
 
-            $message = 'Post guardado';
+            $_SESSION['popup_content'] = 'Post guardado';
         }
 
         // Return to index or single with message
         if (isset($request['curr_page'])) {
             $currPage = $request['curr_page'];
 
-            return header('Location: ' . $this->baseUrl . '?page=' . $currPage . "&popup_content=" . $message);
+            return header('Location: ' . $this->baseUrl . '?page=' . $currPage);
         } else {
-            return route('/post/' . $postId, ['popup_content' => $message]);
+            return header('Location: /post/' . $postId);
         }
     }
 
@@ -311,17 +312,15 @@ class UserController
         $userId = $request['user_id'];
     
         $result = $this->postModel->deleteSaved($postId, $userId);
-
-        $message = '';
     
         if (!$result) {
-            $message = 'Error';
+            $_SESSION['popup_content'] = 'Error al remover el post';
         } else {
             if (($key = array_search($postId, $_SESSION['saved_posts'])) !== false) {
                 unset($_SESSION['saved_posts'][$key]);
                 $_SESSION['saved_posts'] = array_values($_SESSION['saved_posts']);
             }
-            $message = 'Post removido de guardados';
+            $_SESSION['popup_content'] = 'Post removido de guardados';
         }
     
         if (isset($request['curr_page'])) {
@@ -329,13 +328,13 @@ class UserController
             $totalPages = $request['total_pages'];
 
             if ($totalPages > 1) {
-                return header('Location: ' . $this->baseUrl . 'search/user/saved/' . $userId . '/?page=' . $currPage . "&popup_content=" . $message);
+                return header('Location: ' . $this->baseUrl . 'search/user/saved/' . $userId . '/?page=' . $currPage);
             } else {
-                return header('Location: ' . $this->baseUrl . 'search/user/saved/' . $userId . "?popup_content=" . $message);
+                return header('Location: ' . $this->baseUrl . 'search/user/saved/' . $userId);
             }
         }
 
-        return route('/post/' . $postId, ['popup_content' => $message]);
+        return header('Location: /post/' . $postId);
     }
 
     public function changeRole($id, $request)
@@ -354,13 +353,12 @@ class UserController
 
         $result = $this->userModel->changeRole($id, $newRole);
 
-        $message = '';
         if ($result) {
-            $message = 'User role changed';
+            $_SESSION['popup_content'] = 'User role changed';
         } else {
-            $message = 'Error';
+            $_SESSION['popup_content'] = 'Error';
         }
 
-        return header('Location: ' . $url . "?popup_content=" . $message);
+        return header('Location: ' . $url);
     }
-} 
+}

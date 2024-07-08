@@ -1,5 +1,9 @@
-<?php if (isset($_GET['popup_content']) || (isset($popupContent))): ?>
+<?php if (isset($_SESSION['popup_content'])): ?>
+  <?php
+  $message = $_SESSION['popup_content'];
+  unset($_SESSION['popup_content']);
+  ?>
   <div class="popup-container">
-    <div class="popup"><?= isset($_GET['popup_content']) ? $_GET['popup_content'] : (isset($popupContent) ? $popupContent : '') ?></div>
+    <div class="popup"><?= $message ?></div>
   </div>
 <?php endif; ?>

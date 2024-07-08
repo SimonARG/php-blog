@@ -71,9 +71,9 @@ class ReportController
         $type = htmlspecialchars($request['type']);
         $allowedTypes = ['post', 'comment', 'user'];
         if (!in_array($type, $allowedTypes)) {
-            $message = 'Error al reportar el post';
+            $_SESSION['popup_content'] = 'Error al reportar el post';
 
-            return route('/', ['popup_content' => $message]);
+            return header('Location: /');
         }
 
         $url = $request['curr_url'];
@@ -100,22 +100,20 @@ class ReportController
 
         $result = $this->reportModel->createReport($data);
 
-        $message = '';
-
         if (!$result) {
-            $message = 'Ya has reportado este ' . $type;
+            $_SESSION['popup_content'] = 'Ya has reportado este ' . $type;
 
-            return header('Location: ' . $url . '?popup_content=' . $message);
+            return header('Location: ' . $url);
         }
 
         if ($type == 'post') {
-            $message = 'Post reportado';
+            $_SESSION['popup_content'] = 'Post reportado';
         } else if ($type == 'comment') {
-            $message = 'Comentario reportado';
+            $_SESSION['popup_content'] = 'Comentario reportado';
         } else if ($type == 'user') {
-            $message = 'Usuario reportado';
+            $_SESSION['popup_content'] = 'Usuario reportado';
         }
 
-        return header('Location: ' . $url . '?popup_content=' . $message);
+        return header('Location: ' . $url);
     }
 }

@@ -88,7 +88,9 @@ class SearchController
         $result = $this->userModel->getUserPosts($id, $currentPage);
 
         if(!$result) {
-            return header('Location:' . $this->baseUrl . '?popup_content=No hay resultados');
+            $_SESSION['popup_content'] = 'No hay resultados';
+
+            return header('Location:' . $this->baseUrl);
         }
 
         $posts = $result['posts'];
@@ -138,7 +140,9 @@ class SearchController
         $result = $this->userModel->getSavedPosts($id, $currentPage);
 
         if(!$result) {
-            return header('Location:' . $this->baseUrl . '?popup_content=No hay resultados');
+            $_SESSION['popup_content'] = 'No hay resultados';
+
+            return header('Location:' . $this->baseUrl);
         }
 
         $posts = $result['posts'];

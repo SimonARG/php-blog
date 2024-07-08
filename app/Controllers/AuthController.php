@@ -31,9 +31,9 @@ class AuthController
     
         if ($user) {
             if ($user['role'] == 'banned') {
-                $message = 'Usuario banneado';
+                $_SESSION['popup_content'] = 'Usuario banneado';
     
-                return  header('Location: ' . $this->baseUrl . 'login' . "?popup_content=" . $message);
+                return  header('Location: ' . $this->baseUrl . 'login');
             }
             
             if (password_verify($password, $user['password'])) {
@@ -55,8 +55,10 @@ class AuthController
                 $_SESSION['user_id'] = $user['id'];
                 $_SESSION['username'] = $user['name'];
                 $_SESSION['role'] = $user['role'];
+
+                $_SESSION['popup_content'] = 'Sesion iniciada';
     
-                return route('/', ['popup_content' => 'Sesion iniciada']);
+                return header('Location: /');
             } else {
                 $errors['error'] = 'Credenciales invalidas';
             }
@@ -77,6 +79,6 @@ class AuthController
         $_SESSION = [];
         session_destroy();
 
-        return route('/', ['popup_content' => 'Sesion cerrada']);
+        return header('Location: /');
     }
 }
