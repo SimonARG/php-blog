@@ -122,6 +122,19 @@ class Report
         ]);
     }
 
+    public function getReportedResourceId(string $type, int $resourceId)
+    {
+        $columnName = $type . "_id";
+    
+        $sql = "SELECT id FROM reported_resources WHERE ($columnName) = :resource_id;";
+
+        $result = $this->db->fetch($sql, [
+            ':resource_id' => $resourceId
+        ]);
+
+        return $result ? $result : 0;
+    }
+
     public function getReportCount()
     {
         $sql = "SELECT COUNT(*) FROM reports";
@@ -156,7 +169,7 @@ class Report
         $fields = ['resource_id', 'reported_by'];
         $placeholders = [':resource_id', ':reported_by'];
         $params = [
-            ':resource_id' => $data['resource_id'],
+            ':resource_id' => $data['reported_id'],
             ':reported_by' => $data['reported_by'],
         ];
     

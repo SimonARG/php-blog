@@ -564,17 +564,11 @@ header {
 
 /*
 |------------------------------------------------------------
-| Index
+| Report
 |------------------------------------------------------------
 */
 
-.index > .post {
-  background-color: var(--panel-bg);
-  margin-bottom: 2px;
-  padding: .6rem 1rem 1.6rem 1rem;
-}
-
-.index > .report-form {
+.report-form {
   position: fixed;
   top: 50%;
   left: 50%;
@@ -594,7 +588,7 @@ header {
   box-shadow: 0 0 10px 7px rgba(0, 0, 0, 0.644);
 }
 
-.index > .report-form > span {
+.report-form > span {
   position: absolute;
   right: 0;
   top: 0;
@@ -602,13 +596,25 @@ header {
   line-height: 1;
 }
 
-.index > .report-form > input[type='text'] {
+.report-form > input[type='text'] {
   padding: .2rem .4rem;
 }
 
-.index > .report-form > input[type='submit'] {
+.report-form > input[type='submit'] {
   border: 1px solid white;
   padding: .2rem .4rem;
+}
+
+/*
+|------------------------------------------------------------
+| Index
+|------------------------------------------------------------
+*/
+
+.index > .post {
+  background-color: var(--panel-bg);
+  margin-bottom: 2px;
+  padding: .6rem 1rem 1.6rem 1rem;
 }
 
 .index > .post > .menu {
@@ -873,12 +879,8 @@ header {
 .single > .post > .btns > * {
   border: 1px solid white;
   padding: .3rem .6rem;
-  font-size: 1.2rem;
+  font-size: 1rem;
 }
-
-/* .single > .post > .btns > *:hover {
-  background-color: ;
-} */
 
 .single > .post .comment-count {
   display: flex;
@@ -1064,10 +1066,17 @@ header {
 .single > .comments .dropdown form input[type=submit] {
   border: 1px solid white;
   padding: .4rem .6rem;
+  margin-right: .3rem;
 }
 
-.single > .comments .dropdown .edit input[type=submit] {
+.single > .comments .dropdown .edit input[type=submit],
+.single > .comments .dropdown .report-btn {
   float: left;
+}
+
+.single > .comments .dropdown .report-btn {
+  border: 1px solid white;
+  padding: .4rem .6rem;
 }
 
 .single > .comments .dropdown .del {

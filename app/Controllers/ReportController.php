@@ -75,13 +75,14 @@ class ReportController
 
             return route('/', ['popup_content' => $message]);
         }
+
+        $url = $request['curr_url'];
         
         $resourceId = $request['id'];
         $reportedBy = $request['user_id'];
 
         $data = [
             'type' => $type,
-            'resource_id' => $resourceId,
             'reported_by' => $reportedBy
         ];
         
@@ -92,22 +93,19 @@ class ReportController
         // Attempt to create the reported resource
         $result = $this->reportModel->createReportedResource($type, $resourceId);
 
-        // Is user already reported the resource, return with error message
-        if (!$result) {
-            $message = 'Ya has reportado este ' . $type;
-
-            return route('/', ['popup_content' => $message]);
-        }
-
         // Else, create the report
+        $result = $this->reportModel->getReportedResourceId($type, $resourceId);
+
+        $data['reported_id'] = $result['id'];
+
         $result = $this->reportModel->createReport($data);
 
         $message = '';
 
         if (!$result) {
-            $message = 'Error al reportar el ' . $type;
+            $message = 'Ya has reportado este ' . $type;
 
-            return route('/', ['popup_content' => $message]);
+            return header('Location: ' . $url . '?popup_content=' . $message);
         }
 
         if ($type == 'post') {
@@ -118,6 +116,6 @@ class ReportController
             $message = 'Usuario reportado';
         }
 
-        return route('/', ['popup_content' => $message]);
+        return header('Location: ' . $url . '?popup_content=' . $message);
     }
 }

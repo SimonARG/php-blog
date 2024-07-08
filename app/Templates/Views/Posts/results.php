@@ -57,6 +57,8 @@ function truncateHTML($html_string, $length, $append = '&hellip;', $is_html = tr
     <?php endif; ?>
   </div>
   <?php foreach ($posts as $index => $post) : ?>
+    <?php require __DIR__ . '/../../Layouts/Components/report.php'; ?>
+
     <div class="post <?= 'post-' . $index + 1 ?>">
       <?php if ($_SESSION) : ?>
         <div class="menu">
@@ -70,7 +72,7 @@ function truncateHTML($html_string, $length, $append = '&hellip;', $is_html = tr
                 <form action="<?= $baseUrl ?>post/delete" method="POST"><input type="hidden" name="post_id" value="<?= $post['id'] ?>"><input type="submit" value="Eliminar"></form>
               </li>
             <?php else : ?>
-              <li><div>Reportar</div></li>
+              <li><div class="report-btn">Reportar</div></li>
             <?php endif; ?>
             <?php if(!in_array($post['id'], $_SESSION['saved_posts'])) : ?>
                 <li>

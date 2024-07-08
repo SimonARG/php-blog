@@ -49,18 +49,7 @@ $currUrl = $actual_link = (empty($_SERVER['HTTPS']) ? 'http' : 'https') . "://$_
 
 <div class="index">
   <?php foreach ($posts as $index => $post) : ?>
-    <form class="report-form <?= 'report-' . ($index + 1) ?>" method="post" action="/report">
-      <span class="material-symbols-rounded btn">close</span>
-      
-      <label for="comment">Razón</label>
-      <input maxlength="40" type="text" id="comment" name="comment" placeholder="Opcional">
-
-      <input type="hidden" name="type" value="post">
-      <input type="hidden" name="id" value="<?= $post['id'] ?>">
-      <input type="hidden" name="user_id" value="<?= $_SESSION['user_id'] ?>">
-
-      <input class="btn" type="submit" value="Reportar">
-    </form>
+    <?php require __DIR__ . '/../../Layouts/Components/report.php'; ?>
 
     <div class="post <?= 'post-' . $index + 1 ?>">
       <?php if($_SESSION): ?>
