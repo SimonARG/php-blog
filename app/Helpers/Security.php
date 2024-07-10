@@ -4,7 +4,7 @@ namespace App\Helpers;
 
 class Security
 {
-    public function verifyIdentity($resourceOwnerId)
+    public function verifyIdentity(int $resourceOwnerId) : int
     {
         if(!($resourceOwnerId == $_SESSION['user_id']) && !($_SESSION['role'] == 'admin') && !($_SESSION['role'] == 'mod')) {
             return 0;
@@ -13,7 +13,7 @@ class Security
         return 1;
     }
 
-    public function isElevatedUser($userId)
+    public function isElevatedUser(int $userId) : int
     {
         if(!(isset($_SESSION))) {
             return 0;
