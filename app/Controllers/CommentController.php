@@ -4,23 +4,19 @@ namespace App\Controllers;
 
 use App\Models\Post;
 use App\Models\Comment;
-use App\Helpers\Security;
-use App\Helpers\Helpers;
+use App\Controllers\Controller;
 use League\CommonMark\GithubFlavoredMarkdownConverter;
 
-class CommentController
+class CommentController extends Controller
 {
-    protected $commentModel;
-    protected $postModel;
-    protected $security;
-    protected $helpers;
+    protected $comment;
+    protected $post;
 
     public function __construct()
     {
-        $this->commentModel = new Comment();
-        $this->postModel = new Post();
-        $this->security = new Security();
-        $this->helpers = new Helpers();
+        parent::__construct();
+        $this->comment = new Comment();
+        $this->post = new Post();
     }
 
     public function store($request)
@@ -43,7 +39,7 @@ class CommentController
             ]);
         }
 
-        $this->commentModel->storeComment($request);
+        $this->comment->storeComment($request);
 
         $this->helpers->setPopup('Comentario creado');
 
@@ -52,8 +48,8 @@ class CommentController
 
     public function update($id, $request)
     {
-        $comment = $this->commentModel->getCommentById($id);
-        $post = $this->postModel->getPostById($request['post_id']);
+        $comment = $this->comment->getCommentById($id);
+        $post = $this->post->getPostById($request['post_id']);
 
         if(!$this->security->verifyIdentity($comment['user_id'])) {
             $this->helpers->setPopup('Solo puedes editar tus propios comentarios');
@@ -81,7 +77,7 @@ class CommentController
 
         $dbEntry['body'] = $body;
 
-        $this->commentModel->update($dbEntry, $id);
+        $this->comment->update($dbEntry, $id);
         
         $$this->helpers->setPopup('Comentario editado');
 
@@ -92,7 +88,7 @@ class CommentController
     {
         $id = $request['comment_id'];
 
-        $comment = $this->commentModel->getCommentById($id);
+        $comment = $this->comment->getCommentById($id);
 
         if(!$this->security->verifyIdentity($comment['user_id'])) {
             $this->helpers->setPopup('Solo puedes eliminar tus propios comentarios');
@@ -100,7 +96,7 @@ class CommentController
             return header('Location: /post/' . $request['post_id'] . '#comment-1');
         }
 
-        $this->commentModel->softDelete($id);
+        $this->comment->softDelete($id);
 
         $this->helpers->setPopup('Comentario eliminado');
 

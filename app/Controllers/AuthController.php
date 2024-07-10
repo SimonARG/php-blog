@@ -3,17 +3,16 @@
 namespace App\Controllers;
 
 use App\Models\User;
-use App\Helpers\Helpers;
+use App\Controllers\Controller;
 
-class AuthController
+class AuthController extends Controller
 {
     protected $user;
-    protected $helpers;
 
     public function __construct()
     {
+        parent::__construct();
         $this->user = new User();
-        $this->helpers = new Helpers();
     }
 
     public function login()

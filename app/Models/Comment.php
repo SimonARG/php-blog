@@ -2,16 +2,15 @@
 
 namespace App\Models;
 
-class Comment
+use App\Models\Model;
+
+class Comment extends Model
 {
-    protected $db;
     protected $commentsPerPage;
 
     public function __construct()
     {
-        // Use the global database instance
-        $this->db = $GLOBALS['db'];
-
+        parent::__construct();
         $this->commentsPerPage = $GLOBALS['config']['comments_per_page'];
     }
 

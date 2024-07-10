@@ -5,22 +5,20 @@ namespace App\Controllers;
 use DateTime;
 use App\Models\Report;
 use App\Models\Comment;
-use App\Helpers\Helpers;
 
-class ReportController
+class ReportController extends Controller
 {
-    protected $commentModel;
-    protected $reportModel;
+    protected $comment;
+    protected $report;
     protected $reportsPerPage;
-    protected $helpers;
 
     public function __construct()
     {
         $this->reportsPerPage = $GLOBALS['config']['reports_per_page'];
         
-        $this->commentModel = new Comment();
-        $this->reportModel = new Report();
-        $this->helpers = new Helpers();
+        parent::__construct();
+        $this->comment = new Comment();
+        $this->report = new Report();
     }
 
     public function index($request)
@@ -30,16 +28,16 @@ class ReportController
         $reports = '';
 
         if (!(isset($request['sort'])) || !$request['sort']) {
-            $reports = $this->reportModel->getAllReportsSortNew($currentPage);
+            $reports = $this->report->getAllReportsSortNew($currentPage);
         } else {
-            $reports = $this->reportModel->getAllReportsSortUnreviewed($currentPage);
+            $reports = $this->report->getAllReportsSortUnreviewed($currentPage);
         }
 
-        $totalReports = $this->reportModel->getReportCount();
+        $totalReports = $this->report->getReportCount();
 
         $totalPages = ceil($totalReports / $this->reportsPerPage);
 
-        $unreviewed = $this->reportModel->getUnreviewedReportCount();
+        $unreviewed = $this->report->getUnreviewedReportCount();
         
         foreach ($reports as $key => $report) {
             $reportDate = new DateTime($report['created_at']);
@@ -93,14 +91,14 @@ class ReportController
         }
 
         // Attempt to create the reported resource
-        $result = $this->reportModel->createReportedResource($type, $resourceId);
+        $result = $this->report->createReportedResource($type, $resourceId);
 
         // Else, create the report
-        $result = $this->reportModel->getReportedResourceId($type, $resourceId);
+        $result = $this->report->getReportedResourceId($type, $resourceId);
 
         $data['reported_id'] = $result['id'];
 
-        $result = $this->reportModel->createReport($data);
+        $result = $this->report->createReport($data);
 
         if (!$result) {
             $this->helpers->setPopup('Ya has reportado este ' . $type);

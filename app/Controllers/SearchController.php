@@ -6,35 +6,34 @@ use DateTime;
 use App\Models\Post;
 use App\Models\User;
 use App\Models\Comment;
-use App\Helpers\Helpers;
+use App\Controllers\Controller;
 use League\CommonMark\GithubFlavoredMarkdownConverter;
 
-class SearchController
+class SearchController extends Controller
 {
-    protected $postModel;
-    protected $commentModel;
-    protected $userModel;
-    protected $helpers;
+    protected $post;
+    protected $comment;
+    protected $user;
 
     public function __construct()
     {
-        $this->postModel = new Post();
-        $this->commentModel = new Comment();
-        $this->userModel = new User();
-        $this->helpers = new Helpers();
+        parent::__construct();
+        $this->post = new Post();
+        $this->comment = new Comment();
+        $this->user = new User();
     }
 
     public function search()
     {
         $query = $_GET['query'];
 
-        $postModel = new Post();
+        $post = new Post();
 
         // Get the current page from the query parameters, default to 1 if not set
         $currentPage = isset($_GET['page']) ? (int)$_GET['page'] : 1;
 
         // Get the posts for the current page
-        $result = $postModel->search($query, $currentPage);
+        $result = $post->search($query, $currentPage);
 
         if(!$result) {
             $this->helpers->setPopup('No hay resultados');
@@ -82,13 +81,13 @@ class SearchController
     public function getUserPosts($id)
     {
         // Get user name
-        $user = $this->userModel->getUserById($id);
+        $user = $this->user->getUserById($id);
 
         // Get the current page from the query parameters, default to 1 if not set
         $currentPage = isset($_GET['page']) ? (int)$_GET['page'] : 1;
 
         // Get the posts for the current page
-        $result = $this->userModel->getUserPosts($id, $currentPage);
+        $result = $this->user->getUserPosts($id, $currentPage);
 
         if(!$result) {
             $this->helpers->setPopup('No hay resultados');
@@ -140,7 +139,7 @@ class SearchController
         $currentPage = isset($_GET['page']) ? (int)$_GET['page'] : 1;
 
         // Get the posts for the current page
-        $result = $this->userModel->getSavedPosts($id, $currentPage);
+        $result = $this->user->getSavedPosts($id, $currentPage);
 
         if(!$result) {
             $$this->helpers->setPopup('No hay resultados');

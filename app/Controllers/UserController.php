@@ -6,27 +6,19 @@ use DateTime;
 use App\Models\Post;
 use App\Models\User;
 use App\Models\Comment;
-use App\Helpers\Security;
-use App\Helpers\Helpers;
-use App\Controllers\PostController;
 
-class UserController
+class UserController extends Controller
 {
-    protected $userModel;
-    protected $postModel;
-    protected $postController;
-    protected $commentModel;
-    protected $security;
-    protected $helpers;
+    protected $user;
+    protected $post;
+    protected $comment;
 
     public function __construct()
     {
-        $this->userModel = new User();
-        $this->postModel = new Post();
-        $this->postController = new PostController();
-        $this->commentModel = new Comment();
-        $this->security = new Security();
-        $this->helpers = new Helpers();
+        parent::__construct();
+        $this->user = new User();
+        $this->post = new Post();
+        $this->comment = new Comment();
     }
 
     public function create()
@@ -81,19 +73,19 @@ class UserController
         $data['email'] = $email; 
         $data['password'] = $password; 
     
-        $this->userModel->create($data);
+        $this->user->create($data);
 
-        $result = $this->userModel->getUserByEmail($email);
+        $result = $this->user->getUserByEmail($email);
 
-        $users = $this->userModel->getUserCount();
+        $users = $this->user->getUserCount();
 
         if ($users > 0) {
-            $this->userModel->setRole($result['id'], 'user');
+            $this->user->setRole($result['id'], 'user');
         } else {
-            $this->userModel->setRole($result['id'], 'admin');
+            $this->user->setRole($result['id'], 'admin');
         }
 
-        $user = $this->userModel->getUserById($result['id']);
+        $user = $this->user->getUserById($result['id']);
 
         session_start();
 
@@ -109,15 +101,15 @@ class UserController
 
     public function show($id)
     {
-        $user = $this->userModel->getUserById($id);
+        $user = $this->user->getUserById($id);
 
-        $lastPostId = $this->userModel->getLatestUserPostId($id);
+        $lastPostId = $this->user->getLatestUserPostId($id);
 
-        $lastCommentId = $this->userModel->getLatestUserCommentId($id);
+        $lastCommentId = $this->user->getLatestUserCommentId($id);
         
-        $lastCommentPostId = $this->commentModel->getPostIdForComment($lastCommentId['id']);
+        $lastCommentPostId = $this->comment->getPostIdForComment($lastCommentId['id']);
 
-        $savedPosts = $this->userModel->getSavedPostsCount($id)['posts'];
+        $savedPosts = $this->user->getSavedPostsCount($id)['posts'];
 
         $userDate = new DateTime($user['created_at']);
         $userStrdate = $userDate->format('Y/m/d H:i');
@@ -145,7 +137,7 @@ class UserController
             return header('Location: /user/' . $_SESSION['user_id']);
         }
 
-        $user = $this->userModel->getUserById($id);
+        $user = $this->user->getUserById($id);
 
         $errors = [];
 
@@ -158,13 +150,13 @@ class UserController
         $avatar = $_FILES['avatar']['name'] ? $_FILES['avatar'] : NULL;
 
         // Get values for view
-        $lastPostId = $this->userModel->getLatestUserPostId($id);
+        $lastPostId = $this->user->getLatestUserPostId($id);
 
-        $lastCommentId = $this->userModel->getLatestUserCommentId($id);
+        $lastCommentId = $this->user->getLatestUserCommentId($id);
         
-        $lastCommentPostId = $this->commentModel->getPostIdForComment($lastCommentId['id']);
+        $lastCommentPostId = $this->comment->getPostIdForComment($lastCommentId['id']);
 
-        $savedPosts = $this->userModel->getSavedPostsCount($id)['posts'];
+        $savedPosts = $this->user->getSavedPostsCount($id)['posts'];
 
         $userDate = new DateTime($user['created_at']);
         $userStrdate = $userDate->format('Y/m/d H:i');
@@ -267,8 +259,8 @@ class UserController
         $dbEntry['email'] = $email;
         $newPassword ?? $dbEntry['password'] = $newPassword;
 
-        $this->userModel->update($dbEntry, $id);
-        $user = $this->userModel->getUserById($id);
+        $this->user->update($dbEntry, $id);
+        $user = $this->user->getUserById($id);
 
         $this->helpers->setPopup('Perfil editado');
 
@@ -289,7 +281,7 @@ class UserController
         if (in_array($postId, $_SESSION['saved_posts'])) {
             $this->helpers->setPopup('El post ya esta guardado');
         } else {
-            $this->postModel->save($postId, $userId);
+            $this->post->save($postId, $userId);
 
             $_SESSION['saved_posts'][] = $postId;
 
@@ -311,7 +303,7 @@ class UserController
         $postId = $request['post_id'];
         $userId = $request['user_id'];
     
-        $result = $this->postModel->deleteSaved($postId, $userId);
+        $result = $this->post->deleteSaved($postId, $userId);
     
         if (!$result) {
             $this->helpers->setPopup('Error al remover el post');
@@ -351,7 +343,7 @@ class UserController
             $url = $url;
         }
 
-        $result = $this->userModel->changeRole($id, $newRole);
+        $result = $this->user->changeRole($id, $newRole);
 
         if ($result) {
             $this->helpers->setPopup('User role changed');

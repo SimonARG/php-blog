@@ -5,23 +5,19 @@ namespace App\Controllers;
 use DateTime;
 use App\Models\Post;
 use App\Models\Comment;
-use App\Helpers\Security;
-use App\Helpers\Helpers;
+use App\Controllers\Controller;
 use League\CommonMark\GithubFlavoredMarkdownConverter;
 
-class PostController
+class PostController extends Controller
 {
-    protected $postModel;
-    protected $commentModel;
-    protected $security;
-    protected $helpers;
+    protected $post;
+    protected $comment;
 
     public function __construct()
     {
-        $this->postModel = new Post();
-        $this->commentModel = new Comment();
-        $this->security = new Security();
-        $this->helpers = new Helpers();
+        parent::__construct();
+        $this->post = new Post();
+        $this->comment = new Comment();
     }
 
     public function index()
@@ -30,10 +26,10 @@ class PostController
         $currentPage = isset($_GET['page']) ? (int)$_GET['page'] : 1;
 
         // Get the posts for the current page
-        $posts = $this->postModel->getPosts($currentPage);
+        $posts = $this->post->getPosts($currentPage);
 
         // Get the total number of posts to calculate pagination
-        $totalPosts = $this->postModel->getPostCount();
+        $totalPosts = $this->post->getPostCount();
 
         $converter = new GithubFlavoredMarkdownConverter([
         ]);
@@ -143,8 +139,8 @@ class PostController
 
         $imgError = $this->helpers->processImage($sourcePath, $destinationPath);
 
-        $this->postModel->create($dbEntry);
-        $post = $this->postModel->getPostByTitle($request['title']);
+        $this->post->create($dbEntry);
+        $post = $this->post->getPostByTitle($request['title']);
 
         $this->helpers->setPopup('Post creado');
 
@@ -153,7 +149,7 @@ class PostController
 
     public function show($id)
     {
-        $post = $this->postModel->getPostById($id);
+        $post = $this->post->getPostById($id);
 
         $converter = new GithubFlavoredMarkdownConverter();
 
@@ -163,7 +159,7 @@ class PostController
         // Get the current page from the query parameters, default to 1 if not set
         $currentPage = isset($_GET['page']) ? (int)$_GET['page'] : 1;
 
-        $comments = $this->commentModel->getCommentsForPost($id, $currentPage);
+        $comments = $this->comment->getCommentsForPost($id, $currentPage);
 
         $postDate = new DateTime($post['created_at']);
         $postStrdate = $postDate->format('Y/m/d H:i');
@@ -199,7 +195,7 @@ class PostController
 
     public function edit($id)
     {
-        $post = $this->postModel->getPostById($id);
+        $post = $this->post->getPostById($id);
 
         if(!$this->security->verifyIdentity($post['user_id'])) {
             $this->helpers->setPopup('Solo puedes editar tus propios posts');
@@ -214,7 +210,7 @@ class PostController
     
     public function update($id, $request)
     {
-        $post = $this->postModel->getPostById($id);
+        $post = $this->post->getPostById($id);
 
         if(!$this->security->verifyIdentity($post['user_id'])) {
             $this->helpers->setPopup('Solo puedes editar tus propios posts');
@@ -291,8 +287,8 @@ class PostController
         $dbEntry['subtitle'] = $subtitle;
         $dbEntry['body'] = $body;
 
-        $this->postModel->update($dbEntry, $id);
-        $post = $this->postModel->getPostById($id);
+        $this->post->update($dbEntry, $id);
+        $post = $this->post->getPostById($id);
 
         $this->helpers->setPopup('Post editado');
 
@@ -303,7 +299,7 @@ class PostController
     {
         $id = $request['post_id'];
 
-        $post = $this->postModel->getPostById($id);
+        $post = $this->post->getPostById($id);
 
         if(!$this->security->verifyIdentity($post['user_id'])) {
             $this->helpers->setPopup('Solo puedes eliminar tus propios posts');
@@ -311,7 +307,7 @@ class PostController
             return header('Location: /');
         }
 
-        $this->postModel->softDelete($id);
+        $this->post->softDelete($id);
 
         $this->helpers->setPopup('Post eliminado');
 

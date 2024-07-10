@@ -2,16 +2,15 @@
 
 namespace App\Models;
 
-class Report
+use App\Models\Model;
+
+class Report extends Model
 {
-    protected $db;
     protected $reportsPerPage;
 
     public function __construct()
     {
-        // Use the global database instance
-        $this->db = $GLOBALS['db'];
-
+        parent::__construct();
         $this->reportsPerPage = $GLOBALS['config']['reports_per_page'];
     }
 

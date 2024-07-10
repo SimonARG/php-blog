@@ -2,16 +2,15 @@
 
 namespace App\Models;
 
-class User
+use App\Models\Model;
+
+class User extends Model
 {
-    protected $db;
     protected $postsPerPage;
 
     public function __construct()
     {
-        // Use the global database instance
-        $this->db = $GLOBALS['db'];
-
+        parent::__construct();
         $this->postsPerPage = $GLOBALS['config']['posts_per_page'];
     }
 
