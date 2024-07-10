@@ -2,17 +2,20 @@
 
 namespace App\Factories;
 
-use Faker\Factory;
+use App\Factories\Factory;
 
-class UserFactory
+class UserFactory extends Factory
 {
-    public static function create()
+    public function __construct()
     {
-        $faker = Factory::create();
+        parent::__construct();
+    }
 
+    public function create()
+    {
         return [
-            'name' => $faker->unique()->userName(),
-            'email' => $faker->unique()->safeEmail(),
+            'name' => $this->faker->unique()->userName(),
+            'email' => $this->faker->unique()->safeEmail(),
             'password' => password_hash('password', PASSWORD_DEFAULT),
             'avatar' => rand(1, 7) . '.webp',
         ];

@@ -2,16 +2,19 @@
 
 namespace App\Factories;
 
-use Faker\Factory;
+use App\Factories\Factory;
 
-class CommentFactory
+class CommentFactory extends Factory
 {
-    public static function create()
+    public function __construct()
     {
-        $faker = Factory::create();
+        parent::__construct();
+    }
 
+    public function create()
+    {
         return [
-            'body' => $faker->paragraphs(1, true),
+            'body' => $this->faker->paragraphs(1, true),
             'user_id' => rand(1, 12),
             'post_id' => rand(1, 60)
         ];

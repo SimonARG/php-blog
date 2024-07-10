@@ -2,19 +2,22 @@
 
 namespace App\Factories;
 
-use Faker\Factory;
+use App\Factories\Factory;
 
-class PostFactory
+class PostFactory extends Factory
 {
-    public static function create()
+    public function __construct()
     {
-        $faker = Factory::create();
+        parent::__construct();
+    }
 
+    public function create()
+    {
         return [
-            'title' => $faker->sentence,
-            'subtitle' => $faker->sentence,
+            'title' => $this->faker->sentence,
+            'subtitle' => $this->faker->sentence,
             'thumb' => rand(1, 7) . '.webp',
-            'body' => $faker->paragraphs(7, true),
+            'body' => $this->faker->paragraphs(7, true),
             'user_id' => rand(1, 12)
         ];
     }
