@@ -3,6 +3,7 @@ $currUrl = (empty($_SERVER['HTTPS']) ? 'http' : 'https') . "://$_SERVER[HTTP_HOS
 ?>
 <?php if (isset($index) && !(isset($comment))) : ?>
   <form class="report-form <?= 'report-' . ($index + 1) ?>" method="post" action="/report">
+    <input type="hidden" name="csrf" value="<?php echo $_SESSION['csrf'] ?? '' ?>">
     <span class="material-symbols-rounded btn">close</span>
 
     <label for="comment">Razón</label>
@@ -17,6 +18,7 @@ $currUrl = (empty($_SERVER['HTTPS']) ? 'http' : 'https') . "://$_SERVER[HTTP_HOS
   </form>
 <?php elseif (isset($index) && isset($comment)) : ?>
   <form class="report-form <?= 'report-' . ($index + 2) ?>" method="post" action="/report">
+    <input type="hidden" name="csrf" value="<?php echo $_SESSION['csrf'] ?? '' ?>">
     <span class="material-symbols-rounded btn">close</span>
 
     <label for="comment">Razón</label>
@@ -31,6 +33,7 @@ $currUrl = (empty($_SERVER['HTTPS']) ? 'http' : 'https') . "://$_SERVER[HTTP_HOS
   </form>
 <?php elseif (isset($user)) : ?>
   <form class="report-form report-1" method="post" action="/report">
+    <input type="hidden" name="csrf" value="<?php echo $_SESSION['csrf'] ?? '' ?>">
     <span class="material-symbols-rounded btn">close</span>
 
     <label for="comment">Razón</label>
@@ -45,6 +48,7 @@ $currUrl = (empty($_SERVER['HTTPS']) ? 'http' : 'https') . "://$_SERVER[HTTP_HOS
   </form>
 <?php elseif (isset($post) && !(isset($index))) : ?>
   <form class="report-form report-1" method="post" action="/report">
+    <input type="hidden" name="csrf" value="<?php echo $_SESSION['csrf'] ?? '' ?>">
     <span class="material-symbols-rounded btn">close</span>
 
     <label for="comment">Razón</label>

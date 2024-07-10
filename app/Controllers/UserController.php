@@ -94,6 +94,8 @@ class UserController extends Controller
         $_SESSION['username'] = $user['name'];
         $_SESSION['role'] = $user['role'];
 
+        $this->security->generateCsrf();
+
         $this->helpers->setPopup('Cuenta ' . $user['name'] . ' creada');
 
         return header('Location: /' . 'user/' . ($result['id']));
@@ -131,6 +133,8 @@ class UserController extends Controller
 
     public function update($id, $request)
     {
+        $this->security->verifyCsrf($request['csrf'] ?? '');
+
         if(!$this->security->verifyIdentity($id)) {
             $this->helpers->setPopup('Solo puedes editar tu propio perfil');
 
@@ -274,6 +278,8 @@ class UserController extends Controller
 
     public function save($request)
     {
+        $this->security->verifyCsrf($request['csrf'] ?? '');
+
         $postId = $request['post_id'];
         $userId = $request['user_id'];
 
@@ -300,6 +306,8 @@ class UserController extends Controller
 
     public function deleteSaved($request)
     {
+        $this->security->verifyCsrf($request['csrf'] ?? '');
+
         $postId = $request['post_id'];
         $userId = $request['user_id'];
     
@@ -331,6 +339,8 @@ class UserController extends Controller
 
     public function changeRole($id, $request)
     {
+        $this->security->verifyCsrf($request['csrf'] ?? '');
+        
         $newRole = $request['role'];
 
         $url = $request['curr-url'];

@@ -65,6 +65,8 @@ class ReportController extends Controller
 
     public function create($request)
     {
+        $this->security->verifyCsrf($request['csrf'] ?? '');
+        
         // Sanitize
         $comment = htmlspecialchars($request['comment'] ?? '');
 

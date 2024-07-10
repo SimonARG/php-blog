@@ -61,7 +61,12 @@ $currUrl = $actual_link = (empty($_SERVER['HTTPS']) ? 'http' : 'https') . "://$_
                 </li>
 
                 <li>
-                  <form action="/post/delete" method="POST"><input type="hidden" name="post_id" value="<?= $post['id'] ?>"><input type="submit" value="Eliminar"></form>
+                  <form action="/post/delete" method="POST">
+                    <input type="hidden" name="csrf" value="<?php echo $_SESSION['csrf'] ?? '' ?>">
+
+                    <input type="hidden" name="post_id" value="<?= $post['id'] ?>">
+                    <input type="submit" value="Eliminar">
+                  </form>
                 </li>
               <?php endif; ?>
 
@@ -72,6 +77,8 @@ $currUrl = $actual_link = (empty($_SERVER['HTTPS']) ? 'http' : 'https') . "://$_
               <?php if(!in_array($post['id'], $_SESSION['saved_posts'])) : ?>
                 <li>
                   <form method="POST" action="/user/saved/save">
+                    <input type="hidden" name="csrf" value="<?php echo $_SESSION['csrf'] ?? '' ?>">
+
                     <input type="hidden" name="post_id" value="<?= $post['id'] ?>">
                     <input type="hidden" name="user_id" value="<?= $_SESSION['user_id'] ?>">
                     <input type="hidden" name="curr_page" value="<?= $currentPage ?? 1 ?>">

@@ -71,7 +71,9 @@ class PostController extends Controller
     }
 
     public function store($request)
-    {   
+    {
+        $this->security->verifyCsrf($request['csrf'] ?? '');
+
         // Sanitize
         $title = htmlspecialchars($request['title']);
         $subtitle = htmlspecialchars($request['subtitle']);
@@ -210,6 +212,8 @@ class PostController extends Controller
     
     public function update($id, $request)
     {
+        $this->security->verifyCsrf($request['csrf'] ?? '');
+
         $post = $this->post->getPostById($id);
 
         if(!$this->security->verifyIdentity($post['user_id'])) {
@@ -297,6 +301,8 @@ class PostController extends Controller
 
     public function delete($request)
     {
+        $this->security->verifyCsrf($request['csrf'] ?? '');
+        
         $id = $request['post_id'];
 
         $post = $this->post->getPostById($id);

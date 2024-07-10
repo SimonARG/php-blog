@@ -21,6 +21,7 @@ class CommentController extends Controller
 
     public function store($request)
     {
+        $this->security->verifyCsrf($request['csrf'] ?? '');
         // Sanitize
         htmlspecialchars($request['body']);
 
@@ -48,6 +49,8 @@ class CommentController extends Controller
 
     public function update($id, $request)
     {
+        $this->security->verifyCsrf($request['csrf'] ?? '');
+
         $comment = $this->comment->getCommentById($id);
         $post = $this->post->getPostById($request['post_id']);
 
@@ -86,6 +89,8 @@ class CommentController extends Controller
 
     public function delete($request)
     {
+        $this->security->verifyCsrf($request['csrf'] ?? '');
+        
         $id = $request['comment_id'];
 
         $comment = $this->comment->getCommentById($id);

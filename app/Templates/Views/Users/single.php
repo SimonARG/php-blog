@@ -38,6 +38,8 @@ $currUrl = (empty($_SERVER['HTTPS']) ? 'http' : 'https') . "://$_SERVER[HTTP_HOS
 
       <?php if ($_SESSION['role'] == 'admin' || $_SESSION['role'] == 'mod'): ?>
         <form class="change-role" autocomplete="off" action="<?= '/user/role/' . $user['id'] ?>" method="POST">
+          <input type="hidden" name="csrf" value="<?php echo $_SESSION['csrf'] ?? '' ?>">
+
           <ul>
             <?php foreach ($classes as $key => $newRole): ?>
               <?php if (!($newRole == $role)): ?>
@@ -98,6 +100,8 @@ $currUrl = (empty($_SERVER['HTTPS']) ? 'http' : 'https') . "://$_SERVER[HTTP_HOS
     <?php if ($_SESSION) : ?>
       <?php if ($_SESSION['user_id'] == $user['id'] || $_SESSION['role'] == 'admin' || $_SESSION['role'] == 'mod') : ?>
         <form class="user" autocomplete="off" enctype="multipart/form-data" action="<?= '/user/update/' . $user['id'] ?>" method="POST">
+          <input type="hidden" name="csrf" value="<?php echo $_SESSION['csrf'] ?? '' ?>">
+
           <label for="name">Cambiar Nombre</label>
           <input type="text" id="name" name="name" <?php if (isset($errors['name_error'])) : ?> placeholder="<?= $errors['name_error'] ?>" class="ph-error" <?php else : ?> value="<?= isset($errors) ? $old['name'] : $user['name'] ?>" <?php endif; ?>>
 

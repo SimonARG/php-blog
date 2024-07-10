@@ -25,4 +25,17 @@ class Security
 
         return 1;
     }
+
+    public function generateCsrf() : void
+    {
+        $_SESSION['csrf'] = md5(uniqid(mt_rand(), true));
+    }
+
+    public function verifyCsrf($csrf) : void
+    {
+        if (!$csrf || $csrf !== $_SESSION['csrf']) {
+            header($_SERVER['SERVER_PROTOCOL'] . ' 405 Method Not Allowed');
+            exit;
+        }
+    }
 }

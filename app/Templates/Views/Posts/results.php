@@ -67,7 +67,12 @@ function truncateHTML($html_string, $length, $append = '&hellip;', $is_html = tr
                 <a href="<?= '/post/edit/' . $post['id'] ?>">Editar</a>
               </li>
               <li>
-                <form action="/post/delete" method="POST"><input type="hidden" name="post_id" value="<?= $post['id'] ?>"><input type="submit" value="Eliminar"></form>
+                <form action="/post/delete" method="POST">
+                  <input type="hidden" name="csrf" value="<?php echo $_SESSION['csrf'] ?? '' ?>">
+
+                  <input type="hidden" name="post_id" value="<?= $post['id'] ?>">
+                  <input type="submit" value="Eliminar">
+                </form>
               </li>
             <?php else : ?>
               <li><div class="report-btn">Reportar</div></li>
@@ -75,6 +80,8 @@ function truncateHTML($html_string, $length, $append = '&hellip;', $is_html = tr
             <?php if(!in_array($post['id'], $_SESSION['saved_posts'])) : ?>
                 <li>
                   <form method="POST" action="/user/saved/save">
+                    <input type="hidden" name="csrf" value="<?php echo $_SESSION['csrf'] ?? '' ?>">
+
                     <input type="hidden" name="post_id" value="<?= $post['id'] ?>">
                     <input type="hidden" name="user_id" value="<?= $_SESSION['user_id'] ?>">
                     <input type="hidden" name="curr_page" value="<?= $currentPage ?? 1 ?>">
@@ -85,6 +92,8 @@ function truncateHTML($html_string, $length, $append = '&hellip;', $is_html = tr
               <?php if(in_array($post['id'], $_SESSION['saved_posts'])) : ?>
                 <li>
                   <form method="POST" action="/user/saved/delete">
+                    <input type="hidden" name="csrf" value="<?php echo $_SESSION['csrf'] ?? '' ?>">
+                    
                     <input type="hidden" name="post_id" value="<?= $post['id'] ?>">
                     <input type="hidden" name="user_id" value="<?= $_SESSION['user_id'] ?>">
                     <input type="hidden" name="curr_page" value="<?= $currentPage ?? 1 ?>">

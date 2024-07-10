@@ -56,6 +56,8 @@ class AuthController extends Controller
                 $_SESSION['username'] = $user['name'];
                 $_SESSION['role'] = $user['role'];
 
+                $this->security->generateCsrf();
+
                 $this->helpers->setPopup('Sesion iniciada');
     
                 return header('Location: /');
