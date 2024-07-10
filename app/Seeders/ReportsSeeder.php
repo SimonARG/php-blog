@@ -2,17 +2,15 @@
 
 namespace App\Seeders;
 
-require_once __DIR__ . '/../bootstrap.php';
+use App\Seeders\Seeder;
 
-class ReportsSeeder
+class ReportsSeeder extends Seeder
 {
-    protected $db;
     protected $resources;
 
     public function __construct()
     {
-        // Use the global database instance
-        $this->db = $GLOBALS['db'];
+        parent::__construct();
         $this->resources = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14];
     }
 

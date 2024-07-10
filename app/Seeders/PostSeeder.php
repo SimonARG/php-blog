@@ -4,16 +4,14 @@ namespace App\Seeders;
 
 require_once __DIR__ . '/../bootstrap.php';
 
+use App\Seeders\Seeder;
 use App\Factories\PostFactory;
 
-class PostSeeder
+class PostSeeder extends Seeder
 {
-    protected $db;
-
     public function __construct()
     {
-        // Use the global database instance
-        $this->db = $GLOBALS['db'];
+        parent::__construct();
     }
 
     public function run()

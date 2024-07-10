@@ -2,17 +2,15 @@
 
 namespace App\Seeders;
 
-require_once __DIR__ . '/../bootstrap.php';
-
-class RoleSeeder
+class RoleSeeder extends Seeder
 {
-    protected $db;
-    protected $roles = ['admin', 'mod', 'poster', 'user', 'restricted', 'banned'];
+    protected $roles;
 
     public function __construct()
     {
-        // Use the global database instance
-        $this->db = $GLOBALS['db'];
+        parent::__construct();
+
+        $this->roles = ['admin', 'mod', 'poster', 'user', 'restricted', 'banned'];
     }
 
     public function run()

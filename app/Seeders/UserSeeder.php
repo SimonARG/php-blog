@@ -2,20 +2,17 @@
 
 namespace App\Seeders;
 
-require_once __DIR__ . '/../bootstrap.php';
-
-use App\Factories\UserFactory;
 use App\Models\User;
+use App\Seeders\Seeder;
+use App\Factories\UserFactory;
 
-class UserSeeder
+class UserSeeder extends Seeder
 {
-    protected $db;
     protected $userModel;
 
     public function __construct()
     {
-        // Use the global database instance
-        $this->db = $GLOBALS['db'];
+        parent::__construct();
         $this->userModel = new User();
     }
 

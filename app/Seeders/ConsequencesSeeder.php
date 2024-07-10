@@ -2,18 +2,15 @@
 
 namespace App\Seeders;
 
-require_once __DIR__ . '/../bootstrap.php';
+use App\Seeders\Seeder;
 
-class ConsequencesSeeder
+class ConsequencesSeeder extends Seeder
 {
-    protected $db;
-
     public function __construct()
     {
-        // Use the global database instance
-        $this->db = $GLOBALS['db'];
+        parent::__construct();
     }
-
+    
     public function run()
     {
         $consequences = [
@@ -27,6 +24,7 @@ class ConsequencesSeeder
 
         foreach ($consequences as $key => $consequence) {
             $sql = "INSERT INTO consequences (consequence) VALUE (:consequence);";
+
             $this->db->query($sql, [':consequence' => $consequence]);
         }
     }
