@@ -142,9 +142,10 @@ class SearchController extends Controller
         $result = $this->user->getSavedPosts($id, $currentPage);
 
         if(!$result) {
-            $$this->helpers->setPopup('No hay resultados');
+            $this->helpers->setPopup('No hay resultados');
 
             header('Location: /');
+            return;
         }
 
         $posts = $result['posts'];

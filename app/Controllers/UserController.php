@@ -310,6 +310,7 @@ class UserController extends Controller
 
         $postId = $request['post_id'];
         $userId = $request['user_id'];
+        $request['total_posts'] ? $savedPosts = $request['total_posts'] : $savedPosts = NULL;
     
         $result = $this->post->deleteSaved($postId, $userId);
     
@@ -322,15 +323,31 @@ class UserController extends Controller
             }
             $this->helpers->setPopup('Post removido de guardados');
         }
+
+        if (isset($savedPosts) && $savedPosts == 1) {
+            header('Location: /');
+
+            return;
+        }
+
+        if (isset($savedPosts) && $savedPosts == 7) {
+            header('Location: /search/user/saved/' . $userId);
+
+            return;
+        }
     
         if (isset($request['curr_page'])) {
             $currPage = $request['curr_page'];
             $totalPages = $request['total_pages'];
 
             if ($totalPages > 1) {
-                header('Location: /search/user/saved/' . $userId . '/?page=' . $currPage);
+                header('Location: /search/user/saved/' . $userId . '?page=' . $currPage);
+
+                return;
             } else {
                 header('Location: /search/user/saved/' . $userId);
+
+                return;
             }
         }
 

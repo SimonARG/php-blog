@@ -64,7 +64,7 @@ class Comment extends Model
         return $result ? $result : false;
     }
 
-    public function storeComment(array $comment) : array|bool
+    public function storeComment(array $comment) : object|bool
     {
         $sql  = "INSERT INTO comments (body, user_id, post_id) VALUES (:body, :user_id, :post_id)";
 
@@ -82,7 +82,7 @@ class Comment extends Model
         return $result ? $result : false;
     }
 
-    public function update(array $data, int $id) : array|bool
+    public function update(array $data, int $id) : object|bool
     {
         $sql = "UPDATE comments SET body = :body WHERE id = :id";
 
@@ -94,7 +94,7 @@ class Comment extends Model
         return $result ? $result : false;
     }
 
-    public function softDelete(int $id) : array|bool
+    public function softDelete(int $id) : object|bool
     {
         $currentTime = date('Y-m-d H:i:s');
 

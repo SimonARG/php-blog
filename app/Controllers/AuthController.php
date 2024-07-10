@@ -27,7 +27,7 @@ class AuthController extends Controller
         $email = $request['email'];
         $password = $request['password'];
     
-        $user = $this->user->getUserByEmailWithRole($email);
+        $user = $this->user->getUserByEmail($email);
     
         if ($user) {
             if ($user['role'] == 'banned') {

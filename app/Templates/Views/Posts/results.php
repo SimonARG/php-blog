@@ -98,6 +98,7 @@ function truncateHTML($html_string, $length, $append = '&hellip;', $is_html = tr
                     <input type="hidden" name="user_id" value="<?= $_SESSION['user_id'] ?>">
                     <input type="hidden" name="curr_page" value="<?= $currentPage ?? 1 ?>">
                     <input type="hidden" name="total_pages" value="<?= $totalPages ?? 1 ?>">
+                    <input type="hidden" name="total_posts" value="<?= $totalPosts ?>">
                     <input type="submit" value="Quitar de guardados">
                   </form>
                 </li>

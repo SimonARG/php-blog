@@ -878,8 +878,13 @@ header {
 
 .single > .post > .btns > * {
   border: 1px solid white;
-  padding: .3rem .6rem;
   font-size: 1rem;
+}
+
+.single > .post > .btns > div,
+.single > .post > .btns > a,
+.single > .post > .btns > form > input[type='submit'] {
+  padding: .3rem .6rem;
 }
 
 .single > .post .comment-count {
