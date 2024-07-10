@@ -23,7 +23,7 @@ class SearchController extends Controller
         $this->user = new User();
     }
 
-    public function search()
+    public function search() : void
     {
         $query = $_GET['query'];
 
@@ -38,7 +38,7 @@ class SearchController extends Controller
         if(!$result) {
             $this->helpers->setPopup('No hay resultados');
 
-            return header('Location: /');
+            header('Location: /');
         }
 
         $posts = $result['posts'];
@@ -70,7 +70,7 @@ class SearchController extends Controller
         $totalPages = ceil($totalPosts / $postsPerPage);
 
         // Pass the necessary data to the view
-        return $this->helpers->view('posts.results', [
+        $this->helpers->view('posts.results', [
             'posts' => $posts,
             'currentPage' => $currentPage,
             'totalPages' => $totalPages,
@@ -78,7 +78,7 @@ class SearchController extends Controller
         ]);
     }
 
-    public function getUserPosts($id)
+    public function getUserPosts(int $id) : void
     {
         // Get user name
         $user = $this->user->getUserById($id);
@@ -92,7 +92,7 @@ class SearchController extends Controller
         if(!$result) {
             $this->helpers->setPopup('No hay resultados');
 
-            return header('Location: /');
+            header('Location: /');
         }
 
         $posts = $result['posts'];
@@ -124,7 +124,7 @@ class SearchController extends Controller
         $totalPages = ceil($totalPosts / $postsPerPage);
 
         // Pass the necessary data to the view
-        return $this->helpers->view('posts.results', [
+        $this->helpers->view('posts.results', [
             'posts' => $posts,
             'user' => $user,
             'currentPage' => $currentPage,
@@ -133,7 +133,7 @@ class SearchController extends Controller
         ]);
     }
 
-    public function saved($id)
+    public function saved(int $id) : void
     {
         // Get the current page from the query parameters, default to 1 if not set
         $currentPage = isset($_GET['page']) ? (int)$_GET['page'] : 1;
@@ -144,7 +144,7 @@ class SearchController extends Controller
         if(!$result) {
             $$this->helpers->setPopup('No hay resultados');
 
-            return header('Location: /');
+            header('Location: /');
         }
 
         $posts = $result['posts'];
@@ -176,7 +176,7 @@ class SearchController extends Controller
         $totalPages = ceil($totalPosts / $postsPerPage);
 
         // Pass the necessary data to the view
-        return $this->helpers->view('posts.results', [
+        $this->helpers->view('posts.results', [
             'posts' => $posts,
             'currentPage' => $currentPage,
             'totalPages' => $totalPages,

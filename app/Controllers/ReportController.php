@@ -21,7 +21,7 @@ class ReportController extends Controller
         $this->report = new Report();
     }
 
-    public function index($request)
+    public function index(array $request) : void
     {
         $currentPage = isset($_GET['page']) ? (int)$_GET['page'] : 1;
 
@@ -55,7 +55,7 @@ class ReportController extends Controller
             }
         }
 
-        return $this->helpers->view('admin.reports', [
+        $this->helpers->view('admin.reports', [
             'reports' => $reports,
             'currentPage' => $currentPage,
             'totalPages' => $totalPages,
@@ -63,7 +63,7 @@ class ReportController extends Controller
         ]);
     }
 
-    public function create($request)
+    public function create(array $request) : void
     {
         $this->security->verifyCsrf($request['csrf'] ?? '');
         
@@ -75,7 +75,7 @@ class ReportController extends Controller
         if (!in_array($type, $allowedTypes)) {
             $this->helpers->setPopup('Error al reportar el post');
 
-            return header('Location: /');
+            header('Location: /');
         }
 
         $url = $request['curr_url'];
@@ -105,7 +105,7 @@ class ReportController extends Controller
         if (!$result) {
             $this->helpers->setPopup('Ya has reportado este ' . $type);
 
-            return header('Location: ' . $url);
+            header('Location: ' . $url);
         }
 
         if ($type == 'post') {
@@ -116,6 +116,6 @@ class ReportController extends Controller
             $this->helpers->setPopup('Usuario reportado');
         }
 
-        return header('Location: ' . $url);
+        header('Location: ' . $url);
     }
 }

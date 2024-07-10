@@ -10,7 +10,8 @@ class Controller
     protected $security;
     protected $helpers;
 
-    public function __construct() {
+    public function __construct()
+    {
         $this->security = new Security();
         $this->helpers = new Helpers();
     }

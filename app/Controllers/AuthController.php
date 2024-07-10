@@ -15,12 +15,12 @@ class AuthController extends Controller
         $this->user = new User();
     }
 
-    public function login()
+    public function login() : void
     {
-        return $this->helpers->view('users.login');
+        $this->helpers->view('users.login');
     }
 
-    public function authenticate($request)
+    public function authenticate(array $request) : void
     {
         $errors = [];
     
@@ -33,7 +33,7 @@ class AuthController extends Controller
             if ($user['role'] == 'banned') {
                 $this->helpers->setPopup('Cuenta banneada');
     
-                return  header('Location: /login');
+                header('Location: /login');
             }
             
             if (password_verify($password, $user['password'])) {
@@ -60,7 +60,7 @@ class AuthController extends Controller
 
                 $this->helpers->setPopup('Sesion iniciada');
     
-                return header('Location: /');
+                header('Location: /');
             } else {
                 $errors['error'] = 'Credenciales invalidas';
             }
@@ -70,17 +70,17 @@ class AuthController extends Controller
     
         // Return errors if any
         if (!empty($errors)) {
-            return $this->helpers->view('users.login', ['request' => $request, 'errors' => $errors]);
+            $this->helpers->view('users.login', ['request' => $request, 'errors' => $errors]);
         }
     }
     
 
-    public function logout()
+    public function logout() : void
     {
         session_start();
         $_SESSION = [];
         session_destroy();
 
-        return header('Location: /');
+        header('Location: /');
     }
 }

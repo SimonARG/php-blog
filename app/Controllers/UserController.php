@@ -21,12 +21,12 @@ class UserController extends Controller
         $this->comment = new Comment();
     }
 
-    public function create()
+    public function create() : void
     {
-        return $this->helpers->view('users.create');
+        $this->helpers->view('users.create');
     }
 
-    public function store($request)
+    public function store(array $request) : void
     {
         $errors = [];
 
@@ -64,7 +64,7 @@ class UserController extends Controller
     
         // Return errors if any
         if (!empty($errors)) {
-            return $this->helpers->view('users.create', ['request' => $request, 'errors' => $errors]);
+            $this->helpers->view('users.create', ['request' => $request, 'errors' => $errors]);
         }
 
         $password = password_hash($password, PASSWORD_DEFAULT);
@@ -98,10 +98,10 @@ class UserController extends Controller
 
         $this->helpers->setPopup('Cuenta ' . $user['name'] . ' creada');
 
-        return header('Location: /' . 'user/' . ($result['id']));
+        header('Location: /' . 'user/' . ($result['id']));
     }
 
-    public function show($id)
+    public function show(int $id) : void
     {
         $user = $this->user->getUserById($id);
 
@@ -123,7 +123,7 @@ class UserController extends Controller
             $user['updated_at'] = $userUpStrdate;
         }
 
-        return $this->helpers->view('users.single', [
+        $this->helpers->view('users.single', [
             'user' => $user,
             'lastPostId' => $lastPostId,
             'lastCommentPostId' => $lastCommentPostId,
@@ -131,14 +131,14 @@ class UserController extends Controller
         ]);
     }
 
-    public function update($id, $request)
+    public function update(int $id, array $request) : void
     {
         $this->security->verifyCsrf($request['csrf'] ?? '');
 
         if(!$this->security->verifyIdentity($id)) {
             $this->helpers->setPopup('Solo puedes editar tu propio perfil');
 
-            return header('Location: /user/' . $_SESSION['user_id']);
+            header('Location: /user/' . $_SESSION['user_id']);
         }
 
         $user = $this->user->getUserById($id);
@@ -176,7 +176,7 @@ class UserController extends Controller
         if (!password_verify($password, $user['password'])) {
             $errors['password_error'] = 'Contraseña incorrecta';
 
-            return $this->helpers->view('users.single', [
+            $this->helpers->view('users.single', [
                 'user' => $user,
                 'lastPostId' => $lastPostId,
                 'lastCommentPostId' => $lastCommentPostId,
@@ -250,7 +250,7 @@ class UserController extends Controller
     
         // Return errors if any
         if (!empty($errors)) {
-            return $this->helpers->view('users.single', [
+            $this->helpers->view('users.single', [
                 'user' => $user,
                 'lastPostId' => $lastPostId,
                 'lastCommentPostId' => $lastCommentPostId,
@@ -268,7 +268,7 @@ class UserController extends Controller
 
         $this->helpers->setPopup('Perfil editado');
 
-        return $this->helpers->view('users.single', [
+        $this->helpers->view('users.single', [
             'user' => $user,
             'lastPostId' => $lastPostId,
             'lastCommentPostId' => $lastCommentPostId,
@@ -276,7 +276,7 @@ class UserController extends Controller
         ]);
     }
 
-    public function save($request)
+    public function save(array $request) : void
     {
         $this->security->verifyCsrf($request['csrf'] ?? '');
 
@@ -298,13 +298,13 @@ class UserController extends Controller
         if (isset($request['curr_page'])) {
             $currPage = $request['curr_page'];
 
-            return header('Location: /?page=' . $currPage);
+            header('Location: /?page=' . $currPage);
         } else {
-            return header('Location: /post/' . $postId);
+            header('Location: /post/' . $postId);
         }
     }
 
-    public function deleteSaved($request)
+    public function deleteSaved(array $request) : void
     {
         $this->security->verifyCsrf($request['csrf'] ?? '');
 
@@ -328,16 +328,16 @@ class UserController extends Controller
             $totalPages = $request['total_pages'];
 
             if ($totalPages > 1) {
-                return header('Location: /search/user/saved/' . $userId . '/?page=' . $currPage);
+                header('Location: /search/user/saved/' . $userId . '/?page=' . $currPage);
             } else {
-                return header('Location: /search/user/saved/' . $userId);
+                header('Location: /search/user/saved/' . $userId);
             }
         }
 
-        return header('Location: /post/' . $postId);
+        header('Location: /post/' . $postId);
     }
 
-    public function changeRole($id, $request)
+    public function changeRole(int $id, array $request) : void
     {
         $this->security->verifyCsrf($request['csrf'] ?? '');
         
@@ -361,6 +361,6 @@ class UserController extends Controller
             $this->helpers->setPopup('Error');
         }
 
-        return header('Location: ' . $url);
+        header('Location: ' . $url);
     }
 }

@@ -4,7 +4,7 @@ namespace App\Helpers;
 
 class Helpers
 {
-    public function view($viewName, $data = [])
+    public function view(string $viewName, array $data = []) : void
     {
         // Extract data to variables
         extract($data);
@@ -31,11 +31,10 @@ class Helpers
     public function setPopup(string $content) : void
     {
         $_SESSION['popup_content'] = $content;
-
-        return;
     }
 
-    public function processImage($sourcePath, $destinationPath) {
+    public function processImage(string $sourcePath, string $destinationPath) : string
+    {
         $quality = 88;
         $maxWidth = 1000;
         

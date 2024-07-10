@@ -20,7 +20,7 @@ class PostController extends Controller
         $this->comment = new Comment();
     }
 
-    public function index()
+    public function index() : void
     {
         // Get the current page from the query parameters, default to 1 if not set
         $currentPage = isset($_GET['page']) ? (int)$_GET['page'] : 1;
@@ -55,22 +55,22 @@ class PostController extends Controller
         $totalPages = ceil($totalPosts / $postsPerPage);
 
         // Pass the necessary data to the view
-        return $this->helpers->view('posts.index', [
+        $this->helpers->view('posts.index', [
             'posts' => $posts,
             'currentPage' => $currentPage,
             'totalPages' => $totalPages
         ]);
     }
 
-    public function create()
+    public function create() : void
     {   
         if (!$_SESSION) {
-            return header('Location: /');
+            header('Location: /');
         }
-        return $this->helpers->view('posts.create');
+        $this->helpers->view('posts.create');
     }
 
-    public function store($request)
+    public function store(array $request) : void
     {
         $this->security->verifyCsrf($request['csrf'] ?? '');
 
@@ -123,7 +123,7 @@ class PostController extends Controller
 
         // Return errors if any
         if (!empty($errors)) {
-            return $this->helpers->view('posts.create', ['request' => $request, 'errors' => $errors]);
+            $this->helpers->view('posts.create', ['request' => $request, 'errors' => $errors]);
         }
 
         $new_thumb_name = random_int(1000000000000000, 9999999999999999);
@@ -146,10 +146,10 @@ class PostController extends Controller
 
         $this->helpers->setPopup('Post creado');
 
-        return header('Location: /post/' . $post['id']);
+        header('Location: /post/' . $post['id']);
     }
 
-    public function show($id)
+    public function show(int $id) : void
     {
         $post = $this->post->getPostById($id);
 
@@ -189,28 +189,28 @@ class PostController extends Controller
             }
         }
 
-        return $this->helpers->view('posts.single', [
+        $this->helpers->view('posts.single', [
             'post' => $post,
             'comments' => $comments,
         ]);
     }
 
-    public function edit($id)
+    public function edit(int $id) : void
     {
         $post = $this->post->getPostById($id);
 
         if(!$this->security->verifyIdentity($post['user_id'])) {
             $this->helpers->setPopup('Solo puedes editar tus propios posts');
 
-            return header('Location: /');
+            header('Location: /');
         }
 
-        return $this->helpers->view('posts.edit', [
+        $this->helpers->view('posts.edit', [
             'post' => $post
         ]);
     }
     
-    public function update($id, $request)
+    public function update(int $id, array $request) : void
     {
         $this->security->verifyCsrf($request['csrf'] ?? '');
 
@@ -219,7 +219,7 @@ class PostController extends Controller
         if(!$this->security->verifyIdentity($post['user_id'])) {
             $this->helpers->setPopup('Solo puedes editar tus propios posts');
 
-            return header('Location: /');
+            header('Location: /');
         }
 
         // Sanitize
@@ -284,7 +284,7 @@ class PostController extends Controller
 
         // Return errors if any
         if (!empty($errors)) {
-            return $this->helpers->view('posts.edit', ['request' => $request, 'errors' => $errors]);
+            $this->helpers->view('posts.edit', ['request' => $request, 'errors' => $errors]);
         }
 
         $dbEntry['title'] = $title;
@@ -296,10 +296,10 @@ class PostController extends Controller
 
         $this->helpers->setPopup('Post editado');
 
-        return header('Location: /post/' . $post['id']);
+        header('Location: /post/' . $post['id']);
     }
 
-    public function delete($request)
+    public function delete(array $request) : void
     {
         $this->security->verifyCsrf($request['csrf'] ?? '');
         
@@ -310,13 +310,13 @@ class PostController extends Controller
         if(!$this->security->verifyIdentity($post['user_id'])) {
             $this->helpers->setPopup('Solo puedes eliminar tus propios posts');
 
-            return header('Location: /');
+            header('Location: /');
         }
 
         $this->post->softDelete($id);
 
         $this->helpers->setPopup('Post eliminado');
 
-        return header('Location: /');
+        header('Location: /');
     }
 }

@@ -19,7 +19,7 @@ class CommentController extends Controller
         $this->post = new Post();
     }
 
-    public function store($request)
+    public function store(array $request) : void
     {
         $this->security->verifyCsrf($request['csrf'] ?? '');
         // Sanitize
@@ -34,7 +34,7 @@ class CommentController extends Controller
 
         // Return errors if any
         if (!empty($errors)) {
-            return view('posts.single', [
+            view('posts.single', [
                 'request' => $request,
                 'errors' => $errors
             ]);
@@ -44,10 +44,10 @@ class CommentController extends Controller
 
         $this->helpers->setPopup('Comentario creado');
 
-        return header('Location: /post/' . $request['post_id'] . '#comment-1');
+        header('Location: /post/' . $request['post_id'] . '#comment-1');
     }
 
-    public function update($id, $request)
+    public function update(int $id, array $request) : void
     {
         $this->security->verifyCsrf($request['csrf'] ?? '');
 
@@ -57,7 +57,7 @@ class CommentController extends Controller
         if(!$this->security->verifyIdentity($comment['user_id'])) {
             $this->helpers->setPopup('Solo puedes editar tus propios comentarios');
 
-            return header('Location: /post/' . $request['post_id'] . '#comment-1');
+            header('Location: /post/' . $request['post_id'] . '#comment-1');
         }
 
         // Sanitize
@@ -67,15 +67,15 @@ class CommentController extends Controller
         if (strlen($request['body']) < 1) {
             $this->helpers->setPopup('Comentario demasiado corto');
 
-            return header('Location: /post/' . $request['post_id'] . '#comment-1');
+            header('Location: /post/' . $request['post_id'] . '#comment-1');
         } elseif (strlen($request['body']) > 1600) {
             $this->helpers->setPopup('Comentario demasiado largo');
 
-            return header('Location: /post/' . $request['post_id'] . '#comment-1');
+            header('Location: /post/' . $request['post_id'] . '#comment-1');
         } elseif ($request['body'] == $comment['body']) {
             $this->helpers->setPopup('El nuevo comentario es identico al original');
 
-            return header('Location: /post/' . $request['post_id'] . '#comment-1');
+            header('Location: /post/' . $request['post_id'] . '#comment-1');
         }
 
         $dbEntry['body'] = $body;
@@ -84,10 +84,10 @@ class CommentController extends Controller
         
         $$this->helpers->setPopup('Comentario editado');
 
-        return header('Location: /post/' . $request['post_id'] . '#comment-1');
+        header('Location: /post/' . $request['post_id'] . '#comment-1');
     }
 
-    public function delete($request)
+    public function delete(array $request) : void
     {
         $this->security->verifyCsrf($request['csrf'] ?? '');
         
@@ -98,13 +98,13 @@ class CommentController extends Controller
         if(!$this->security->verifyIdentity($comment['user_id'])) {
             $this->helpers->setPopup('Solo puedes eliminar tus propios comentarios');
 
-            return header('Location: /post/' . $request['post_id'] . '#comment-1');
+            header('Location: /post/' . $request['post_id'] . '#comment-1');
         }
 
         $this->comment->softDelete($id);
 
         $this->helpers->setPopup('Comentario eliminado');
 
-        return header('Location: /post/' . $request['post_id'] . '#comment-1');
+        header('Location: /post/' . $request['post_id'] . '#comment-1');
     }
 }
