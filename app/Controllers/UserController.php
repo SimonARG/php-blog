@@ -75,17 +75,17 @@ class UserController extends Controller
     
         $this->user->create($data);
 
-        $result = $this->user->getUserByEmail($email);
+        $user = $this->user->getUserByEmail($email);
 
         $users = $this->user->getUserCount();
 
         if ($users > 0) {
-            $this->user->setRole($result['id'], 'user');
+            $this->user->setRole($user['id'], 'user');
         } else {
-            $this->user->setRole($result['id'], 'admin');
+            $this->user->setRole($user['id'], 'admin');
         }
 
-        $user = $this->user->getUserById($result['id']);
+        $user = $this->user->getUserById($user['id']);
 
         session_start();
 
@@ -98,7 +98,7 @@ class UserController extends Controller
 
         $this->helpers->setPopup('Cuenta ' . $user['name'] . ' creada');
 
-        header('Location: /' . 'user/' . ($result['id']));
+        header('Location: /' . 'user/' . ($user['id']));
     }
 
     public function show(int $id) : void

@@ -24,7 +24,6 @@ class Database
     {
         $stmt = $this->pdo->prepare($sql);
         
-        // Bind parameters with specified types
         foreach ($params as $key => $value) {
             if (isset($types[$key])) {
                 $type = isset($types[$key]) ? $types[$key] : PDO::PARAM_INT;

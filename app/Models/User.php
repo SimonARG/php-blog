@@ -14,29 +14,7 @@ class User extends Model
         $this->postsPerPage = $GLOBALS['config']['posts_per_page'];
     }
 
-    public function getAllUsers()
-    {
-        $sql = "SELECT * FROM users";
-        return $this->db->fetchAll($sql);
-    }
-
-    public function getUserByEmail($email)
-    {
-        $sql = "SELECT * FROM users
-        WHERE users.email = :email";
-
-        $result = $this->db->fetch($sql, [
-            ':email' => $email
-        ]);
-
-        if ($result) {
-            return $result;
-        } else {
-            return 0;
-        }
-    }
-
-    public function getUserByEmailWithRole($email)
+    public function getUserByEmail(string $email) : array|bool
     {
         $sql = "SELECT users.*, roles.role AS role 
         FROM users
@@ -48,14 +26,10 @@ class User extends Model
             ':email' => $email
         ]);
 
-        if ($result) {
-            return $result;
-        } else {
-            return 0;
-        }
+        return $result ? $result : false;
     }
 
-    public function getUserById($id)
+    public function getUserById(int $id) : array|bool
     {
         $sql = "SELECT 
                 users.*, 
@@ -72,25 +46,23 @@ class User extends Model
             ':id' => $id
         ]);
 
-        if ($result) {
-            return $result;
-        } else {
-            return 0;
-        }
+        return $result ? $result : false;
     }
 
-    public function create($data)
+    public function create(array $data) : object|bool
     {
         $sql = "INSERT INTO users (name, email, password, avatar) VALUES (:name, :email, :password, 'avatar.jpg')";
 
-        return $this->db->query($sql, [
+        $result = $this->db->query($sql, [
             ':name' => $data['name'],
             ':email' => $data['email'],
             ':password' => $data['password'],
         ]);
+
+        return $result ? $result : false;
     }
 
-    public function getUserCount()
+    public function getUserCount() : array|bool
     {
         $sql = "SELECT COUNT(*) as count FROM users;";
 
@@ -99,7 +71,7 @@ class User extends Model
         return $result ? $result : 0;
     }
 
-    public function setRole($user_id, $roleName)
+    public function setRole(int $userId, string $roleName) : object|bool
     {
         $sql = "SELECT id FROM roles
         WHERE roles.role = :role";
@@ -109,13 +81,16 @@ class User extends Model
         ]);
         
         $sql = "INSERT INTO role_user (user_id, role_id) VALUES (:user_id, :role_id)";
-        return $this->db->query($sql, [
-            ':user_id' => $user_id,
+
+        $result = $this->db->query($sql, [
+            ':user_id' => $userId,
             ':role_id' => $role['id']
         ]);
+
+        return $result ? $result : false;
     }
 
-    public function getUserPosts($id, $currentPage = 1)
+    public function getUserPosts(int $id, int $currentPage = 1) : array|bool
     {
         $offset = ($currentPage - 1) * $this->postsPerPage;
 
@@ -150,17 +125,10 @@ class User extends Model
             ':id' => $id
         ])['COUNT(*)'];
 
-        if($result) {
-            return [
-                'count' => $count,
-                'posts' => $result
-            ];
-        } else {
-            return 0;
-        }
+        return $result ? ['count' => $count, 'posts' => $result] : false;
     }
 
-    public function getLatestUserPostId($id)
+    public function getLatestUserPostId(int $id) : array|bool
     {
         $sql = "SELECT id FROM posts
                 WHERE user_id = :id
@@ -173,7 +141,7 @@ class User extends Model
         return $result ? $result : 0;
     }
 
-    public function getUserComments($id)
+    public function getUserComments(int $id) : array|bool
     {
         $sql = "SELECT * FROM comments
                 WHERE user_id = :id
@@ -186,7 +154,7 @@ class User extends Model
         return $result ? $result : 0;
     }
 
-    public function getLatestUserCommentId($id)
+    public function getLatestUserCommentId(int $id) : array
     {
         $sql = "SELECT id FROM comments
                 WHERE user_id = :id
@@ -199,7 +167,7 @@ class User extends Model
         return $result ? $result : ['id' => 0];
     }
 
-    public function getSavedPostsCount($id)
+    public function getSavedPostsCount(int $id) : array
     {
         $sql = "SELECT COUNT(saved_posts.user_id) as posts 
                 FROM saved_posts 
@@ -211,7 +179,7 @@ class User extends Model
         return $result ? $result : ['posts' => 0];
     }
 
-    public function getSavedPostsIds($id)
+    public function getSavedPostsIds(int $id) : array|bool
     {
         $sql = "SELECT saved_posts.post_id as post
                 FROM saved_posts
@@ -223,7 +191,7 @@ class User extends Model
         return $result ? $result : 0;
     }
 
-    public function getSavedPosts($id, $currentPage = 1)
+    public function getSavedPosts(int $id, int $currentPage = 1) : array|bool
     {
         $offset = ($currentPage - 1) * $this->postsPerPage;
 
@@ -257,17 +225,10 @@ class User extends Model
             ':id' => $id
         ])['posts'];
 
-        if($result) {
-            return [
-                'count' => $count,
-                'posts' => $result
-            ];
-        } else {
-            return 0;
-        }
+        return $result ? ['count' => $count, 'posts' => $result] : false;
     }
 
-    public function update($data, $id)
+    public function update(array $data, string $id) : object|bool
     {
         $sql = "UPDATE users SET ";
         $params = NULL;
@@ -296,12 +257,14 @@ class User extends Model
 
         $sql .= " WHERE id = :id";
 
-        return $this->db->query($sql, $params, [
+        $result = $this->db->query($sql, $params, [
             ':id' => \PDO::PARAM_INT
         ]);
+
+        return $result ? $result : false;
     }
 
-    public function changeRole($userId, $roleId)
+    public function changeRole(int $userId, int $roleId) : int
     {
         $sql = "UPDATE role_user SET role_id = :role_id WHERE user_id = :user_id;";
 

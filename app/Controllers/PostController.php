@@ -187,11 +187,16 @@ class PostController extends Controller
                     $comments[$key]['updated_at'] = $comUpStrdate;
                 }
             }
+
+            $this->helpers->view('posts.single', [
+                'post' => $post,
+                'comments' => $comments,
+            ]);
+            return;
         }
 
         $this->helpers->view('posts.single', [
-            'post' => $post,
-            'comments' => $comments,
+            'post' => $post
         ]);
     }
 

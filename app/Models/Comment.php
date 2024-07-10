@@ -14,7 +14,7 @@ class Comment extends Model
         $this->commentsPerPage = $GLOBALS['config']['comments_per_page'];
     }
 
-    public function getCommentsForPost($id, $currentPage = 1)
+    public function getCommentsForPost(int $id, int $currentPage = 1) : array|bool
     {
         $offset = ($currentPage - 1) * $this->commentsPerPage;
 
@@ -31,7 +31,7 @@ class Comment extends Model
                     :limit";
         
         // Bind parameters with explicit data types
-        return $this->db->fetchAll($sql, [
+        $result = $this->db->fetchAll($sql, [
             ':id' => $id,
             ':limit' => $this->commentsPerPage,
             ':offset' => $offset
@@ -40,16 +40,20 @@ class Comment extends Model
             ':limit' => \PDO::PARAM_INT,
             ':offset' => \PDO::PARAM_INT
         ]);
+
+        return $result ? $result : false;
     }
     
-    public function getCommentById($id)
+    public function getCommentById(int $id) : array|bool
     {
         $sql = "SELECT * FROM comments WHERE id = :id";
 
-        return $this->db->fetch($sql, [':id' => $id]);
+        $result = $this->db->fetch($sql, [':id' => $id]);
+
+        return $result ? $result : false;
     }
 
-    public function getPostIdForComment($id)
+    public function getPostIdForComment(int $id) : array|bool
     {
         $sql = "SELECT post_id
                 FROM comments
@@ -57,15 +61,15 @@ class Comment extends Model
 
         $result = $this->db->fetch($sql, [':id' => $id]);
 
-        return $result ? $result : 0;
+        return $result ? $result : false;
     }
 
-    public function storeComment($comment)
+    public function storeComment(array $comment) : array|bool
     {
         $sql  = "INSERT INTO comments (body, user_id, post_id) VALUES (:body, :user_id, :post_id)";
 
         // Bind parameters with explicit data types
-        return $this->db->query($sql, [
+        $result = $this->db->query($sql, [
         ':body' => $comment['body'],
         ':user_id' => $comment['user_id'],
         ':post_id' => $comment['post_id']
@@ -74,25 +78,33 @@ class Comment extends Model
         ':user_id' => \PDO::PARAM_INT,
         ':post_id' => \PDO::PARAM_INT
         ]);
+
+        return $result ? $result : false;
     }
 
-    public function update($data, $id)
+    public function update(array $data, int $id) : array|bool
     {
         $sql = "UPDATE comments SET body = :body WHERE id = :id";
-        return $this->db->query($sql, [
+
+        $result = $this->db->query($sql, [
             ':body' => $data['body'],
             ':id' => $id,
         ]);
+
+        return $result ? $result : false;
     }
 
-    public function softDelete($id)
+    public function softDelete(int $id) : array|bool
     {
         $currentTime = date('Y-m-d H:i:s');
 
         $sql = "UPDATE comments SET deleted_at = :deleted_at WHERE id = :id";
-        return $this->db->query($sql, [
+
+        $result =  $this->db->query($sql, [
             ':deleted_at' => $currentTime,
             ':id' => $id
         ]);
+
+        return $result ? $result : false;
     }
 }

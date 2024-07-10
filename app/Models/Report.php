@@ -14,7 +14,7 @@ class Report extends Model
         $this->reportsPerPage = $GLOBALS['config']['reports_per_page'];
     }
 
-    public function getAllReportsSortNew($currentPage = 1)
+    public function getAllReportsSortNew(int $currentPage = 1) : array|bool
     {
         $offset = ($currentPage - 1) * $this->reportsPerPage;
         
@@ -72,16 +72,18 @@ class Report extends Model
                     :offset, :limit;";
         
         // Bind parameters with explicit data types
-        return $this->db->fetchAll($sql, [
+        $result = $this->db->fetchAll($sql, [
             ':limit' => $this->reportsPerPage,
             ':offset' => $offset
         ], [
             ':limit' => \PDO::PARAM_INT,
             ':offset' => \PDO::PARAM_INT
         ]);
+
+        return $result ? $result : false;
     }
 
-    public function getAllReportsSortUnreviewed($currentPage = 1)
+    public function getAllReportsSortUnreviewed(int $currentPage = 1) : array|bool
     {
         $offset = ($currentPage - 1) * $this->reportsPerPage;
         
@@ -141,16 +143,18 @@ class Report extends Model
                     :offset, :limit;";
         
         // Bind parameters with explicit data types
-        return $this->db->fetchAll($sql, [
+        $result = $this->db->fetchAll($sql, [
             ':limit' => $this->reportsPerPage,
             ':offset' => $offset
         ], [
             ':limit' => \PDO::PARAM_INT,
             ':offset' => \PDO::PARAM_INT
         ]);
+
+        return $result ? $result : false;
     }
 
-    public function getReportedResourceId(string $type, int $resourceId)
+    public function getReportedResourceId(string $type, int $resourceId) : array|null
     {
         $columnName = $type . "_id";
     
@@ -160,26 +164,26 @@ class Report extends Model
             ':resource_id' => $resourceId
         ]);
 
-        return $result ? $result : 0;
+        return $result ? $result : false;
     }
 
-    public function getReportCount()
+    public function getReportCount() : array|null
     {
         $sql = "SELECT COUNT(*) FROM reports";
         $result = $this->db->fetch($sql)['COUNT(*)'];
 
-        return $result ? $result : 0;
+        return $result ? $result : false;
     }
 
-    public function getUnreviewedReportCount()
+    public function getUnreviewedReportCount() : array|null
     {
         $sql = "SELECT COUNT(*) FROM reports WHERE reviewed = 0";
         $result = $this->db->fetch($sql)['COUNT(*)'];
 
-        return $result ? $result : 0;
+        return $result ? $result : false;
     }
 
-    public function createReportedResource(string $type, int $resourceId)
+    public function createReportedResource(string $type, int $resourceId) : object|null
     {
         $columnName = $type . "_id";
     
@@ -189,10 +193,10 @@ class Report extends Model
             ':resource_id' => $resourceId
         ]);
 
-        return $result ? $result : 0;
+        return $result ? $result : false;
     }
 
-    public function createReport($data)
+    public function createReport(array $data) : object|null
     {
         $fields = ['resource_id', 'reported_by'];
         $placeholders = [':resource_id', ':reported_by'];
@@ -212,6 +216,6 @@ class Report extends Model
     
         $result = $this->db->query($sql, $params);
 
-        return $result ? $result : 0;
+        return $result ? $result : false;
     }
 }

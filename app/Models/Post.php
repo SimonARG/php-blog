@@ -14,7 +14,7 @@ class Post extends Model
         $this->postsPerPage = $GLOBALS['config']['posts_per_page'];
     }
 
-    public function getPosts($currentPage = 1)
+    public function getPosts(int $currentPage = 1) : array|bool
     {
         $offset = ($currentPage - 1) * $this->postsPerPage;
         $sql = "SELECT posts.*,
@@ -29,22 +29,27 @@ class Post extends Model
             LIMIT :offset, :limit;";
         
         // Bind parameters with explicit data types
-        return $this->db->fetchAll($sql, [
+        $result = $this->db->fetchAll($sql, [
             ':limit' => $this->postsPerPage,
             ':offset' => $offset
         ], [
             ':limit' => \PDO::PARAM_INT,
             ':offset' => \PDO::PARAM_INT
         ]);
+
+        return $result ? $result : false;
     }
 
-    public function getPostCount()
+    public function getPostCount() : int|bool
     {
         $sql = "SELECT COUNT(*) FROM posts WHERE deleted_at IS NULL";
-        return $this->db->fetch($sql)['COUNT(*)'];
+
+        $result =  $this->db->fetch($sql)['COUNT(*)'];
+
+        return $result ? $result : false;
     }
 
-    public function getPostById($id)
+    public function getPostById(int $id) : array|bool
     {
         $sql = "SELECT posts.*,
             users.name AS username,
@@ -55,14 +60,16 @@ class Post extends Model
         WHERE posts.id = :id";
         
         // Bind parameters with explicit data types
-        return $this->db->fetch($sql, [
+        $result = $this->db->fetch($sql, [
             ':id' => $id
         ], [
             ':id' => \PDO::PARAM_INT
         ]);
+
+        return $result ? $result : false;
     }
 
-    public function getPostByTitle($title)
+    public function getPostByTitle(string $title) : array|bool
     {
         $sql = "SELECT posts.*, users.name AS username 
         FROM posts
@@ -73,51 +80,54 @@ class Post extends Model
             ':title' => $title
         ]);
 
-        if ($result) {
-            return $result;
-        } else {
-            return 0;
-        }
+        return $result ? $result : false;
     }
 
-    public function create($data)
+    public function create(array $data) : array|bool
     {
         $sql = "INSERT INTO posts (title, subtitle, thumb, body, user_id) VALUES (:title, :subtitle, :thumb, :body, :user_id)";
 
-        return $this->db->query($sql, [
+        $result = $this->db->query($sql, [
             ':title' => $data['title'],
             ':subtitle' => $data['subtitle'],
             ':thumb' => $data['thumb'],
             ':body' => $data['body'],
             ':user_id' => $data['user_id']
         ]);
+
+        return $result ? $result : false;
     }
 
-    public function update($data, $id)
+    public function update(array $data, int $id) : array|bool
     {
         $sql = "UPDATE posts SET title = :title, subtitle = :subtitle, thumb = :thumb, body = :body WHERE id = :id";
 
-        return $this->db->query($sql, [
+        $result = $this->db->query($sql, [
             ':title' => $data['title'],
             ':subtitle' => $data['subtitle'],
             ':thumb' => $data['thumb'],
             ':body' => $data['body'],
             ':id' => $id,
         ]);
+
+        return $result ? $result : false;
     }
 
-    public function softDelete($id)
+    public function softDelete(int $id) : object|bool
     {
         $currentTime = date('Y-m-d H:i:s');
 
         $sql = "UPDATE posts SET deleted_at = :deleted_at WHERE id = :id";
-        return $this->db->query($sql, [
+
+        $result = $this->db->query($sql, [
             ':deleted_at' => $currentTime,
             ':id' => $id
         ]);
+
+        return $result ? $result : false;
     }
 
-    public function hardDelete()
+    public function hardDelete() : array|bool
     {
         $sql = "SELECT id FROM posts WHERE deleted_at IS NOT NULL";
 
@@ -131,10 +141,10 @@ class Post extends Model
 
         $result = $this->db->query($sql);
 
-        return $result ? [$deletionList, $thumbList] : 0;
+        return $result ? [$deletionList, $thumbList] : false;
     }
 
-    public function search($query, $currentPage = 1)
+    public function search(string $query, int $currentPage = 1) : array|bool
     {
         $offset = ($currentPage - 1) * $this->postsPerPage;
 
@@ -176,17 +186,10 @@ class Post extends Model
             'search' => '%' . $query . '%'
         ])['COUNT(*)'];
 
-        if($result) {
-            return [
-                'count' => $count,
-                'posts' => $result
-            ];
-        } else {
-            return 0;
-        }
+        return $result ? ['count' => $count, 'posts' => $result] : false;
     }
 
-    public function save($postId, $userId)
+    public function save(int $postId, int $userId) : bool
     {
         $sql = "INSERT INTO saved_posts (user_id, post_id)
         VALUES (:user_id, :post_id)";
@@ -196,14 +199,10 @@ class Post extends Model
             ':post_id' => $postId
         ]);
 
-        if($result) {
-            return 1;
-        } else {
-            return 0;
-        }
+        return $result ? true : false;
     }
 
-    public function deleteSaved($postId, $userId)
+    public function deleteSaved(int $postId, int $userId) : bool
     {
         $sql = "DELETE FROM saved_posts
                 WHERE user_id = :user_id
@@ -214,10 +213,6 @@ class Post extends Model
             ':post_id' => $postId
         ]);
 
-        if($result) {
-            return 1;
-        } else {
-            return 0;
-        }
+        return $result ? true : false;
     }
 }
