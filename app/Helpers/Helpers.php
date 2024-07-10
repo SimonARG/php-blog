@@ -9,9 +9,6 @@ class Helpers
         // Extract data to variables
         extract($data);
 
-        // Add base URL to the extracted data
-        $baseUrl = $GLOBALS['config']['base_url'];
-
         // Capture the view output
         ob_start();
         $viewPath = __DIR__ . '/../Templates/Views/' . str_replace('.', '/', $viewName) . '.php';

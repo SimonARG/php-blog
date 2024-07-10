@@ -1,7 +1,3 @@
-<?php
-$baseUrl = $GLOBALS['config']['base_url'];
-?>
-
 <header class="pos-stick">
   <div>
     <span class="material-symbols-rounded pos-ab menu-btn point no-select">menu</span>
@@ -13,19 +9,19 @@ $baseUrl = $GLOBALS['config']['base_url'];
     <nav class="nav-menu">
       <ul>
         <li>
-          <a href="<?= $baseUrl ?>">Inicio</a>
+          <a href="/">Inicio</a>
         </li>
         <li>
-          <a href="<?= $baseUrl ?>">Contacto</a>
+          <a href="/">Contacto</a>
         </li>
         <li>
-          <a href="<?= $baseUrl ?>">Otros Blogs</a>
+          <a href="/">Otros Blogs</a>
         </li>
         <li>
-          <a href="<?= $baseUrl ?>">Links</a>
+          <a href="/">Links</a>
         </li>
         <li>
-          <a href="<?= $baseUrl ?>">Info</a>
+          <a href="/">Info</a>
         </li>
       </ul>
     </nav>

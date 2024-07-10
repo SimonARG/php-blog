@@ -1,6 +1,4 @@
 <?php
-$baseUrl = $GLOBALS['config']['base_url'];
-
 function truncateHTML($html_string, $length, $append = '&hellip;', $is_html = true) {
   $html_string = trim($html_string);
   $plain_text_length = strlen(strip_tags($html_string));
@@ -59,11 +57,11 @@ $currUrl = $actual_link = (empty($_SERVER['HTTPS']) ? 'http' : 'https') . "://$_
             <ul class="dropdown">
               <?php if(($post['username'] == $_SESSION['username']) || $_SESSION['role'] == 'admin' || $_SESSION['role'] == 'mod'): ?>
                 <li>
-                  <a href="<?= $baseUrl . 'post/edit/' . $post['id'] ?>">Editar</a>
+                  <a href="<?= '/post/edit/' . $post['id'] ?>">Editar</a>
                 </li>
 
                 <li>
-                  <form action="<?= $baseUrl ?>post/delete" method="POST"><input type="hidden" name="post_id" value="<?= $post['id'] ?>"><input type="submit" value="Eliminar"></form>
+                  <form action="/post/delete" method="POST"><input type="hidden" name="post_id" value="<?= $post['id'] ?>"><input type="submit" value="Eliminar"></form>
                 </li>
               <?php endif; ?>
 
@@ -73,7 +71,7 @@ $currUrl = $actual_link = (empty($_SERVER['HTTPS']) ? 'http' : 'https') . "://$_
 
               <?php if(!in_array($post['id'], $_SESSION['saved_posts'])) : ?>
                 <li>
-                  <form method="POST" action="<?= $baseUrl . 'user/saved/save' ?>">
+                  <form method="POST" action="/user/saved/save">
                     <input type="hidden" name="post_id" value="<?= $post['id'] ?>">
                     <input type="hidden" name="user_id" value="<?= $_SESSION['user_id'] ?>">
                     <input type="hidden" name="curr_page" value="<?= $currentPage ?? 1 ?>">
@@ -90,10 +88,10 @@ $currUrl = $actual_link = (empty($_SERVER['HTTPS']) ? 'http' : 'https') . "://$_
           <h1 class="title"><?= htmlspecialchars($post['title']) ?></h1>
           <h2 class="subtitle"><?= htmlspecialchars($post['subtitle']) ?></h2>
         </a>
-          <div class="poster"><span>Posted by </span><a class="link" href="<?= $baseUrl . 'user/' . $post['user_id'] ?>"><?= htmlspecialchars($post['username']) ?></a></div>
+          <div class="poster"><span>Posted by </span><a class="link" href="<?='/user/' . $post['user_id'] ?>"><?= htmlspecialchars($post['username']) ?></a></div>
         <a href="/post/<?= $post['id'] ?>">
           <div class="thumb">
-            <img class="no-select" src="<?= $baseUrl . 'imgs/thumbs/' . htmlspecialchars($post['thumb']) ?>" alt="miniatura">
+            <img class="no-select" src="<?='/imgs/thumbs/' . htmlspecialchars($post['thumb']) ?>" alt="miniatura">
           </div>
           <div class="body body-preview"><?= truncateHTML(($post['body']), 160, "...") ?></div>
           <hr>

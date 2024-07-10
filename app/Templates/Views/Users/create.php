@@ -1,9 +1,5 @@
-<?php
-$baseUrl = $GLOBALS['config']['base_url'];
-?>
-
 <div class="auth-container">
-  <form class="auth" action="<?= $baseUrl ?>users/store" method="POST">
+  <form class="auth" action="/users/store" method="POST">
     <label for="name">Nombre de Usuario</label>
     <input pattern="^[A-Za-z0-9_\.\-]+" minlength="6" maxlength="17" required type="text" id="name" name="name"
     <?php if (isset($errors['name_error'])): ?>

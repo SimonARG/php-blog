@@ -1,9 +1,5 @@
-<?php
-$baseUrl = $GLOBALS['config']['base_url'];
-?>
-
 <div class="edit-post">
-  <form enctype="multipart/form-data" class="update-post-form" action="<?= $baseUrl . 'post/update/' . $post['id'] ?>" method="POST">
+  <form enctype="multipart/form-data" class="update-post-form" action="<?= '/post/update/' . $post['id'] ?>" method="POST">
     <label for="title">Titulo</label>
     <input minlength="4" maxlength="40" required type="text" class="title" id="title" name="title"
     <?php if (isset($errors['title_error'])): ?>

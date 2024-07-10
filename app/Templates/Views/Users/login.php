@@ -1,9 +1,5 @@
-<?php
-$baseUrl = $GLOBALS['config']['base_url'];
-?>
-
 <div class="auth-container login">
-  <form class="auth" action="<?= $baseUrl ?>auth" method="POST">
+  <form class="auth" action="/auth" method="POST">
     <label for="email">Correo Electronico</label>
     <input type="text" id="email" name="email"
     <?php if (isset($errors['error'])): ?>

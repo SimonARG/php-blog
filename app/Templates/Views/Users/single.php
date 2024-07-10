@@ -21,7 +21,6 @@ $role = $user['role'];
 $color = $classes[$role];
 
 $currUrl = (empty($_SERVER['HTTPS']) ? 'http' : 'https') . "://$_SERVER[HTTP_HOST]$_SERVER[REQUEST_URI]";
-
 ?>
 
 <div class="single">
@@ -38,7 +37,7 @@ $currUrl = (empty($_SERVER['HTTPS']) ? 'http' : 'https') . "://$_SERVER[HTTP_HOS
       <?php require __DIR__ . '/../../Layouts/Components/report.php'; ?>
 
       <?php if ($_SESSION['role'] == 'admin' || $_SESSION['role'] == 'mod'): ?>
-        <form class="change-role" autocomplete="off" action="<?= $baseUrl . 'user/role/' . $user['id'] ?>" method="POST">
+        <form class="change-role" autocomplete="off" action="<?= '/user/role/' . $user['id'] ?>" method="POST">
           <ul>
             <?php foreach ($classes as $key => $newRole): ?>
               <?php if (!($newRole == $role)): ?>
@@ -61,7 +60,7 @@ $currUrl = (empty($_SERVER['HTTPS']) ? 'http' : 'https') . "://$_SERVER[HTTP_HOS
     <?php endif; ?>
 
     <div class="user-avatar">
-      <img src="<?= $baseUrl . 'imgs/avatars/' . htmlspecialchars($user['avatar']) ?>" alt="Your avatar">
+      <img src="<?= '/imgs/avatars/' . htmlspecialchars($user['avatar']) ?>" alt="Your avatar">
     </div>
 
     <?php if ($_SESSION) : ?>
@@ -98,7 +97,7 @@ $currUrl = (empty($_SERVER['HTTPS']) ? 'http' : 'https') . "://$_SERVER[HTTP_HOS
 
     <?php if ($_SESSION) : ?>
       <?php if ($_SESSION['user_id'] == $user['id'] || $_SESSION['role'] == 'admin' || $_SESSION['role'] == 'mod') : ?>
-        <form class="user" autocomplete="off" enctype="multipart/form-data" action="<?= $baseUrl . 'user/update/' . $user['id'] ?>" method="POST">
+        <form class="user" autocomplete="off" enctype="multipart/form-data" action="<?= '/user/update/' . $user['id'] ?>" method="POST">
           <label for="name">Cambiar Nombre</label>
           <input type="text" id="name" name="name" <?php if (isset($errors['name_error'])) : ?> placeholder="<?= $errors['name_error'] ?>" class="ph-error" <?php else : ?> value="<?= isset($errors) ? $old['name'] : $user['name'] ?>" <?php endif; ?>>
 

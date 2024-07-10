@@ -1,6 +1,4 @@
 <?php
-$baseUrl = $GLOBALS['config']['base_url'];
-
 function truncateHTML($html_string, $length, $append = '&hellip;', $is_html = true)
 {
   $html_string = trim($html_string);
@@ -54,12 +52,12 @@ $currUrl = $actual_link = (empty($_SERVER['HTTPS']) ? 'http' : 'https') . "://$_
   </div>
 
   <div class="reports-btns">
-    <form method="post" action="<?= $baseUrl . 'admin/reports' ?>" class="btn">
+    <form method="post" action="/admin/reports" class="btn">
       <input type="hidden" name="sort" value="0">
       <input type="submit" value="See newest">
     </form>
 
-    <form method="post" action="<?= $baseUrl . 'admin/reports' ?>" class="btn">
+    <form method="post" action="/admin/reports" class="btn">
       <input type="hidden" name="sort" value="1">
       <input type="submit" value="See unreviewed">
     </form>
