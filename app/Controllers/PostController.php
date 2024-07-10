@@ -6,6 +6,7 @@ use DateTime;
 use App\Models\Post;
 use App\Models\Comment;
 use App\Helpers\Security;
+use App\Helpers\Helpers;
 use League\CommonMark\GithubFlavoredMarkdownConverter;
 
 class PostController
@@ -14,6 +15,7 @@ class PostController
     protected $postModel;
     protected $commentModel;
     protected $security;
+    protected $helpers;
 
     public function __construct()
     {
@@ -21,6 +23,7 @@ class PostController
         $this->postModel = new Post();
         $this->commentModel = new Comment();
         $this->security = new Security();
+        $this->helpers = new Helpers();
     }
 
     public function index()
@@ -58,7 +61,7 @@ class PostController
         $totalPages = ceil($totalPosts / $postsPerPage);
 
         // Pass the necessary data to the view
-        return view('posts.index', [
+        return $this->helpers->view('posts.index', [
             'posts' => $posts,
             'currentPage' => $currentPage,
             'totalPages' => $totalPages
@@ -70,7 +73,7 @@ class PostController
         if (!$_SESSION) {
             return header('Location: '. $this->baseUrl);
         }
-        return view('posts.create');
+        return $this->helpers->view('posts.create');
     }
 
     public function store($request)
@@ -124,7 +127,7 @@ class PostController
 
         // Return errors if any
         if (!empty($errors)) {
-            return view('posts.create', ['request' => $request, 'errors' => $errors]);
+            return $this->helpers->view('posts.create', ['request' => $request, 'errors' => $errors]);
         }
 
         $new_thumb_name = random_int(1000000000000000, 9999999999999999);
@@ -140,12 +143,12 @@ class PostController
         $sourcePath = 'D:/Programs/Apache/Apache24/htdocs/blog/public/imgs/thumbs/' . $new_thumb_name . '.' . $extension;
         $destinationPath = 'D:/Programs/Apache/Apache24/htdocs/blog/public/imgs/thumbs/' . $new_thumb_name . '2.webp';
 
-        $imgError = processImage($sourcePath, $destinationPath);
+        $imgError = $this->helpers->processImage($sourcePath, $destinationPath);
 
         $this->postModel->create($dbEntry);
         $post = $this->postModel->getPostByTitle($request['title']);
 
-        $_SESSION['popup_content'] = 'Post creado';
+        $this->helpers->setPopup('Post creado');
 
         return header('Location:' . $this->baseUrl . 'post/' . $post['id']);
     }
@@ -190,7 +193,7 @@ class PostController
             }
         }
 
-        return view('posts.single', [
+        return $this->helpers->view('posts.single', [
             'post' => $post,
             'comments' => $comments,
         ]);
@@ -201,12 +204,12 @@ class PostController
         $post = $this->postModel->getPostById($id);
 
         if(!$this->security->verifyIdentity($post['user_id'])) {
-            $_SESSION['popup_content'] = 'Solo puedes editar tus propios posts';
+            $this->helpers->setPopup('Solo puedes editar tus propios posts');
 
             return header('Location: /');
         }
 
-        return view('posts.edit', [
+        return $this->helpers->view('posts.edit', [
             'post' => $post
         ]);
     }
@@ -216,7 +219,7 @@ class PostController
         $post = $this->postModel->getPostById($id);
 
         if(!$this->security->verifyIdentity($post['user_id'])) {
-            $_SESSION['popup_content'] = 'Solo puedes editar tus propios posts';
+            $this->helpers->setPopup('Solo puedes editar tus propios posts');
 
             return header('Location: /');
         }
@@ -278,12 +281,12 @@ class PostController
             $sourcePath = 'D:/Programs/Apache/Apache24/htdocs/blog/public/imgs/thumbs/' . $new_thumb_name . '.' . $extension;
             $destinationPath = 'D:/Programs/Apache/Apache24/htdocs/blog/public/imgs/thumbs/' . $new_thumb_name . '2.webp';
     
-            $imgError = processImage($sourcePath, $destinationPath);
+            $imgError = $this->helpers->processImage($sourcePath, $destinationPath);
         }
 
         // Return errors if any
         if (!empty($errors)) {
-            return view('posts.edit', ['request' => $request, 'errors' => $errors]);
+            return $this->helpers->view('posts.edit', ['request' => $request, 'errors' => $errors]);
         }
 
         $dbEntry['title'] = $title;
@@ -293,7 +296,7 @@ class PostController
         $this->postModel->update($dbEntry, $id);
         $post = $this->postModel->getPostById($id);
 
-        $_SESSION['popup_content'] = 'Post editado';
+        $this->helpers->setPopup('Post editado');
 
         return header('Location:' . $this->baseUrl . 'post/' . $post['id']);
     }
@@ -305,14 +308,14 @@ class PostController
         $post = $this->postModel->getPostById($id);
 
         if(!$this->security->verifyIdentity($post['user_id'])) {
-            $message = 'Solo puedes eliminar tus propios posts';
+            $this->helpers->setPopup('Solo puedes eliminar tus propios posts');
 
-            return route('/', ['popup_content' => $message]);
+            return header('Location: /');
         }
 
         $this->postModel->softDelete($id);
 
-        $_SESSION['popup_content'] = 'Post eliminado';
+        $this->helpers->setPopup('Post eliminado');
 
         return header('Location: /');
     }

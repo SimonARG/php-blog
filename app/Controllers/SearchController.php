@@ -6,6 +6,7 @@ use DateTime;
 use App\Models\Post;
 use App\Models\User;
 use App\Models\Comment;
+use App\Helpers\Helpers;
 use League\CommonMark\GithubFlavoredMarkdownConverter;
 
 class SearchController
@@ -14,6 +15,7 @@ class SearchController
     protected $postModel;
     protected $commentModel;
     protected $userModel;
+    protected $helpers;
 
     public function __construct()
     {
@@ -21,6 +23,7 @@ class SearchController
         $this->postModel = new Post();
         $this->commentModel = new Comment();
         $this->userModel = new User();
+        $this->helpers = new Helpers();
     }
 
     public function search()
@@ -36,7 +39,9 @@ class SearchController
         $result = $postModel->search($query, $currentPage);
 
         if(!$result) {
-            return header('Location:' . $this->baseUrl . '?popup_content=No hay resultados');
+            $this->helpers->setPopup('No hay resultados');
+
+            return header('Location: /');
         }
 
         $posts = $result['posts'];
@@ -68,7 +73,7 @@ class SearchController
         $totalPages = ceil($totalPosts / $postsPerPage);
 
         // Pass the necessary data to the view
-        return view('posts.results', [
+        return $this->helpers->view('posts.results', [
             'posts' => $posts,
             'currentPage' => $currentPage,
             'totalPages' => $totalPages,
@@ -88,9 +93,9 @@ class SearchController
         $result = $this->userModel->getUserPosts($id, $currentPage);
 
         if(!$result) {
-            $_SESSION['popup_content'] = 'No hay resultados';
+            $this->helpers->setPopup('No hay resultados');
 
-            return header('Location:' . $this->baseUrl);
+            return header('Location: /');
         }
 
         $posts = $result['posts'];
@@ -122,7 +127,7 @@ class SearchController
         $totalPages = ceil($totalPosts / $postsPerPage);
 
         // Pass the necessary data to the view
-        return view('posts.results', [
+        return $this->helpers->view('posts.results', [
             'posts' => $posts,
             'user' => $user,
             'currentPage' => $currentPage,
@@ -140,9 +145,9 @@ class SearchController
         $result = $this->userModel->getSavedPosts($id, $currentPage);
 
         if(!$result) {
-            $_SESSION['popup_content'] = 'No hay resultados';
+            $$this->helpers->setPopup('No hay resultados');
 
-            return header('Location:' . $this->baseUrl);
+            return header('Location: /');
         }
 
         $posts = $result['posts'];
@@ -174,7 +179,7 @@ class SearchController
         $totalPages = ceil($totalPosts / $postsPerPage);
 
         // Pass the necessary data to the view
-        return view('posts.results', [
+        return $this->helpers->view('posts.results', [
             'posts' => $posts,
             'currentPage' => $currentPage,
             'totalPages' => $totalPages,

@@ -7,6 +7,7 @@ use App\Models\Post;
 use App\Models\User;
 use App\Models\Comment;
 use App\Helpers\Security;
+use App\Helpers\Helpers;
 use App\Controllers\PostController;
 
 class UserController
@@ -15,8 +16,8 @@ class UserController
     protected $postModel;
     protected $postController;
     protected $commentModel;
-    protected $baseUrl;
     protected $security;
+    protected $helpers;
 
     public function __construct()
     {
@@ -25,12 +26,12 @@ class UserController
         $this->postController = new PostController();
         $this->commentModel = new Comment();
         $this->security = new Security();
-        $this->baseUrl = $GLOBALS['config']['base_url'];
+        $this->helpers = new Helpers();
     }
 
     public function create()
     {
-        return view('users.create');
+        return $this->helpers->view('users.create');
     }
 
     public function store($request)
@@ -71,7 +72,7 @@ class UserController
     
         // Return errors if any
         if (!empty($errors)) {
-            return view('users.create', ['request' => $request, 'errors' => $errors]);
+            return $this->helpers->view('users.create', ['request' => $request, 'errors' => $errors]);
         }
 
         $password = password_hash($password, PASSWORD_DEFAULT);
@@ -96,13 +97,12 @@ class UserController
 
         session_start();
 
-        
         $_SESSION['saved_posts'] = [];
         $_SESSION['user_id'] = $user['id'];
         $_SESSION['username'] = $user['name'];
         $_SESSION['role'] = $user['role'];
 
-        $_SESSION['popup_content'] = 'Cuenta ' . $user['name'] . ' creada';
+        $this->helpers->setPopup('Cuenta ' . $user['name'] . ' creada');
 
         return header('Location: /' . 'user/' . ($result['id']));
     }
@@ -129,7 +129,7 @@ class UserController
             $user['updated_at'] = $userUpStrdate;
         }
 
-        return view('users.single', [
+        return $this->helpers->view('users.single', [
             'user' => $user,
             'lastPostId' => $lastPostId,
             'lastCommentPostId' => $lastCommentPostId,
@@ -140,9 +140,9 @@ class UserController
     public function update($id, $request)
     {
         if(!$this->security->verifyIdentity($id)) {
-            $_SESSION['popup_content'] = 'Solo puedes editar tu propio perfil';
+            $this->helpers->setPopup('Solo puedes editar tu propio perfil');
 
-            return header('Location: /' . 'user/' . $_SESSION['user_id']);
+            return header('Location: /user/' . $_SESSION['user_id']);
         }
 
         $user = $this->userModel->getUserById($id);
@@ -180,7 +180,7 @@ class UserController
         if (!password_verify($password, $user['password'])) {
             $errors['password_error'] = 'Contraseña incorrecta';
 
-            return view('users.single', [
+            return $this->helpers->view('users.single', [
                 'user' => $user,
                 'lastPostId' => $lastPostId,
                 'lastCommentPostId' => $lastCommentPostId,
@@ -249,12 +249,12 @@ class UserController
             $sourcePath = 'D:/Programs/Apache/Apache24/htdocs/blog/public/imgs/avatars/' . $new_avatar_name . '.' . $extension;
             $destinationPath = 'D:/Programs/Apache/Apache24/htdocs/blog/public/imgs/avatars/' . $new_avatar_name . '2.webp';
     
-            $imgError = processImage($sourcePath, $destinationPath);
+            $imgError = $this->helpers->processImage($sourcePath, $destinationPath);
         }
     
         // Return errors if any
         if (!empty($errors)) {
-            return view('users.single', [
+            return $this->helpers->view('users.single', [
                 'user' => $user,
                 'lastPostId' => $lastPostId,
                 'lastCommentPostId' => $lastCommentPostId,
@@ -270,9 +270,9 @@ class UserController
         $this->userModel->update($dbEntry, $id);
         $user = $this->userModel->getUserById($id);
 
-        $_SESSION['popup_content'] = 'Perfil editado';
+        $this->helpers->setPopup('Perfil editado');
 
-        return view('users.single', [
+        return $this->helpers->view('users.single', [
             'user' => $user,
             'lastPostId' => $lastPostId,
             'lastCommentPostId' => $lastCommentPostId,
@@ -287,20 +287,20 @@ class UserController
 
         // Check if post is already saved and perform action
         if (in_array($postId, $_SESSION['saved_posts'])) {
-            $_SESSION['popup_content'] = 'El post ya esta guardado';
+            $this->helpers->setPopup('El post ya esta guardado');
         } else {
             $this->postModel->save($postId, $userId);
 
             $_SESSION['saved_posts'][] = $postId;
 
-            $_SESSION['popup_content'] = 'Post guardado';
+            $this->helpers->setPopup('Post guardado');
         }
 
         // Return to index or single with message
         if (isset($request['curr_page'])) {
             $currPage = $request['curr_page'];
 
-            return header('Location: ' . $this->baseUrl . '?page=' . $currPage);
+            return header('Location: /?page=' . $currPage);
         } else {
             return header('Location: /post/' . $postId);
         }
@@ -314,13 +314,13 @@ class UserController
         $result = $this->postModel->deleteSaved($postId, $userId);
     
         if (!$result) {
-            $_SESSION['popup_content'] = 'Error al remover el post';
+            $this->helpers->setPopup('Error al remover el post');
         } else {
             if (($key = array_search($postId, $_SESSION['saved_posts'])) !== false) {
                 unset($_SESSION['saved_posts'][$key]);
                 $_SESSION['saved_posts'] = array_values($_SESSION['saved_posts']);
             }
-            $_SESSION['popup_content'] = 'Post removido de guardados';
+            $this->helpers->setPopup('Post removido de guardados');
         }
     
         if (isset($request['curr_page'])) {
@@ -328,9 +328,9 @@ class UserController
             $totalPages = $request['total_pages'];
 
             if ($totalPages > 1) {
-                return header('Location: ' . $this->baseUrl . 'search/user/saved/' . $userId . '/?page=' . $currPage);
+                return header('Location: /search/user/saved/' . $userId . '/?page=' . $currPage);
             } else {
-                return header('Location: ' . $this->baseUrl . 'search/user/saved/' . $userId);
+                return header('Location: /search/user/saved/' . $userId);
             }
         }
 
@@ -354,9 +354,9 @@ class UserController
         $result = $this->userModel->changeRole($id, $newRole);
 
         if ($result) {
-            $_SESSION['popup_content'] = 'User role changed';
+            $this->helpers->setPopup('User role changed');
         } else {
-            $_SESSION['popup_content'] = 'Error';
+            $this->helpers->setPopup('Error');
         }
 
         return header('Location: ' . $url);

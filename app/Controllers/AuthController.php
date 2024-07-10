@@ -3,21 +3,24 @@
 namespace App\Controllers;
 
 use App\Models\User;
+use App\Helpers\Helpers;
 
 class AuthController
 {
     protected $user;
     protected $baseUrl;
+    protected $helpers;
 
     public function __construct()
     {
         $this->user = new User();
         $this->baseUrl = $GLOBALS['config']['base_url'];
+        $this->helpers = new Helpers();
     }
 
     public function login()
     {
-        return view('users.login');
+        return $this->helpers->view('users.login');
     }
 
     public function authenticate($request)
@@ -31,7 +34,7 @@ class AuthController
     
         if ($user) {
             if ($user['role'] == 'banned') {
-                $_SESSION['popup_content'] = 'Usuario banneado';
+                $this->helpers->setPopup('Cuenta banneada');
     
                 return  header('Location: ' . $this->baseUrl . 'login');
             }
@@ -56,7 +59,7 @@ class AuthController
                 $_SESSION['username'] = $user['name'];
                 $_SESSION['role'] = $user['role'];
 
-                $_SESSION['popup_content'] = 'Sesion iniciada';
+                $this->helpers->setPopup('Sesion iniciada');
     
                 return header('Location: /');
             } else {
@@ -68,7 +71,7 @@ class AuthController
     
         // Return errors if any
         if (!empty($errors)) {
-            return view('users.login', ['request' => $request, 'errors' => $errors]);
+            return $this->helpers->view('users.login', ['request' => $request, 'errors' => $errors]);
         }
     }
     

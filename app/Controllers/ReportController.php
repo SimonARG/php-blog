@@ -5,6 +5,7 @@ namespace App\Controllers;
 use DateTime;
 use App\Models\Report;
 use App\Models\Comment;
+use App\Helpers\Helpers;
 
 class ReportController
 {
@@ -12,6 +13,7 @@ class ReportController
     protected $commentModel;
     protected $reportModel;
     protected $reportsPerPage;
+    protected $helpers;
 
     public function __construct()
     {
@@ -19,6 +21,7 @@ class ReportController
         $this->commentModel = new Comment();
         $this->reportModel = new Report();
         $this->reportsPerPage = $GLOBALS['config']['reports_per_page'];
+        $this->helpers = new Helpers();
     }
 
     public function index($request)
@@ -55,7 +58,7 @@ class ReportController
             }
         }
 
-        return view('admin.reports', [
+        return $this->helpers->view('admin.reports', [
             'reports' => $reports,
             'currentPage' => $currentPage,
             'totalPages' => $totalPages,
@@ -71,7 +74,7 @@ class ReportController
         $type = htmlspecialchars($request['type']);
         $allowedTypes = ['post', 'comment', 'user'];
         if (!in_array($type, $allowedTypes)) {
-            $_SESSION['popup_content'] = 'Error al reportar el post';
+            $this->helpers->setPopup('Error al reportar el post');
 
             return header('Location: /');
         }
@@ -101,17 +104,17 @@ class ReportController
         $result = $this->reportModel->createReport($data);
 
         if (!$result) {
-            $_SESSION['popup_content'] = 'Ya has reportado este ' . $type;
+            $this->helpers->setPopup('Ya has reportado este ' . $type);
 
             return header('Location: ' . $url);
         }
 
         if ($type == 'post') {
-            $_SESSION['popup_content'] = 'Post reportado';
+            $this->helpers->setPopup('Post reportado');
         } else if ($type == 'comment') {
-            $_SESSION['popup_content'] = 'Comentario reportado';
+            $this->helpers->setPopup('Comentario reportado');
         } else if ($type == 'user') {
-            $_SESSION['popup_content'] = 'Usuario reportado';
+            $this->helpers->setPopup('Usuario reportado');
         }
 
         return header('Location: ' . $url);
