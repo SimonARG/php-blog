@@ -20,7 +20,7 @@ class Database
         }
     }
 
-    public function query($sql, $params = [], $types = [])
+    public function query(string $sql, array $params = [], array $types = []) : object|int
     {
         $stmt = $this->pdo->prepare($sql);
         
@@ -43,13 +43,13 @@ class Database
         return $stmt;
     }
 
-    public function fetchAll($sql, $params = [], $types = [])
+    public function fetchAll(string $sql, array $params = [], array $types = []) : array|false
     {
         $stmt = $this->query($sql, $params, $types);
         return $stmt->fetchAll(PDO::FETCH_ASSOC);
     }
 
-    public function fetch($sql, $params = [], $types = [])
+    public function fetch(string $sql, array $params = [], array $types = []) : array|false
     {
         $stmt = $this->query($sql, $params, $types);
         return $stmt->fetch(PDO::FETCH_ASSOC);
