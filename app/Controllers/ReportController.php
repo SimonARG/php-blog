@@ -9,7 +9,6 @@ use App\Helpers\Helpers;
 
 class ReportController
 {
-    protected $baseUrl;
     protected $commentModel;
     protected $reportModel;
     protected $reportsPerPage;
@@ -17,10 +16,10 @@ class ReportController
 
     public function __construct()
     {
-        $this->baseUrl = $GLOBALS['config']['base_url'];
+        $this->reportsPerPage = $GLOBALS['config']['reports_per_page'];
+        
         $this->commentModel = new Comment();
         $this->reportModel = new Report();
-        $this->reportsPerPage = $GLOBALS['config']['reports_per_page'];
         $this->helpers = new Helpers();
     }
 

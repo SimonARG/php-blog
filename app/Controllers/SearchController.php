@@ -11,7 +11,6 @@ use League\CommonMark\GithubFlavoredMarkdownConverter;
 
 class SearchController
 {
-    protected $baseUrl;
     protected $postModel;
     protected $commentModel;
     protected $userModel;
@@ -19,7 +18,6 @@ class SearchController
 
     public function __construct()
     {
-        $this->baseUrl = $GLOBALS['config']['base_url'];
         $this->postModel = new Post();
         $this->commentModel = new Comment();
         $this->userModel = new User();

@@ -10,7 +10,6 @@ use League\CommonMark\GithubFlavoredMarkdownConverter;
 
 class CommentController
 {
-    protected $baseUrl;
     protected $commentModel;
     protected $postModel;
     protected $security;
@@ -18,7 +17,6 @@ class CommentController
 
     public function __construct()
     {
-        $this->baseUrl = $GLOBALS['config']['base_url'];
         $this->commentModel = new Comment();
         $this->postModel = new Post();
         $this->security = new Security();
@@ -49,7 +47,7 @@ class CommentController
 
         $this->helpers->setPopup('Comentario creado');
 
-        return header('Location:' . $this->baseUrl . 'post/' . $request['post_id'] . '#comment-1');
+        return header('Location: /post/' . $request['post_id'] . '#comment-1');
     }
 
     public function update($id, $request)
@@ -60,7 +58,7 @@ class CommentController
         if(!$this->security->verifyIdentity($comment['user_id'])) {
             $this->helpers->setPopup('Solo puedes editar tus propios comentarios');
 
-            return header('Location:' . $this->baseUrl . 'post/' . $request['post_id'] . '#comment-1');
+            return header('Location: /post/' . $request['post_id'] . '#comment-1');
         }
 
         // Sanitize
@@ -70,15 +68,15 @@ class CommentController
         if (strlen($request['body']) < 1) {
             $this->helpers->setPopup('Comentario demasiado corto');
 
-            return header('Location:' . $this->baseUrl . 'post/' . $request['post_id'] . '#comment-1');
+            return header('Location: /post/' . $request['post_id'] . '#comment-1');
         } elseif (strlen($request['body']) > 1600) {
             $this->helpers->setPopup('Comentario demasiado largo');
 
-            return header('Location:' . $this->baseUrl . 'post/' . $request['post_id'] . '#comment-1');
+            return header('Location: /post/' . $request['post_id'] . '#comment-1');
         } elseif ($request['body'] == $comment['body']) {
             $this->helpers->setPopup('El nuevo comentario es identico al original');
 
-            return header('Location:' . $this->baseUrl . 'post/' . $request['post_id'] . '#comment-1');
+            return header('Location: /post/' . $request['post_id'] . '#comment-1');
         }
 
         $dbEntry['body'] = $body;
@@ -87,7 +85,7 @@ class CommentController
         
         $$this->helpers->setPopup('Comentario editado');
 
-        return header('Location:' . $this->baseUrl . 'post/' . $request['post_id'] . '#comment-1');
+        return header('Location: /post/' . $request['post_id'] . '#comment-1');
     }
 
     public function delete($request)
@@ -99,13 +97,13 @@ class CommentController
         if(!$this->security->verifyIdentity($comment['user_id'])) {
             $this->helpers->setPopup('Solo puedes eliminar tus propios comentarios');
 
-            return header('Location:' . $this->baseUrl . 'post/' . $request['post_id'] . '#comment-1');
+            return header('Location: /post/' . $request['post_id'] . '#comment-1');
         }
 
         $this->commentModel->softDelete($id);
 
         $this->helpers->setPopup('Comentario eliminado');
 
-        return header('Location:' . $this->baseUrl . 'post/' . $request['post_id'] . '#comment-1');
+        return header('Location: /post/' . $request['post_id'] . '#comment-1');
     }
 }

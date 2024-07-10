@@ -8,13 +8,11 @@ use App\Helpers\Helpers;
 class AuthController
 {
     protected $user;
-    protected $baseUrl;
     protected $helpers;
 
     public function __construct()
     {
         $this->user = new User();
-        $this->baseUrl = $GLOBALS['config']['base_url'];
         $this->helpers = new Helpers();
     }
 
@@ -36,7 +34,7 @@ class AuthController
             if ($user['role'] == 'banned') {
                 $this->helpers->setPopup('Cuenta banneada');
     
-                return  header('Location: ' . $this->baseUrl . 'login');
+                return  header('Location: /login');
             }
             
             if (password_verify($password, $user['password'])) {

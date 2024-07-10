@@ -11,7 +11,6 @@ use League\CommonMark\GithubFlavoredMarkdownConverter;
 
 class PostController
 {
-    protected $baseUrl;
     protected $postModel;
     protected $commentModel;
     protected $security;
@@ -19,7 +18,6 @@ class PostController
 
     public function __construct()
     {
-        $this->baseUrl = $GLOBALS['config']['base_url'];
         $this->postModel = new Post();
         $this->commentModel = new Comment();
         $this->security = new Security();
@@ -71,7 +69,7 @@ class PostController
     public function create()
     {   
         if (!$_SESSION) {
-            return header('Location: '. $this->baseUrl);
+            return header('Location: /');
         }
         return $this->helpers->view('posts.create');
     }
@@ -150,7 +148,7 @@ class PostController
 
         $this->helpers->setPopup('Post creado');
 
-        return header('Location:' . $this->baseUrl . 'post/' . $post['id']);
+        return header('Location: /post/' . $post['id']);
     }
 
     public function show($id)
@@ -298,7 +296,7 @@ class PostController
 
         $this->helpers->setPopup('Post editado');
 
-        return header('Location:' . $this->baseUrl . 'post/' . $post['id']);
+        return header('Location: /post/' . $post['id']);
     }
 
     public function delete($request)
