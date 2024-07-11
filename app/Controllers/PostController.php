@@ -171,30 +171,10 @@ class PostController extends Controller
 
         $comments = $this->comment->getCommentsForPost($id, $currentPage);
 
-        $postDate = new DateTime($post['created_at']);
-        $postStrdate = $postDate->format('Y/m/d H:i');
-        $post['created_at'] = $postStrdate;
-
-        if (isset($post['updated_at'])) {
-            $postUpDate = new DateTime($post['updated_at']);
-            $postUpStrdate = $postUpDate->format('Y/m/d H:i');
-            $post['updated_at'] = $postUpStrdate;
-        }
+        $post = $this->helpers->formatDates($post);
 
         if ($comments) {
-            foreach ($comments as $key => $comment) {
-                // $comment->comment = Markdown::convert($comment->comment)->getContent();
-                
-                $comDate = new DateTime($comment['created_at']);
-                $comStrdate = $comDate->format('Y/m/d H:i');
-                $comments[$key]['created_at'] = $comStrdate;
-
-                if (isset($comment['updated_at'])) {
-                    $comUpDate = new DateTime($comment['updated_at']);
-                    $comUpStrdate = $comUpDate->format('Y/m/d H:i');
-                    $comments[$key]['updated_at'] = $comUpStrdate;
-                }
-            }
+            $comments = $this->helpers->formatDates($comments);
 
             $this->helpers->view('posts.single', [
                 'post' => $post,

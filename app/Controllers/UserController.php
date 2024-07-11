@@ -113,15 +113,7 @@ class UserController extends Controller
 
         $savedPosts = $this->user->getSavedPostsCount($id)['posts'];
 
-        $userDate = new DateTime($user['created_at']);
-        $userStrdate = $userDate->format('Y/m/d H:i');
-        $user['created_at'] = $userStrdate;
-
-        if (isset($user['updated_at'])) {
-            $userUpDate = new DateTime($user['updated_at']);
-            $userUpStrdate = $userUpDate->format('Y/m/d H:i');
-            $user['updated_at'] = $userUpStrdate;
-        }
+        $user = $this->helpers->formatDates($user);
 
         $this->helpers->view('users.single', [
             'user' => $user,
