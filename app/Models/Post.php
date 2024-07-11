@@ -83,7 +83,7 @@ class Post extends Model
         return $result ? $result : false;
     }
 
-    public function create(array $data) : array|bool
+    public function create(array $data) : object|bool
     {
         $sql = "INSERT INTO posts (title, subtitle, thumb, body, user_id) VALUES (:title, :subtitle, :thumb, :body, :user_id)";
 

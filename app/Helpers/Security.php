@@ -4,6 +4,15 @@ namespace App\Helpers;
 
 class Security
 {
+    public function verifySession() : int
+    {
+        if (!$_SESSION) {
+            return 0;
+        }
+
+        return 1;
+    }
+
     public function verifyIdentity(int $resourceOwnerId) : int
     {
         if(!($resourceOwnerId == $_SESSION['user_id']) && !($_SESSION['role'] == 'admin') && !($_SESSION['role'] == 'mod')) {
@@ -13,13 +22,39 @@ class Security
         return 1;
     }
 
-    public function isElevatedUser(int $userId) : int
+    public function isElevatedUser() : int
     {
         if(!(isset($_SESSION))) {
             return 0;
         }
 
-        if(!(($_SESSION['user_role'] == 'admin') || ($_SESSION['user_role'] == 'mod'))) {
+        if(!(($_SESSION['role'] == 'admin') || ($_SESSION['role'] == 'mod'))) {
+            return 0;
+        }
+
+        return 1;
+    }
+
+    public function canPost() : int
+    {
+        if(!(isset($_SESSION))) {
+            return 0;
+        }
+
+        if(($_SESSION['role'] == 'admin') || ($_SESSION['role'] == 'mod') || ($_SESSION['role'] == 'poster')) {
+            return 1;
+        }
+
+        return 0;
+    }
+
+    public function canComment() : int
+    {
+        if(!(isset($_SESSION))) {
+            return 0;
+        }
+
+        if(($_SESSION['role'] == 'restricted') || ($_SESSION['role'] == 'banned')) {
             return 0;
         }
 
@@ -31,11 +66,12 @@ class Security
         $_SESSION['csrf'] = md5(uniqid(mt_rand(), true));
     }
 
-    public function verifyCsrf($csrf) : void
+    public function verifyCsrf($csrf) : int
     {
         if (!$csrf || $csrf !== $_SESSION['csrf']) {
-            header($_SERVER['SERVER_PROTOCOL'] . ' 405 Method Not Allowed');
-            exit;
+            return 0;
         }
+
+        return 1;
     }
 }

@@ -2,6 +2,9 @@
 
 namespace App\Helpers;
 
+use DateTime;
+use InvalidArgumentException;
+
 class Helpers
 {
     public function view(string $viewName, array $data = []) : void
@@ -33,7 +36,7 @@ class Helpers
         $_SESSION['popup_content'] = $content;
     }
 
-    public function processImage(string $sourcePath, string $destinationPath) : string
+    public function processImage(string $sourcePath, string $destinationPath) : bool
     {
         $quality = 88;
         $maxWidth = 1000;
@@ -60,12 +63,41 @@ class Helpers
         if (file_exists($destinationPath)) {
             // Delete the original image
             if (unlink($sourcePath)) {
-                return "Image resized, converted to AVIF, and original file deleted successfully.";
+                return 1;
             } else {
-                return "Image resized and converted to AVIF, but failed to delete the original file.";
+                return 0;
             }
         } else {
-            return "Error: " . $output;
+            return 0;
         }
+    }
+
+    public function formatDates($resource): array
+    {
+        if (!is_array($resource)) {
+            throw new InvalidArgumentException('Input must be an array');
+        }
+
+        $formatDate = function ($date) {
+            return (new DateTime($date))->format('Y/m/d H:i');
+        };
+
+        if (isset($resource[0]) && is_array($resource[0])) {
+            // Handle array of resources
+            foreach ($resource as &$item) {
+                $item['created_at'] = $formatDate($item['created_at']);
+                if (isset($item['updated_at'])) {
+                    $item['updated_at'] = $formatDate($item['updated_at']);
+                }
+            }
+        } else {
+            // Handle single resource
+            $resource['created_at'] = $formatDate($resource['created_at']);
+            if (isset($resource['updated_at'])) {
+                $resource['updated_at'] = $formatDate($resource['updated_at']);
+            }
+        }
+
+        return $resource;
     }
 }

@@ -6,18 +6,21 @@ use DateTime;
 use App\Models\Post;
 use App\Models\Comment;
 use App\Controllers\Controller;
+use App\Services\PostService;
 use League\CommonMark\GithubFlavoredMarkdownConverter;
 
 class PostController extends Controller
 {
     protected $post;
     protected $comment;
+    protected $service;
 
     public function __construct()
     {
         parent::__construct();
         $this->post = new Post();
         $this->comment = new Comment();
+        $this->service = new postService();
     }
 
     public function index() : void
@@ -36,18 +39,11 @@ class PostController extends Controller
 
         foreach ($posts as $key => $post) {
             $convertedContent = $converter->convert($post['body']);
-            $posts[$key]['body'] = $convertedContent->getContent();
 
-            $postDate = new DateTime($post['created_at']);
-            $postStrdate = $postDate->format('Y/m/d H:i');
-            $posts[$key]['created_at'] = $postStrdate;
-    
-            if (isset($post['updated_at'])) {
-                $postUpDate = new DateTime($post['updated_at']);
-                $postUpStrdate = $postUpDate->format('Y/m/d H:i');
-                $posts[$key]['updated_at'] = $postUpStrdate;
-            }
+            $posts[$key]['body'] = $convertedContent->getContent();
         }
+
+        $posts = $this->helpers->formatDates($posts);
         
         $postsPerPage = $GLOBALS['config']['posts_per_page'];
 
@@ -64,89 +60,101 @@ class PostController extends Controller
 
     public function create() : void
     {   
-        if (!$_SESSION) {
+        if (!$this->security->canPost()) {
+            $this->helpers->setPopup('Operacion no autorizada');
+
             header('Location: /');
+
+            return;
         }
+        
         $this->helpers->view('posts.create');
     }
 
     public function store(array $request) : void
     {
-        $this->security->verifyCsrf($request['csrf'] ?? '');
+        if (!$this->security->canPost()) {
+            $this->helpers->setPopup('Operacion no autorizada');
+            
+            header('Location: /');
 
-        // Sanitize
-        $title = htmlspecialchars($request['title']);
-        $subtitle = htmlspecialchars($request['subtitle']);
-        $thumb = $_FILES["thumb"];
-        $body = $request['body'];
-        $user_id = $request['user_id'];
-
-        // Validate title
-        if (strlen($title) < 4) {
-            $errors['title_error'] = 'El titulo es demasiado corto';
-        } elseif (strlen($title) > 40) {
-            $errors['title_error'] = 'El titulo es demasiado largo';
+            return;
         }
 
-        // Validate subtitle
-        if (strlen($subtitle) < 4) {
-            $errors['subtitle_error'] = 'El subtitulo es demasiado corto';
-        } elseif (strlen($subtitle) > 50) {
-            $errors['subtitle_error'] = 'El subtitulo es demasiado largo';
+        if (!$this->security->verifyCsrf($request['csrf'] ?? '')) {
+            $this->helpers->setPopup('Operacion no autorizada');
+            
+            header('Location: /');
+
+            return;
         }
 
-        // Validate body
-        if (strlen($body) < 10) {
-            $errors['body_error'] = 'El cuerpo es demasiado corto';
-        } elseif (strlen($body) > 40000) {
-            $errors['body_error'] = 'El cuerpo es demasiado largo';
+        $result = $this->service->sanitizeAndValidate($request);
+
+        $cleanRequest = $result['sanitized_request'];
+        $requestErrors = $result['errors'];
+
+        // Initialize variables for thumbnail validation
+        $thumb = null;
+        $thumbErrors = [];
+    
+        // Check if the image is new or old and process accordingly
+        if (isset($_FILES["thumb"]) && $_FILES["thumb"]["error"] != UPLOAD_ERR_NO_FILE) {
+            $result = $this->service->handleThumb($_FILES["thumb"]);
+            $thumb = $result['new_thumb_name'];
+            $thumbErrors = $result['errors'];
+        } elseif (isset($request['previous_thumb'])) {
+            $thumb = basename($request['previous_thumb']);
         }
-
-        // Validate thumb
-        $storage_dir = "imgs/thumbs/";
-        $file = $storage_dir . basename($thumb["name"]);
-        $extension = strtolower(pathinfo($file,PATHINFO_EXTENSION));
-        $size = $_FILES['thumb']['size'];
-        $imageInfo = getimagesize($_FILES['thumb']['tmp_name']);
-
-        // Define allowed mime types and maximum file size
-        $allowedMimeTypes = ['jpeg', 'png', 'jfif', 'avif', 'webp', 'jpg'];
-        $maxFileSize = 40 * 1024 * 1024; // 40 MB in bytes
-
-        if ($size > $maxFileSize) {
-            $errors['thumb_error'] = 'La imagen pesa mas que 40MB';
-        } else if (!in_array($extension, $allowedMimeTypes)) {
-            $errors['thumb_error'] = 'Solo se permiten imagenes jpeg, png, jfif, avif, webp y jpg';
-        } else if ($imageInfo === false) {
-            $errors['thumb_error'] = 'La imagen no es valida';
-        }
+    
+        // Merge request and file errors
+        $errors = array_merge($requestErrors, $thumbErrors);
 
         // Return errors if any
         if (!empty($errors)) {
+            $storageDir = "imgs/thumbs/"; // Set storage directory
+
+            if ($thumb) {
+                $request['thumb'] = $storageDir . $thumb;
+            } elseif (isset($request['previous_thumb'])) {
+                $request['thumb'] = $request['previous_thumb'];
+            }
+
             $this->helpers->view('posts.create', ['request' => $request, 'errors' => $errors]);
+
+            return;
         }
 
-        $new_thumb_name = random_int(1000000000000000, 9999999999999999);
+        // Return if no thumb is available
+        if (!$thumb) {
+            $this->helpers->setPopup('Error: No se ha proporcionado una imagen');
 
-        $dbEntry['title'] = $title;
-        $dbEntry['subtitle'] = $subtitle;
-        $dbEntry['thumb'] = $new_thumb_name . '2.webp';
-        $dbEntry['body'] = $body;
-        $dbEntry['user_id'] = $user_id;
+            $this->helpers->view('posts.create', ['request' => $request]);
 
-        move_uploaded_file($_FILES["thumb"]["tmp_name"], $storage_dir . $new_thumb_name . '.' . $extension);
+            return;
+        }
 
-        $sourcePath = 'D:/Programs/Apache/Apache24/htdocs/blog/public/imgs/thumbs/' . $new_thumb_name . '.' . $extension;
-        $destinationPath = 'D:/Programs/Apache/Apache24/htdocs/blog/public/imgs/thumbs/' . $new_thumb_name . '2.webp';
-
-        $imgError = $this->helpers->processImage($sourcePath, $destinationPath);
+        $dbEntry['title'] = $cleanRequest['title'];
+        $dbEntry['subtitle'] = $cleanRequest['subtitle'];
+        $dbEntry['thumb'] = $thumb . '2.webp';
+        $dbEntry['body'] = $cleanRequest['body'];
+        $dbEntry['user_id'] = $cleanRequest['user_id'];
 
         $this->post->create($dbEntry);
-        $post = $this->post->getPostByTitle($request['title']);
+        $postId = $this->post->getPostByTitle($request['title'])['id'];
+
+        
+        if (!$postId) {
+            $this->helpers->setPopup('Error al procesar la imagen');
+
+            $this->helpers->view('posts.create', ['request' => $request]);
+
+            return;
+        }
 
         $this->helpers->setPopup('Post creado');
 
-        header('Location: /post/' . $post['id']);
+        header('Location: /post/' . $postId);
     }
 
     public function show(int $id) : void

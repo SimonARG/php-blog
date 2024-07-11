@@ -6,7 +6,7 @@ use Faker\Generator;
 
 class Factory
 {
-    public $faker;
+    protected $faker;
 
     public function __construct()
     {
