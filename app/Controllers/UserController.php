@@ -181,8 +181,11 @@ class UserController extends Controller
                 'lastPostId' => $lastPostId,
                 'lastCommentPostId' => $lastCommentPostId,
                 'errors' => $errors,
-                'old' => $request
+                'old' => $request,
+                'savedPosts' => $savedPosts
             ]);
+
+            return;
         }
     
         // Validate name
@@ -255,8 +258,11 @@ class UserController extends Controller
                 'lastPostId' => $lastPostId,
                 'lastCommentPostId' => $lastCommentPostId,
                 'errors' => $errors,
-                'old' => $request
+                'old' => $request,
+                'savedPosts' => $savedPosts
             ]);
+
+            return;
         }
 
         $dbEntry['name'] = $name;
