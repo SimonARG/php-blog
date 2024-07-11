@@ -2,7 +2,6 @@
 
 namespace App\Controllers;
 
-use DateTime;
 use App\Models\Post;
 use App\Models\Comment;
 use App\Controllers\Controller;
@@ -23,7 +22,7 @@ class PostController extends Controller
         $this->service = new postService();
     }
 
-    public function index() : void
+    public function index(): void
     {
         // Get the current page from the query parameters, default to 1 if not set
         $currentPage = isset($_GET['page']) ? (int)$_GET['page'] : 1;
@@ -34,8 +33,7 @@ class PostController extends Controller
         // Get the total number of posts to calculate pagination
         $totalPosts = $this->post->getPostCount();
 
-        $converter = new GithubFlavoredMarkdownConverter([
-        ]);
+        $converter = new GithubFlavoredMarkdownConverter([]);
 
         foreach ($posts as $key => $post) {
             $convertedContent = $converter->convert($post['body']);
@@ -44,7 +42,7 @@ class PostController extends Controller
         }
 
         $posts = $this->helpers->formatDates($posts);
-        
+
         $postsPerPage = $GLOBALS['config']['posts_per_page'];
 
         // Calculate the total number of pages
@@ -58,8 +56,8 @@ class PostController extends Controller
         ]);
     }
 
-    public function create() : void
-    {   
+    public function create(): void
+    {
         if (!$this->security->canPost()) {
             $this->helpers->setPopup('Operacion no autorizada');
 
@@ -67,15 +65,15 @@ class PostController extends Controller
 
             return;
         }
-        
+
         $this->helpers->view('posts.create');
     }
 
-    public function store(array $request) : void
+    public function store(array $request): void
     {
         if (!$this->security->canPost()) {
             $this->helpers->setPopup('Operacion no autorizada');
-            
+
             header('Location: /');
 
             return;
@@ -83,7 +81,7 @@ class PostController extends Controller
 
         if (!$this->security->verifyCsrf($request['csrf'] ?? '')) {
             $this->helpers->setPopup('Operacion no autorizada');
-            
+
             header('Location: /');
 
             return;
@@ -97,7 +95,7 @@ class PostController extends Controller
         // Initialize variables for thumbnail validation
         $thumb = null;
         $thumbErrors = [];
-    
+
         // Check if the image is new or old and process accordingly
         if (isset($_FILES["thumb"]) && $_FILES["thumb"]["error"] != UPLOAD_ERR_NO_FILE) {
             $result = $this->service->handleThumb($_FILES["thumb"]);
@@ -106,7 +104,7 @@ class PostController extends Controller
         } elseif (isset($request['previous_thumb'])) {
             $thumb = basename($request['previous_thumb']);
         }
-    
+
         // Merge request and file errors
         $errors = array_merge($requestErrors, $thumbErrors);
 
@@ -143,7 +141,7 @@ class PostController extends Controller
         $this->post->create($dbEntry);
         $postId = $this->post->getPostByTitle($request['title'])['id'];
 
-        
+
         if (!$postId) {
             $this->helpers->setPopup('Error al procesar la imagen');
 
@@ -157,7 +155,7 @@ class PostController extends Controller
         header('Location: /post/' . $postId);
     }
 
-    public function show(int $id) : void
+    public function show(int $id): void
     {
         $post = $this->post->getPostById($id);
 
@@ -188,11 +186,11 @@ class PostController extends Controller
         ]);
     }
 
-    public function edit(int $id) : void
+    public function edit(int $id): void
     {
         $post = $this->post->getPostById($id);
 
-        if(!$this->security->verifyIdentity($post['user_id'])) {
+        if (!$this->security->verifyIdentity($post['user_id'])) {
             $this->helpers->setPopup('Solo puedes editar tus propios posts');
 
             header('Location: /');
@@ -202,14 +200,14 @@ class PostController extends Controller
             'post' => $post
         ]);
     }
-    
-    public function update(int $id, array $request) : void
+
+    public function update(int $id, array $request): void
     {
         $this->security->verifyCsrf($request['csrf'] ?? '');
 
         $post = $this->post->getPostById($id);
 
-        if(!$this->security->verifyIdentity($post['user_id'])) {
+        if (!$this->security->verifyIdentity($post['user_id'])) {
             $this->helpers->setPopup('Solo puedes editar tus propios posts');
 
             header('Location: /');
@@ -248,7 +246,7 @@ class PostController extends Controller
         } else {
             $storage_dir = "imgs/thumbs/";
             $file = $storage_dir . basename($thumb["name"]);
-            $extension = strtolower(pathinfo($file,PATHINFO_EXTENSION));
+            $extension = strtolower(pathinfo($file, PATHINFO_EXTENSION));
             $size = $_FILES['thumb']['size'];
             $imageInfo = getimagesize($_FILES['thumb']['tmp_name']);
 
@@ -271,7 +269,7 @@ class PostController extends Controller
 
             $sourcePath = 'D:/Programs/Apache/Apache24/htdocs/blog/public/imgs/thumbs/' . $new_thumb_name . '.' . $extension;
             $destinationPath = 'D:/Programs/Apache/Apache24/htdocs/blog/public/imgs/thumbs/' . $new_thumb_name . '2.webp';
-    
+
             $imgError = $this->helpers->processImage($sourcePath, $destinationPath);
         }
 
@@ -292,15 +290,15 @@ class PostController extends Controller
         header('Location: /post/' . $post['id']);
     }
 
-    public function delete(array $request) : void
+    public function delete(array $request): void
     {
         $this->security->verifyCsrf($request['csrf'] ?? '');
-        
+
         $id = $request['post_id'];
 
         $post = $this->post->getPostById($id);
 
-        if(!$this->security->verifyIdentity($post['user_id'])) {
+        if (!$this->security->verifyIdentity($post['user_id'])) {
             $this->helpers->setPopup('Solo puedes eliminar tus propios posts');
 
             header('Location: /');

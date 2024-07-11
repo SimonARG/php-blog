@@ -2,7 +2,6 @@
 
 namespace App\Controllers;
 
-use DateTime;
 use App\Models\Post;
 use App\Models\User;
 use App\Models\Comment;
