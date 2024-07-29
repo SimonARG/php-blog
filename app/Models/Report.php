@@ -167,7 +167,7 @@ class Report extends Model
         return $result ? $result : false;
     }
 
-    public function getReportCount() : array|null
+    public function getReportCount() : int|null
     {
         $sql = "SELECT COUNT(*) FROM reports";
         $result = $this->db->fetch($sql)['COUNT(*)'];
@@ -175,7 +175,7 @@ class Report extends Model
         return $result ? $result : false;
     }
 
-    public function getUnreviewedReportCount() : array|null
+    public function getUnreviewedReportCount() : int|null
     {
         $sql = "SELECT COUNT(*) FROM reports WHERE reviewed = 0";
         $result = $this->db->fetch($sql)['COUNT(*)'];
