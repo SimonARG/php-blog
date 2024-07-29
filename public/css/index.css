@@ -475,7 +475,7 @@ body {
 .body-container {
   position: fixed;
   overflow-y: scroll;
-  max-height: calc(100% - 4.8rem - 4px);
+  max-height: calc(100% - 4.8rem - 4px); /* Full height - header height - header margins*/
   transition: bottom .2s, transform .2s;
   bottom: 0;
   max-width: 100%;
@@ -611,10 +611,15 @@ header {
 |------------------------------------------------------------
 */
 
+.index {
+  grid-area: index;
+}
+
 .index > .post {
   background-color: var(--panel-bg);
   margin-bottom: 2px;
   padding: .6rem 1rem 1.6rem 1rem;
+  position: relative;
 }
 
 .index > .post > .menu {
@@ -696,6 +701,7 @@ header {
 .index > .post > .post-container .body {
   margin-bottom: .5rem;
   text-align: left;
+  width: min(100%, 600px);
 }
 
 .index > .post *:not(.body, .body *) {
@@ -703,9 +709,10 @@ header {
 }
 
 .index > .post > .post-container .thumb {
-  margin: .7rem 0;
+  margin: .7rem auto;
   border: 1px solid white;
   display: flex;
+  width: min(100%, 600px);
 }
 
 .index > .post > .post-container  img {
@@ -774,6 +781,7 @@ header {
   display: flex;
   justify-content: center;
   margin-bottom: 2px;
+  grid-area: pag;
 }
 
 .pagination > a {
@@ -1094,7 +1102,49 @@ header {
 |------------------------------------------------------------
 */
 
-.sidebar {
+.sidebar:not(.pop) {
+  background-color: var(--panel-bg);
+  padding: 1.2rem;
+  margin-bottom: 2px;
+  display: none;
+  grid-area: sidebar;
+}
+
+.sidebar .side-btns {
+  display: flex;
+  flex-direction: column;
+  gap: .6rem;
+  user-select: none;
+  margin-bottom: .6rem;
+}
+
+.sidebar .side-btns a,
+.sidebar .form-btn {
+  border: 1px solid white;
+  padding: .6rem;
+  text-align: center;
+  font-size: .9rem;
+  cursor: pointer;
+}
+
+.sidebar .searchbar {
+  background-color: transparent;
+  border: 1px solid white;
+  padding: .5rem .5rem;
+  font-size: .9rem;
+  width: 100%;
+}
+
+.sidebar .search-btn {
+  border: 1px solid white;
+  border-left: none;
+  font-size: .9rem;
+  padding: .5rem;
+  cursor: pointer;
+  width: calc(.9rem + (.9rem / 10 * 4) + .5rem * 2 + 2px); /* font-size + (line-height) + y-padding * 2 + 2px */
+}
+
+.sidebar.pop {
   transform: scalex(0%);
   transform-origin: right;
   position: fixed;
@@ -1107,7 +1157,7 @@ header {
   bottom: calc(-4.8rem - 4px);
 }
 
-.sidebar .side-btns {
+.sidebar.pop .side-btns {
   display: flex;
   flex-direction: column;
   gap: .6rem;
@@ -1119,8 +1169,8 @@ header {
   width: 100%;
 }
 
-.side-btns a,
-.form-btn {
+.sidebar.pop .side-btns a,
+.sidebar.pop .form-btn {
   border: 1px solid white;
   padding: .8rem;
   text-align: center;
@@ -1142,7 +1192,7 @@ header {
   display: flex;
 }
 
-.searchbar {
+.sidebar.pop .searchbar {
   background-color: transparent;
   border: 1px solid white;
   padding: .7rem .5rem;
@@ -1150,13 +1200,13 @@ header {
   width: 100%;
 }
 
-.search-btn {
+.sidebar.pop .search-btn {
   border: 1px solid white;
   border-left: none;
   font-size: 1.2rem;
   padding: .7rem .5rem;
   cursor: pointer;
-  width: calc(1.2rem + (1.2rem / 10 * 4) + .7rem * 2 + 2px);
+  width: calc(1.2rem + (1.2rem / 10 * 4) + .7rem * 2 + 2px); /* font-size + (line-height) + y-padding * 2 + 2px */
 }
 
 .searchbar:hover,
@@ -1751,4 +1801,123 @@ footer span {
 
 footer a:hover {
   text-decoration: underline;
+}
+
+/*
+|------------------------------------------------------------
+| Media queries
+|------------------------------------------------------------
+*/
+
+@media screen and (min-width: 600px) {
+  :root {
+    font-size: 17px;
+  }
+}
+
+/* Large screens */
+@media screen and (min-width: 900px) {
+  :root {
+    font-size: 18px;
+  }
+  .page-title {
+    font-size: 1.6rem;
+  }
+  .menu-btn, .sidebar-btn {
+    display: none;
+  }
+  .nav-menu {
+    transform: scaleX(100%);
+  }
+  .nav-menu > ul {
+    display: flex;
+    gap: 2.5px;
+  }
+  .nav-menu > ul > li {
+    width: 20%;
+    font-size: .9rem;
+  }
+  .body-container {
+    max-height: calc(100% - 4.24rem - 2.06rem - 6px); /* Full height - header height - navbar height - header margins*/
+  }
+  .nav-menu > ul li a {
+    padding: .4rem 0;
+  }
+  .sidebar:not(.pop) {
+    display: block;
+  }
+  .body-container > div {
+    display: grid;
+    grid-template-areas:
+      "index sidebar"
+      "pag pag";
+    grid-template-columns: calc(80% - .5px) 1fr;
+    column-gap: 2.5px;
+  }
+  .sidebar.pop {
+    display: none;
+  }
+  .pagination a {
+    font-size: 1.1rem;
+    padding: .3rem;
+    width: 2rem;
+  }
+  footer {
+    font-size: .9rem;
+    gap: 1.2rem;
+    padding: .7rem;
+  }
+  .index > .post > .post-container .body {
+    text-align: left;
+    margin: .3rem auto .7rem auto;
+    font-size: .9rem;
+  }
+  .index > .post > .post-container .date {
+    font-size: .7rem;
+  }
+  .index > .post > .post-container .title {
+    font-size: 1.1rem;
+  }
+  .index > .post > .post-container .subtitle {
+    font-size: .82rem;
+  }
+  .index > .post > .post-container .poster {
+    font-size: .75rem;
+  }
+  .index > .post > .post-container .thumb {
+    margin: .3rem auto .7rem auto;
+  }
+  .continue {
+    font-size: .7rem;
+  }
+  .index > .post > .menu {
+    left: 3%;
+  }
+  .single > .post .title {
+    font-size: 1.1rem;
+    margin-bottom: 0;
+  }
+  .single > .post .subtitle {
+    font-size: .82rem;
+    margin-bottom: .1rem;
+  }
+  .single > .post .poster {
+    font-size: .75rem;
+  }
+  .single > .post > .thumb {
+    margin: .3rem auto .7rem auto;
+    width: 70%;
+  }
+  .single > .post > .body {
+    width: 85%;
+    font-size: .9rem;
+    margin: 0 auto 1.5rem auto;
+  }
+}
+
+/* Extra large screens */
+@media screen and (min-width: 1200px) {
+  :root {
+    font-size: 19px;
+  }
 }

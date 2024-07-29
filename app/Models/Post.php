@@ -98,7 +98,7 @@ class Post extends Model
         return $result ? $result : false;
     }
 
-    public function update(array $data, int $id) : array|bool
+    public function update(array $data, int $id) : object|bool
     {
         $sql = "UPDATE posts SET title = :title, subtitle = :subtitle, thumb = :thumb, body = :body WHERE id = :id";
 

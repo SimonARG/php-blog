@@ -139,8 +139,8 @@ class PostController extends Controller
         $dbEntry['user_id'] = $cleanRequest['user_id'];
 
         $this->post->create($dbEntry);
-        $postId = $this->post->getPostByTitle($request['title'])['id'];
 
+        $postId = $this->post->getPostByTitle($request['title'])['id'];
 
         if (!$postId) {
             $this->helpers->setPopup('Error al procesar la imagen');
@@ -188,13 +188,21 @@ class PostController extends Controller
 
     public function edit(int $id): void
     {
-        $post = $this->post->getPostById($id);
-
-        if (!$this->security->verifyIdentity($post['user_id'])) {
+        if (!$this->security->verifyIdentity($id)) {
             $this->helpers->setPopup('Solo puedes editar tus propios posts');
 
             header('Location: /');
         }
+
+        if (!$this->security->canPost()) {
+            $this->helpers->setPopup('Operacion no autorizada');
+
+            header('Location: /');
+
+            return;
+        }
+
+        $post = $this->post->getPostById($id);
 
         $this->helpers->view('posts.edit', [
             'post' => $post
@@ -203,86 +211,79 @@ class PostController extends Controller
 
     public function update(int $id, array $request): void
     {
-        $this->security->verifyCsrf($request['csrf'] ?? '');
-
-        $post = $this->post->getPostById($id);
-
-        if (!$this->security->verifyIdentity($post['user_id'])) {
+        if (!$this->security->verifyIdentity($id)) {
             $this->helpers->setPopup('Solo puedes editar tus propios posts');
 
             header('Location: /');
         }
 
-        // Sanitize
-        $title = htmlspecialchars($request['title']);
-        $subtitle = htmlspecialchars($request['subtitle']);
+        if (!$this->security->canPost()) {
+            $this->helpers->setPopup('Operacion no autorizada');
+
+            header('Location: /');
+
+            return;
+        }
+
+        if (!$this->security->verifyCsrf($request['csrf'] ?? '')) {
+            $this->helpers->setPopup('Operacion no autorizada');
+
+            header('Location: /');
+
+            return;
+        }
+
+        $post = $this->post->getPostById($id);
         $thumb = $_FILES['thumb']['name'] ? $_FILES['thumb'] : NULL;
-        $body = $request['body'];
 
-        // Validate title
-        if (strlen($title) < 4) {
-            $errors['title_error'] = 'El titulo es demasiado corto';
-        } elseif (strlen($title) > 40) {
-            $errors['title_error'] = 'El titulo es demasiado largo';
-        }
+        $result = $this->service->sanitizeAndValidate($request);
 
-        // Validate subtitle
-        if (strlen($subtitle) < 4) {
-            $errors['subtitle_error'] = 'El subtitulo es demasiado corto';
-        } elseif (strlen($subtitle) > 50) {
-            $errors['subtitle_error'] = 'El subtitulo es demasiado largo';
-        }
-
-        // Validate body
-        if (strlen($body) < 10) {
-            $errors['body_error'] = 'El cuerpo es demasiado corto';
-        } elseif (strlen($body) > 40000) {
-            $errors['body_error'] = 'El cuerpo es demasiado largo';
-        }
+        $cleanRequest = $result['sanitized_request'];
+        $requestErrors = $result['errors'];
 
         // Validate thumb
+        $thumbErrors = [];
         if (!$thumb) {
             $dbEntry['thumb'] = $post['thumb'];
         } else {
-            $storage_dir = "imgs/thumbs/";
-            $file = $storage_dir . basename($thumb["name"]);
-            $extension = strtolower(pathinfo($file, PATHINFO_EXTENSION));
-            $size = $_FILES['thumb']['size'];
-            $imageInfo = getimagesize($_FILES['thumb']['tmp_name']);
-
-            // Define allowed mime types and maximum file size
-            $allowedMimeTypes = ['jpeg', 'png', 'jfif', 'avif', 'webp', 'jpg'];
-            $maxFileSize = 40 * 1024 * 1024; // 40 MB in bytes
-
-            if ($size > $maxFileSize) {
-                $errors['thumb_error'] = 'La imagen pesa mas que 40MB';
-            } else if (!in_array($extension, $allowedMimeTypes)) {
-                $errors['thumb_error'] = 'Solo se permiten imagenes jpeg, png, jfif, avif, webp y jpg';
-            } else if ($imageInfo === false) {
-                $errors['thumb_error'] = 'La imagen no es valida';
+            // Check if the image is new or old and process accordingly
+            if (isset($_FILES["thumb"]) && $_FILES["thumb"]["error"] != UPLOAD_ERR_NO_FILE) {
+                $result = $this->service->handleThumb($_FILES["thumb"]);
+                $thumb = $result['new_thumb_name'];
+                $thumbErrors = $result['errors'];
+            } elseif (isset($request['previous_thumb'])) {
+                $thumb = basename($request['previous_thumb']);
             }
-
-            $new_thumb_name = random_int(1000000000000000, 9999999999999999);
-            $dbEntry['thumb'] = $new_thumb_name . '2.webp';
-
-            move_uploaded_file($_FILES["thumb"]["tmp_name"], $storage_dir . $new_thumb_name . '.' . $extension);
-
-            $sourcePath = 'D:/Programs/Apache/Apache24/htdocs/blog/public/imgs/thumbs/' . $new_thumb_name . '.' . $extension;
-            $destinationPath = 'D:/Programs/Apache/Apache24/htdocs/blog/public/imgs/thumbs/' . $new_thumb_name . '2.webp';
-
-            $imgError = $this->helpers->processImage($sourcePath, $destinationPath);
         }
+
+        // Merge request and file errors
+        $errors = array_merge($requestErrors, $thumbErrors);
 
         // Return errors if any
         if (!empty($errors)) {
-            $this->helpers->view('posts.edit', ['request' => $request, 'errors' => $errors]);
+            $storageDir = "imgs/thumbs/"; // Set storage directory
+
+            if ($thumb) {
+                $request['thumb'] = $storageDir . $thumb;
+            } elseif (isset($request['previous_thumb'])) {
+                $request['thumb'] = $request['previous_thumb'];
+            } else {
+                $request['thumb'] = $post['thumb'];
+            }
+
+            $this->helpers->view('posts.edit', ['post' => $post, 'request' => $request, 'errors' => $errors]);
+
+            return;
         }
 
-        $dbEntry['title'] = $title;
-        $dbEntry['subtitle'] = $subtitle;
-        $dbEntry['body'] = $body;
+        $dbEntry['title'] = $cleanRequest['title'];
+        $dbEntry['subtitle'] = $cleanRequest['subtitle'];
+        $dbEntry['thumb'] = $thumb . '2.webp';
+        $dbEntry['body'] = $cleanRequest['body'];
+        $dbEntry['user_id'] = $cleanRequest['user_id'];
 
         $this->post->update($dbEntry, $id);
+
         $post = $this->post->getPostById($id);
 
         $this->helpers->setPopup('Post editado');

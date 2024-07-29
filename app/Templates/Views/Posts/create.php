@@ -8,26 +8,27 @@
     <label for="subtitle">Subtitulo</label>
     <input class="subtitle" minlength="4" maxlength="50" required type="text" id="subtitle" name="subtitle" <?php if (isset($errors['subtitle_error'])) : ?> <?= "placeholder='" . $errors['subtitle_error'] . "'" ?> <?= "class='subtitle ph-error'" ?> <?php else : ?> <?php if (isset($errors)) : ?> <?= "value='" . $request['subtitle'] . "'" ?> <?php else : ?> <?= "placeholder='Subtitulo' class='subtitle'" ?> <?php endif; ?> <?php endif; ?>>
 
-      <label for="thumb">Miniatura</label>
-<div class="file-up">
-  <label class="btn file-up-btn" for="thumb">🡅</label>
-  <input type="text" required 
-    <?php if (isset($errors['thumb_error'])) : ?>
-      <?= "placeholder='" . $errors['thumb_error'] . "'" ?>
-      <?= "class='file-up-field ph-error'" ?>
-    <?php else : ?>
-      <?php if (isset($request['thumb'])) : ?>
-        <?= "value='" . basename($request['thumb']) . "'" ?>
-        <?= "class='file-up-field'" ?>
-      <?php else : ?>
-        <?= "placeholder='imagen.jpg' class='file-up-field'" ?>
-      <?php endif; ?>
-    <?php endif; ?>>
-</div>
-<input type="file" id="thumb" name="thumb" hidden accept=".jpg, .png, .webp, .avif, .jpeg, .jfif">
-<?php if (isset($request['thumb'])) : ?>
-  <input type="hidden" name="previous_thumb" value="<?= $request['thumb'] ?>">
-<?php endif; ?>
+    <label for="thumb">Miniatura</label>
+    <div class="file-up">
+      <label class="btn file-up-btn" for="thumb">🡅</label>
+      <input type="text" required 
+        <?php if (isset($errors['thumb_error'])) : ?>
+          <?= "placeholder='" . $errors['thumb_error'] . "'" ?>
+          <?= "class='file-up-field ph-error'" ?>
+        <?php else : ?>
+          <?php if (isset($request['thumb'])) : ?>
+            <?= "value='" . basename($request['thumb']) . "'" ?>
+            <?= "class='file-up-field'" ?>
+          <?php else : ?>
+            <?= "placeholder='imagen.jpg' class='file-up-field'" ?>
+          <?php endif; ?>
+        <?php endif; ?>
+      >
+    </div>
+    <input type="file" id="thumb" name="thumb" hidden accept=".jpg, .png, .webp, .avif, .jpeg, .jfif">
+    <?php if (isset($request['thumb'])) : ?>
+      <input type="hidden" name="previous_thumb" value="<?= $request['thumb'] ?>">
+    <?php endif; ?>
 
     <div class="editor-tabs">
       <a class="tab input-tab active">

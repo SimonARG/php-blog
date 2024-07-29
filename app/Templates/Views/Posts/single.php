@@ -65,26 +65,30 @@
 
         <div class="comment" id="<?= 'comment-' . $index + 1 ?>">
           <div class="dropdown">
-            <form class="edit" action="<?= '/comments/update/' . $comment['id'] ?>" method="POST">
-              <input type="hidden" name="csrf" value="<?php echo $_SESSION['csrf'] ?? '' ?>">
+            <?php if ($_SESSION['user_id'] == $comment['user_id'] || ($_SESSION['role'] == 'mod' || $_SESSION['role'] == 'admin')): ?>
+              <form class="edit" action="<?= '/comments/update/' . $comment['id'] ?>" method="POST">
+                <input type="hidden" name="csrf" value="<?php echo $_SESSION['csrf'] ?? '' ?>">
 
-              <textarea name="body" id="body"><?= $comment['body'] ?></textarea>
-              <input type="hidden" name="post_id" value="<?= $post['id'] ?>">
-              <input type="hidden" name="comment_id" value="<?= $comment['id'] ?>">
-              <input class="btn" type="submit" value="Editar">
-            </form>
+                <textarea name="body" id="body"><?= $comment['body'] ?></textarea>
+                <input type="hidden" name="post_id" value="<?= $post['id'] ?>">
+                <input type="hidden" name="comment_id" value="<?= $comment['id'] ?>">
+                <input class="btn" type="submit" value="Editar">
+              </form>
+            <?php endif; ?>
 
             <div class="report-btn btn">Reportar</div>
 
-            <form class="del" action="/comments/delete" method="POST">
-              <input type="hidden" name="csrf" value="<?php echo $_SESSION['csrf'] ?? '' ?>">
+            <?php if ($_SESSION['user_id'] == $comment['user_id'] || ($_SESSION['role'] == 'mod' || $_SESSION['role'] == 'admin')): ?>
+              <form class="del" action="/comments/delete" method="POST">
+                <input type="hidden" name="csrf" value="<?php echo $_SESSION['csrf'] ?? '' ?>">
 
-              <input type="hidden" name="post_id" value="<?= $post['id'] ?>">
-              <input type="hidden" name="comment_id" value="<?= $comment['id'] ?>">
-              <input class="btn" type="submit" value="Eliminar">
-            </form>
+                <input type="hidden" name="post_id" value="<?= $post['id'] ?>">
+                <input type="hidden" name="comment_id" value="<?= $comment['id'] ?>">
+                <input class="btn" type="submit" value="Eliminar">
+              </form>
+            <?php endif; ?>
           </div>
-          <?php if ($_SESSION && (($_SESSION['user_id'] == $comment['user_id']) || $_SESSION['role'] == 'admin' || $_SESSION['role'] == 'mod')): ?>
+          <?php if ($_SESSION && !($_SESSION['role'] == 'restricted' || $_SESSION['role'] == 'banned')): ?>
             <div class="arrow">⯆</div>
           <?php endif; ?>
 

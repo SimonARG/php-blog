@@ -1,33 +1,38 @@
+<?php print_r($request)?>
 <div class="edit-post">
   <form enctype="multipart/form-data" class="update-post-form" action="<?= '/post/update/' . $post['id'] ?>" method="POST">
     <input type="hidden" name="csrf" value="<?php echo $_SESSION['csrf'] ?? '' ?>">
 
     <label for="title">Titulo</label>
-    <input minlength="4" maxlength="40" required type="text" class="title" id="title" name="title"
+    <input minlength="4" maxlength="40" required type="text" id="title" name="title"
     <?php if (isset($errors['title_error'])): ?>
       <?= "placeholder='" . $errors['title_error'] . "'" ?>
-      <?= "class='ph-error'" ?>
+      <?= "class='title ph-error'" ?>
     <?php else: ?>
       <?php if (isset($errors)): ?>
         <?= "value='" . $request['title'] . "'" ?>
+        <?= "class='title'" ?>
       <?php else: ?>
         <?= "placeholder='Titulo'" ?>
         <?= "value='" . $post['title'] . "'" ?>
+        <?= "class='title'" ?>
       <?php endif; ?>
     <?php endif; ?>
     >
 
     <label for="subtitle">Subtitulo</label>
-    <input class="subtitle" minlength="4" maxlength="50" required type="text" id="subtitle" name="subtitle"
+    <input minlength="4" maxlength="50" required type="text" id="subtitle" name="subtitle"
     <?php if (isset($errors['subtitle_error'])): ?>
       <?= "placeholder='" . $errors['subtitle_error'] . "'" ?>
       <?= "class='subtitle ph-error'" ?>
     <?php else: ?>
       <?php if (isset($errors)): ?>
         <?= "value='" . $request['subtitle'] . "'" ?>
+        <?= "class='subtitle'" ?>
       <?php else: ?>
         <?= "placeholder='Subtitulo' class='subtitle'" ?>
         <?= "value='" . $post['subtitle'] . "'" ?>
+        <?= "class='subtitle'" ?>
       <?php endif; ?>
     <?php endif; ?>
     >
@@ -42,6 +47,7 @@
       <?php else: ?>
         <?php if (isset($errors)): ?>
           <?= "value='" . basename($request['thumb']) . "'" ?>
+          <?= "class='file-up-field'" ?>
         <?php else: ?>
           <?= "placeholder='imagen.jpg' class='file-up-field'" ?>
           <?= "value='" . $post['thumb'] . "'" ?>
@@ -50,6 +56,9 @@
       >
     </div>
     <input type="file" id="thumb" name="thumb" hidden accept=".jpg, .png, .webp, .avif, .jpeg, .jfif">
+    <?php if (isset($request['thumb'])) : ?>
+      <input type="hidden" name="previous_thumb" value="<?= $request['thumb'] ?>">
+    <?php endif; ?>
 
     <div class="editor-tabs">
       <a class="tab input-tab active">
