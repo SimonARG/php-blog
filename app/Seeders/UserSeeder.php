@@ -9,17 +9,19 @@ use App\Factories\UserFactory;
 class UserSeeder extends Seeder
 {
     protected $userModel;
+    protected $userFactory;
 
     public function __construct()
     {
         parent::__construct();
         $this->userModel = new User();
+        $this->userFactory = new UserFactory();
     }
 
     public function run()
     {
         for ($i = 0; $i < 14; $i++) {
-            $user = UserFactory::create();
+            $user = $this->userFactory->create();
             $sql = "INSERT INTO users (name, email, password, avatar) VALUES (:name, :email, :password, :avatar)";
             $this->db->query($sql, $user);
         }

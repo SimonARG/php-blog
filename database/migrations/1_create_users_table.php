@@ -36,5 +36,7 @@ class CreateUsersTable
         $db->query($sql);
         $sql = "DROP TABLE IF EXISTS role_user";
         $db->query($sql);
+        $sql = "DROP TABLE IF EXISTS users";
+        $db->query($sql);
     }
 }

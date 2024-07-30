@@ -10,8 +10,9 @@ use App\Seeders\ReportsSeeder;
 use App\Seeders\RoleUserSeeder;
 use App\Seeders\ConsequencesSeeder;
 use App\Seeders\ReportedResourcesSeeder;
+use App\Seeders\ConfigSeeder;
 
-echo "Which seeder do you want to run? (1: All, 2: Users, 3: Posts, 4: Roles, 5: Comments, 6: Role_User, 7: Consequences): ";
+echo "Which seeder do you want to run? (1: All, 2: Users, 3: Posts, 4: Roles, 5: Comments, 6: Role_User, 7: Consequences, 8: Config): ";
 $handle = fopen("php://stdin", "r");
 $choice = trim(fgets($handle));
 
@@ -48,6 +49,10 @@ switch ($choice) {
         $reportsSeeder = new ReportsSeeder();
         $reportsSeeder->run();
         echo "Reports seeded successfully.\n";
+
+        $configSeeder = new ConfigSeeder();
+        $configSeeder->run();
+        echo "Config seeded successfully.\n";
         break;
     case '2':
         $userSeeder = new UserSeeder();
@@ -89,6 +94,10 @@ switch ($choice) {
         $reportsSeeder->run();
         echo "reports seeded successfully.\n";
         break;
+    case '10':
+        $configSeeder = new ConfigSeeder();
+        $configSeeder->run();
+        echo "Config seeded successfully.\n";
     default:
         echo "Invalid choice.\n";
         break;

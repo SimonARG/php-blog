@@ -16,10 +16,7 @@ class User extends Model
 
     public function getUserByEmail(string $email) : array|bool
     {
-        $sql = "SELECT users.*, roles.role AS role 
-        FROM users
-        INNER JOIN role_user ON users.id = role_user.user_id
-        INNER JOIN roles ON role_user.role_id = roles.id
+        $sql = "SELECT users.* FROM users
         WHERE users.email = :email";
 
         $result = $this->db->fetch($sql, [

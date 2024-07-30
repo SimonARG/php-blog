@@ -24,7 +24,11 @@ class CreatePostsTable
     public function down()
     {
         $db = $GLOBALS['db'];
+        $sql = "DROP TABLE IF EXISTS comments";
+        $db->query($sql);
         $sql = "DROP TABLE IF EXISTS users";
+        $db->query($sql);
+        $sql = "DROP TABLE IF EXISTS posts";
         $db->query($sql);
     }
 }

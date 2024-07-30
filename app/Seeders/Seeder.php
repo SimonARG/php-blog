@@ -2,6 +2,8 @@
 
 namespace App\Seeders;
 
+require_once __DIR__ . '/../bootstrap.php';
+
 class Seeder
 {
     protected $db;

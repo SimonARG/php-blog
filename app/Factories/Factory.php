@@ -2,7 +2,7 @@
 
 namespace App\Factories;
 
-use Faker\Generator;
+use Faker\Factory as Generator;
 
 class Factory
 {
@@ -10,6 +10,6 @@ class Factory
 
     public function __construct()
     {
-        $this->faker = new Generator();
+        $this->faker = Generator::create();
     }
 }
