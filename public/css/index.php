@@ -1,3 +1,7 @@
+<?php
+header("Content-type: text/css");
+?>
+
 :root {
   font-size: 16px;
   --panel-bg: rgba(0, 0, 0, 0.555);
@@ -1901,6 +1905,7 @@ footer a:hover {
   }
   .index > .post > .menu {
     left: 3%;
+    margin: -.4rem;
   }
   .single > .post .title {
     font-size: 1.1rem;

@@ -4,13 +4,26 @@ namespace App\Helpers;
 
 use DateTime;
 use InvalidArgumentException;
+use App\Models\Blog;
 
 class Helpers
 {
+    protected $blogModel;
+    protected $blogConfig;
+
+    public function __construct()
+    {
+        $this->blogModel = new Blog();
+        $this->blogConfig = $this->blogModel->getBlogConfig();
+    }
+
     public function view(string $viewName, array $data = []) : void
     {
         // Extract data to variables
         extract($data);
+
+        // Add blogConfig to views
+        $blogConfig = $this->blogConfig;
 
         // Capture the view output
         ob_start();

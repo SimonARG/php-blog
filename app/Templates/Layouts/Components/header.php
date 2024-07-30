@@ -3,7 +3,7 @@
     <span class="material-symbols-rounded pos-ab menu-btn point no-select">menu</span>
     <div class="flex-r f-al-cent f-just-cent">
       <div class="page-title">
-        <a href="/">Muerte Termica</a>
+        <a href="/"><?= $blogConfig['title'] ?></a>
       </div>
     </div>
     <span class="material-symbols-rounded pos-ab sidebar-btn point no-select">menu</span>
