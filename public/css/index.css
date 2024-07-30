@@ -1,16 +1,8 @@
-<?php
-header("Content-type: text/css");
-?>
-
 :root {
   font-size: 16px;
-  --panel-bg: rgba(0, 0, 0, 0.555);
-  --panel-h: rgba(146, 146, 146, 0.24);
-  --panel-a: rgba(175, 175, 175, 0.24);
   --black-panel-h: rgb(141, 141, 141);
   --pag-h: rgba(50, 50, 50, 0.622);
   --pag-a: rgba(86, 86, 86, 0.668);
-  --text-2: rgb(196, 196, 196);
   --solid-h: rgb(70, 70, 70);
   --blue: rgb(45, 45, 180);
   --red: rgb(178, 46, 46);
@@ -460,7 +452,7 @@ textarea:hover {
 
 body {
   font-family: "Noto Sans", sans-serif;
-  background-image: url('../imgs/blog/bg.avif');
+  /* background-image: url('../imgs/blog/bg.avif'); */
   /* background-color: blue; */
   background-position: center;
   background-repeat: no-repeat;
@@ -470,7 +462,6 @@ body {
   font-optical-sizing: auto;
   font-variation-settings:
     "wdth" 88;
-  color: white;
   min-height: 100vh;
   padding: 2px;
   overflow-y: hidden;
@@ -765,10 +756,6 @@ header {
   margin-bottom: 2px;
 }
 
-.index > .post > .post-container a {
-  color: white;
-}
-
 .index > .post > .post-container > .body img {
   display: none;
 }
@@ -847,10 +834,6 @@ header {
   font-weight: 200;
   text-wrap: balance;
   color: var(--text-2);
-}
-
-.single > .post .poster a {
-  color: white;
 }
 
 .single > .post .poster a:hover {
@@ -1662,7 +1645,6 @@ input:-webkit-autofill:active{
 .single > .user > .comments > a:hover,
 .single > .user > .saved-posts:hover {
   text-decoration: underline 1px;
-  color: white;
 }
 
 .single > .user > .posts,

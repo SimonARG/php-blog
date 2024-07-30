@@ -15,7 +15,7 @@
       </form>
 
       <?php if ($_SESSION['role'] == 'admin' || $_SESSION['role'] == 'mod'): ?>
-        <a href="/admin/reports">Admin Panel</a>
+        <a href="/admin/reports">Mod Panel</a>
       <?php endif; ?>
     <?php endif; ?>
   </div>

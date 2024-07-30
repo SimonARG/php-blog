@@ -15,7 +15,7 @@
 
   <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Rounded:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200&display=block" />
 
-  <link rel="stylesheet" href="/css/index.php">
+  <link rel="stylesheet" href="/css/index.css">
 
   <?php if(isset($posts) && $posts): ?>
     <?php foreach($posts as $key => $post): ?>
@@ -24,4 +24,24 @@
   <?php endif; ?>
 
   <title>Blog</title>
+
+  <style>
+    :root {
+      --panel-bg: <?= $blogConfig['panel_color'] ?>;
+      --panel-h: <?= $blogConfig['panel_hover'] ?>;
+      --panel-a: <?= $blogConfig['panel_active'] ?>;
+      --text-2: <?= $blogConfig['text_dim'] ?>;
+    }
+    body {
+      background-color: <?= $blogConfig['bg_color'] ?>;
+    }
+    body,
+    .index > .post > .post-container a,
+    .single > .post .poster a,
+    .single > .user > .posts > a:hover,
+    .single > .user > .comments > a:hover,
+    .single > .user > .saved-posts:hover {
+      color: <?= $blogConfig['text_color'] ?>;
+    }
+  </style>
 </head>

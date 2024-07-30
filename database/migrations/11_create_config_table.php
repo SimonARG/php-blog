@@ -13,6 +13,9 @@ class CreateConfigTable
             bg_color VARCHAR(60) DEFAULT NULL,
             text_color VARCHAR(60),
             panel_color VARCHAR(60),
+            panel_hover VARCHAR(60),
+            panel_active VARCHAR(60),
+            text_dim VARCHAR(60),
             info VARCHAR(4000)
         )";
 
