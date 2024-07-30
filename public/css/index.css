@@ -1887,8 +1887,17 @@ footer a:hover {
   .index > .post > .post-container .thumb {
     margin: .3rem auto .7rem auto;
   }
+  .index > .post > .post-container hr {
+    margin-bottom: 0;
+  }
   .continue {
     font-size: .7rem;
+  }
+  .index .comment-count span {
+    font-size: 1.6rem;
+  }
+  .index .comment-count div {
+    font-size: 1.1rem;
   }
   .index > .post > .menu {
     left: 3%;

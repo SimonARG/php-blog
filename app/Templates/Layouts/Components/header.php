@@ -2,7 +2,9 @@
   <div>
     <span class="material-symbols-rounded pos-ab menu-btn point no-select">menu</span>
     <div class="flex-r f-al-cent f-just-cent">
-      <span class="page-title">Muerte Termica</span>
+      <div class="page-title">
+        <a href="/">Muerte Termica</a>
+      </div>
     </div>
     <span class="material-symbols-rounded pos-ab sidebar-btn point no-select">menu</span>
 
