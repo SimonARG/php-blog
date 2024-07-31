@@ -156,19 +156,21 @@ class UserController extends Controller
         $user = $this->helpers->formatDates($user);
 
         // Perform current password validation
-        if (!password_verify($password, $user['password'])) {
-            $errors['password_error'] = 'Contraseña incorrecta';
+        if (!$this->security->isElevatedUser()) {
+            if (!password_verify($password, $user['password'])) {
+                $errors['password_error'] = 'Contraseña incorrecta';
 
-            $this->helpers->view('users.single', [
-                'user' => $user,
-                'lastPostId' => $lastPostId,
-                'lastCommentPostId' => $lastCommentPostId,
-                'errors' => $errors,
-                'old' => $request,
-                'savedPosts' => $savedPosts
-            ]);
+                $this->helpers->view('users.single', [
+                    'user' => $user,
+                    'lastPostId' => $lastPostId,
+                    'lastCommentPostId' => $lastCommentPostId,
+                    'errors' => $errors,
+                    'old' => $request,
+                    'savedPosts' => $savedPosts
+                ]);
 
-            return;
+                return;
+            }
         }
     
         // Validate name

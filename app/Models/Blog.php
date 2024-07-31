@@ -13,7 +13,7 @@ class Blog extends Model
 
     public function getBlogConfig() : array|int
     {
-        $sql = "SELECT * FROM config";
+        $sql = "SELECT * FROM config;";
         $result = $this->db->fetch($sql);
 
         return $result ? $result : 0;
@@ -21,15 +21,15 @@ class Blog extends Model
 
     public function getContacts() : array|int
     {
-        $sql = "SELECT * FROM contacts;";
+        $sql = "SELECT * FROM contact;";
         $result = $this->db->fetchAll($sql);
 
         return $result ? $result : 0;
     }
 
-    public function getOtherBlogs() : array|int
+    public function getFriends() : array|int
     {
-        $sql = "SELECT * FROM other_blogs;";
+        $sql = "SELECT * FROM friends;";
         $result = $this->db->fetchAll($sql);
 
         return $result ? $result : 0;

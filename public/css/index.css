@@ -1768,6 +1768,140 @@ input:-webkit-autofill:active{
 
 /*
 |------------------------------------------------------------
+| Contact
+|------------------------------------------------------------
+*/
+
+.contacts-container {
+  background-color: var(--panel-bg);
+  min-height: 96vh;
+  margin-bottom: 2px;
+  padding: .6rem 1rem;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.contacts-container > div {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  margin-bottom: .6rem;
+  width: 100%;
+}
+
+.contacts-container > div > hr {
+  background-color: white;
+  width: 100%;
+  margin-top: .3rem;
+}
+
+.contacts-container > div > .email {
+  user-select: all;
+}
+
+.contacts-container > div > a:hover {
+  text-decoration: underline;
+}
+
+/*
+|------------------------------------------------------------
+| Friends
+|------------------------------------------------------------
+*/
+
+.friends-container {
+  background-color: var(--panel-bg);
+  min-height: 96vh;
+  margin-bottom: 2px;
+  padding: .6rem 1rem;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.friends-container > div {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  margin-bottom: .6rem;
+  width: 100%;
+}
+
+.friends-container > div > a {
+  font-size: 1.2rem;
+  margin-bottom: .2rem;
+}
+
+.friends-container > div > div {
+  text-align: center;
+}
+
+.friends-container > div > hr {
+  background-color: white;
+  width: 100%;
+  margin-top: .3rem;
+}
+
+.friends-container > div > a:hover {
+  text-decoration: underline;
+}
+
+/*
+|------------------------------------------------------------
+| Links
+|------------------------------------------------------------
+*/
+
+.links-container {
+  background-color: var(--panel-bg);
+  min-height: 96vh;
+  margin-bottom: 2px;
+  padding: .6rem 1rem;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.links-container > div {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  margin-bottom: .6rem;
+  width: 100%;
+}
+
+.links-container > div > hr {
+  background-color: white;
+  width: 100%;
+  margin-top: .3rem;
+}
+
+.links-container > div > a:hover {
+  text-decoration: underline;
+}
+
+/*
+|------------------------------------------------------------
+| About
+|------------------------------------------------------------
+*/
+
+.about-container {
+  background-color: var(--panel-bg);
+  min-height: 96vh;
+  margin-bottom: 2px;
+  padding: .6rem 1rem;
+}
+
+/*
+|------------------------------------------------------------
+| Settings
+|------------------------------------------------------------
+*/
+
+/*
+|------------------------------------------------------------
 | Footer
 |------------------------------------------------------------
 */

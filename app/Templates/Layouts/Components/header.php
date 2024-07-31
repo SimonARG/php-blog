@@ -3,7 +3,7 @@
     <span class="material-symbols-rounded pos-ab menu-btn point no-select">menu</span>
     <div class="flex-r f-al-cent f-just-cent">
       <div class="page-title">
-        <a href="/"><?= $blogConfig['title'] ?></a>
+        <a href="/" class="no-select"><?= $blogConfig['title'] ?></a>
       </div>
     </div>
     <span class="material-symbols-rounded pos-ab sidebar-btn point no-select">menu</span>
@@ -14,16 +14,16 @@
           <a href="/">Inicio</a>
         </li>
         <li>
-          <a href="/">Contacto</a>
+          <a href="/contact">Contacto</a>
         </li>
         <li>
-          <a href="/">Otros Blogs</a>
+          <a href="/friends">Otros Blogs</a>
         </li>
         <li>
-          <a href="/">Links</a>
+          <a href="/links">Links</a>
         </li>
         <li>
-          <a href="/">Info</a>
+          <a href="/about">Info</a>
         </li>
       </ul>
     </nav>

@@ -3,8 +3,9 @@
 namespace App\Helpers;
 
 use DateTime;
-use InvalidArgumentException;
 use App\Models\Blog;
+use InvalidArgumentException;
+use League\CommonMark\GithubFlavoredMarkdownConverter;
 
 class Helpers
 {
@@ -24,6 +25,10 @@ class Helpers
 
         // Add blogConfig to views
         $blogConfig = $this->blogConfig;
+
+        $converter = new GithubFlavoredMarkdownConverter([]);
+
+        $blogConfig['info'] = $converter->convert($blogConfig['info']);
 
         // Capture the view output
         ob_start();

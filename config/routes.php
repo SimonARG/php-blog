@@ -1,11 +1,12 @@
 <?php
 
-use App\Controllers\CommentController;
 use App\Controllers\AuthController;
+use App\Controllers\BlogController;
 use App\Controllers\PostController;
 use App\Controllers\UserController;
-use App\Controllers\SearchController;
 use App\Controllers\ReportController;
+use App\Controllers\SearchController;
+use App\Controllers\CommentController;
 
 return [
     '/' => PostController::class . '@index',
@@ -39,5 +40,12 @@ return [
     '/comments/delete' => CommentController::class . '@delete',
     // Reports
     '/admin/reports' => ReportController::class . '@index',
-    '/report' => ReportController::class . '@create'
+    '/report' => ReportController::class . '@create',
+    // Admin
+    '/admin/settings' => BlogController::class . '@settings',
+    // Misc
+    '/contact' => BlogController::class . '@contact',
+    '/friends' => BlogController::class . '@friends',
+    '/links' => BlogController::class . '@links',
+    '/about' => BlogController::class . '@about'
 ];

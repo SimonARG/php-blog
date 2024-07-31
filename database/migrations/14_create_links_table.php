@@ -8,7 +8,7 @@ class CreateLinksTable
         $sql = "CREATE TABLE IF NOT EXISTS links (
             id INT AUTO_INCREMENT PRIMARY KEY,
             title VARCHAR(255),
-            URL VARCHAR(255)
+            url VARCHAR(255)
         )";
 
         $db->query($sql);

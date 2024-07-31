@@ -17,6 +17,10 @@
       <?php if ($_SESSION['role'] == 'admin' || $_SESSION['role'] == 'mod'): ?>
         <a href="/admin/reports">Mod Panel</a>
       <?php endif; ?>
+
+      <?php if ($_SESSION['role'] == 'admin'): ?>
+        <a href="/admin/settings">Configuracion</a>
+      <?php endif; ?>
     <?php endif; ?>
   </div>
   

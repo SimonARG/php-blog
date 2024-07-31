@@ -65,7 +65,7 @@
 
         <div class="comment" id="<?= 'comment-' . $index + 1 ?>">
           <div class="dropdown">
-            <?php if ($_SESSION['user_id'] == $comment['user_id'] || ($_SESSION['role'] == 'mod' || $_SESSION['role'] == 'admin')): ?>
+            <?php if ($_SESSION && ($_SESSION['user_id'] == $comment['user_id'] || ($_SESSION['role'] == 'mod' || $_SESSION['role'] == 'admin'))): ?>
               <form class="edit" action="<?= '/comments/update/' . $comment['id'] ?>" method="POST">
                 <input type="hidden" name="csrf" value="<?php echo $_SESSION['csrf'] ?? '' ?>">
 
@@ -78,7 +78,7 @@
 
             <div class="report-btn btn">Reportar</div>
 
-            <?php if ($_SESSION['user_id'] == $comment['user_id'] || ($_SESSION['role'] == 'mod' || $_SESSION['role'] == 'admin')): ?>
+            <?php if ($_SESSION && ($_SESSION['user_id'] == $comment['user_id'] || ($_SESSION['role'] == 'mod' || $_SESSION['role'] == 'admin'))): ?>
               <form class="del" action="/comments/delete" method="POST">
                 <input type="hidden" name="csrf" value="<?php echo $_SESSION['csrf'] ?? '' ?>">
 

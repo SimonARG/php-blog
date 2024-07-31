@@ -6,7 +6,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <meta name="description" content="Blog">
 
-  <link rel="icon" type="image/x-icon" href="imgs/blog/favicon.png">
+  <link rel="icon" type="image/x-icon" href="/imgs/blog/favicon.png">
 
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -33,7 +33,15 @@
       --text-2: <?= $blogConfig['text_dim'] ?>;
     }
     body {
-      background-color: <?= $blogConfig['bg_color'] ?>;
+      <?php if($blogConfig['bg_color']): ?>
+        background-color: <?= $blogConfig['bg_color'] ?>;
+      <?php else: ?>
+        <?php if(preg_match('/http[s]?:\/\//', $blogConfig['bg_image'])): ?>
+          background-image: url("<?= $blogConfig['bg_image'] ?>");
+        <?php else: ?>
+          background-image: url("../imgs/blog/<?= $blogConfig['bg_image'] ?>");
+        <?php endif; ?>
+      <?php endif; ?>
     }
     body,
     .index > .post > .post-container a,

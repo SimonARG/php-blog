@@ -36,7 +36,7 @@ $currUrl = (empty($_SERVER['HTTPS']) ? 'http' : 'https') . "://$_SERVER[HTTP_HOS
 
       <?php require __DIR__ . '/../../Layouts/Components/report.php'; ?>
 
-      <?php if ($_SESSION['role'] == 'admin' || $_SESSION['role'] == 'mod'): ?>
+      <?php if ($_SESSION && ($_SESSION['role'] == 'admin' || $_SESSION['role'] == 'mod')): ?>
         <form class="change-role" autocomplete="off" action="<?= '/user/role/' . $user['id'] ?>" method="POST">
           <input type="hidden" name="csrf" value="<?php echo $_SESSION['csrf'] ?? '' ?>">
 
