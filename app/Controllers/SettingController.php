@@ -6,7 +6,7 @@ use App\Controllers\Controller;
 use App\Models\Blog;
 use App\Services\BlogService;
 
-class BlogController extends Controller
+class SettingController extends Controller
 {
     protected $blog;
     protected $service;
@@ -17,51 +17,6 @@ class BlogController extends Controller
 
         $this->blog = new Blog();
         $this->service = new BlogService();
-    }
-
-    public function contact(): void
-    {
-        $contacts = $this->blog->getContacts();
-
-        if (!$contacts) {
-            $this->helpers->view('blog.contact');
-
-            return;
-        }
-
-        $this->helpers->view('blog.contact', ['contacts' => $contacts]);
-
-        return;
-    }
-
-    public function friends(): void
-    {
-        $friends = $this->blog->getFriends();
-
-        if (!$friends) {
-            $this->helpers->view('blog.friends');
-
-            return;
-        }
-
-        $this->helpers->view('blog.friends', ['friends' => $friends]);
-
-        return;
-    }
-
-    public function links(): void
-    {
-        $links = $this->blog->getLinks();
-
-        if (!$links) {
-            $this->helpers->view('blog.links');
-
-            return;
-        }
-
-        $this->helpers->view('blog.links', ['links' => $links]);
-
-        return;
     }
 
     public function about(): void
@@ -90,6 +45,16 @@ class BlogController extends Controller
 
     public function updateTitle(array $request) : void
     {
+        if (!$this->security->isElevatedUser()) {
+            if ($this->security->verifySession()) {
+                $this->helpers->setPopup('Operacion no autorizada');
+            }
+
+            header('Location: /');
+
+            return;
+        }
+
         $newTitle = $request['title'];
 
         $this->blog->updateTitle($newTitle);
@@ -101,6 +66,16 @@ class BlogController extends Controller
 
     public function updateBgColor(array $request) : void
     {
+        if (!$this->security->isElevatedUser()) {
+            if ($this->security->verifySession()) {
+                $this->helpers->setPopup('Operacion no autorizada');
+            }
+
+            header('Location: /');
+
+            return;
+        }
+
         $newBgColor = $request['bg-color'];
 
         $this->blog->updateBgColor($newBgColor);
@@ -112,6 +87,16 @@ class BlogController extends Controller
 
     public function updateTextColor(array $request) : void
     {
+        if (!$this->security->isElevatedUser()) {
+            if ($this->security->verifySession()) {
+                $this->helpers->setPopup('Operacion no autorizada');
+            }
+
+            header('Location: /');
+
+            return;
+        }
+
         $newTextColor = $request['text-color'];
 
         $this->blog->updateTextColor($newTextColor);
@@ -123,6 +108,16 @@ class BlogController extends Controller
 
     public function updateTextDim(array $request) : void
     {
+        if (!$this->security->isElevatedUser()) {
+            if ($this->security->verifySession()) {
+                $this->helpers->setPopup('Operacion no autorizada');
+            }
+
+            header('Location: /');
+
+            return;
+        }
+
         $newTextDim = $request['text-dim'];
 
         $this->blog->updateTextDim($newTextDim);
@@ -134,6 +129,16 @@ class BlogController extends Controller
 
     public function updatePanelBgColor(array $request) : void
     {
+        if (!$this->security->isElevatedUser()) {
+            if ($this->security->verifySession()) {
+                $this->helpers->setPopup('Operacion no autorizada');
+            }
+
+            header('Location: /');
+
+            return;
+        }
+
         $newPanelBgColor = $request['panel-color'];
 
         $this->blog->updatePanelBg($newPanelBgColor);
@@ -145,6 +150,16 @@ class BlogController extends Controller
 
     public function updatePanelHoverColor(array $request) : void
     {
+        if (!$this->security->isElevatedUser()) {
+            if ($this->security->verifySession()) {
+                $this->helpers->setPopup('Operacion no autorizada');
+            }
+
+            header('Location: /');
+
+            return;
+        }
+
         $newHoverColor = $request['panel-hover'];
 
         $this->blog->updatePanelHover($newHoverColor);
@@ -156,6 +171,16 @@ class BlogController extends Controller
 
     public function updatePanelActiveColor(array $request) : void
     {
+        if (!$this->security->isElevatedUser()) {
+            if ($this->security->verifySession()) {
+                $this->helpers->setPopup('Operacion no autorizada');
+            }
+
+            header('Location: /');
+
+            return;
+        }
+
         $newActiveColor = $request['panel-active'];
 
         $this->blog->updatePanelActive($newActiveColor);
@@ -167,6 +192,16 @@ class BlogController extends Controller
 
     public function updateBgImage(array $request) : void
     {
+        if (!$this->security->isElevatedUser()) {
+            if ($this->security->verifySession()) {
+                $this->helpers->setPopup('Operacion no autorizada');
+            }
+
+            header('Location: /');
+
+            return;
+        }
+
         $newBgImg = null;
         $errors = [];
 
@@ -189,6 +224,16 @@ class BlogController extends Controller
 
     public function updateIcon(array $request) : void
     {
+        if (!$this->security->isElevatedUser()) {
+            if ($this->security->verifySession()) {
+                $this->helpers->setPopup('Operacion no autorizada');
+            }
+
+            header('Location: /');
+
+            return;
+        }
+
         $newIcon = null;
         $errors = [];
 

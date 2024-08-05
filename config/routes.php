@@ -1,12 +1,15 @@
 <?php
 
 use App\Controllers\AuthController;
-use App\Controllers\BlogController;
+use App\Controllers\LinkController;
 use App\Controllers\PostController;
 use App\Controllers\UserController;
+use App\Controllers\FriendController;
 use App\Controllers\ReportController;
 use App\Controllers\SearchController;
 use App\Controllers\CommentController;
+use App\Controllers\ContactController;
+use App\Controllers\SettingController;
 
 return [
     '/' => PostController::class . '@index',
@@ -38,22 +41,26 @@ return [
     '/comments/store' => CommentController::class . '@store',
     '/comments/update/{id}' => CommentController::class . '@update',
     '/comments/delete' => CommentController::class . '@delete',
-    // Admin & moderation
-    '/admin/settings' => BlogController::class . '@settings',
-    '/admin/title' => BlogController::class . '@updateTitle',
-    '/admin/bg-color' => BlogController::class . '@updateBgColor',
-    '/admin/bg-image' => BlogController::class . '@updateBgImage',
-    '/admin/panel-bg' => BlogController::class . '@updatePanelBgColor',
-    '/admin/panel-h' => BlogController::class . '@updatePanelHoverColor',
-    '/admin/panel-a' => BlogController::class . '@updatePanelActiveColor',
-    '/admin/text' => BlogController::class . '@updateTextColor',
-    '/admin/text-dim' => BlogController::class . '@updateTextDim',
-    '/admin/icon' => BlogController::class . '@updateIcon',
+    // --------------------- Admin --------------------- //
+    // Settings
+    '/admin/settings' => SettingController::class . '@settings',
+    '/admin/settings/title' => SettingController::class . '@updateTitle',
+    '/admin/settings/bg-color' => SettingController::class . '@updateBgColor',
+    '/admin/settings/bg-image' => SettingController::class . '@updateBgImage',
+    '/admin/settings/panel-bg' => SettingController::class . '@updatePanelBgColor',
+    '/admin/settings/panel-h' => SettingController::class . '@updatePanelHoverColor',
+    '/admin/settings/panel-a' => SettingController::class . '@updatePanelActiveColor',
+    '/admin/settings/text' => SettingController::class . '@updateTextColor',
+    '/admin/settings/text-dim' => SettingController::class . '@updateTextDim',
+    '/admin/settings/icon' => SettingController::class . '@updateIcon',
+    '/admin/settings/about' => SettingController::class . '@about',
+    // Moderation
     '/admin/reports' => ReportController::class . '@index',
     '/report' => ReportController::class . '@create',
-    // Misc
-    '/contact' => BlogController::class . '@contact',
-    '/friends' => BlogController::class . '@friends',
-    '/links' => BlogController::class . '@links',
-    '/about' => BlogController::class . '@about'
+    // Contacts
+    '/contact' => ContactController::class . '@contact',
+    // Friends
+    '/friends' => FriendController::class . '@friends',
+    // Links
+    '/links' => LinkController::class . '@links',
 ];

@@ -1,5 +1,5 @@
 <div class="settings-container">
-  <form action="/admin/title" method="POST">
+  <form action="/admin/settings/title" method="POST">
     <label for="title">Cambiar título:</label>
     <div>
       <input id="title" name="title" type="text" value="<?= $blogConfig["title"] ?>">
@@ -7,7 +7,7 @@
     </div>
   </form>
 
-  <form enctype="multipart/form-data" action="/admin/icon" method="POST">
+  <form enctype="multipart/form-data" action="/admin/settings/icon" method="POST">
     <label>Cambiar ícono de pestaña:</label>
     <div>
       <label class="btn file-up-btn" for="icon">🡅</label>
@@ -17,7 +17,7 @@
     </div>
   </form>
 
-  <form enctype="multipart/form-data" action="/admin/bg-image" method="POST">
+  <form enctype="multipart/form-data" action="/admin/settings/bg-image" method="POST">
     <label>Cambiar la imágen de fondo:</label>
     <div>
       <label class="btn file-up-btn" for="bg-image">🡅</label>
@@ -27,7 +27,7 @@
     </div>
   </form>
 
-  <form action="/admin/bg-color" method="POST">
+  <form action="/admin/settings/bg-color" method="POST">
     <label for="bg-color">Cambiar color de fondo:</label>
     <div>
       <input type="color" id="bg-color" name="bg-color" <?php if ($blogConfig['bg_color']) : ?> value="<?= $blogConfig['bg_color'] ?>" <?php endif; ?>>
@@ -35,7 +35,7 @@
     </div>
   </form>
 
-  <form action="/admin/text" method="POST">
+  <form action="/admin/settings/text" method="POST">
     <label for="text-color">Cambiar color del texto principal:</label>
     <div>
       <input type="color" id="text-color" name="text-color" <?php if ($blogConfig['text_color']) : ?> value="<?= $blogConfig['text_color'] ?>" <?php endif; ?>>
@@ -43,7 +43,7 @@
     </div>
   </form>
 
-  <form action="/admin/text-dim" method="POST">
+  <form action="/admin/settings/text-dim" method="POST">
     <label for="text-dim">Cambiar color del texto secundario:</label>
     <div>
       <input type="color" id="text-dim" name="text-dim" <?php if ($blogConfig['text_dim']) : ?> value="<?= $blogConfig['text_dim'] ?>" <?php endif; ?>>
@@ -51,7 +51,7 @@
     </div>
   </form>
 
-  <form action="/admin/panel-bg" method="POST">
+  <form action="/admin/settings/panel-bg" method="POST">
     <label for="panel-color">Cambiar color de panel:</label>
     <div>
       <input type="color" id="panel-color" name="panel-color" <?php if ($blogConfig['panel_color']) : ?> value="<?= $blogConfig['panel_color'] ?>" <?php endif; ?>>
@@ -59,7 +59,7 @@
     </div>
   </form>
 
-  <form action="/admin/panel-h" method="POST">
+  <form action="/admin/settings/panel-h" method="POST">
     <label for="panel-hover">Cambiar color de panel en hover:</label>
     <div>
       <input type="color" id="panel-hover" name="panel-hover" <?php if ($blogConfig['panel_hover']) : ?> value="<?= $blogConfig['panel_hover'] ?>" <?php endif; ?>>
@@ -67,7 +67,7 @@
     </div>
   </form>
 
-  <form action="/admin/panel-a" method="POST">
+  <form action="/admin/settings/panel-a" method="POST">
     <label for="panel-active">Cambiar color de panel activo:</label>
     <div>
       <input type="color" id="panel-active" name="panel-active" <?php if ($blogConfig['panel_active']) : ?> value="<?= $blogConfig['panel_active'] ?>" <?php endif; ?>>
