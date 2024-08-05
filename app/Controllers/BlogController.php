@@ -195,16 +195,6 @@ class BlogController extends Controller
         if (isset($_FILES["icon"]) && $_FILES["icon"]["error"] != UPLOAD_ERR_NO_FILE) {
             $result = $this->service->handleImg($_FILES["icon"]);
 
-            if (isset($result['img_error'])) {
-                $newIcon = 'favicon.png';
-
-                $this->blog->updateIcon($newIcon);
-        
-                header('Location: /admin/settings');
-
-                return;
-            }
-
             $newIcon = $result['new_img_name'];
             $errors = $result['errors'];
         } elseif (isset($request['previous_thumb'])) {
