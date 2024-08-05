@@ -39,6 +39,9 @@
         background-image: url("<?= htmlspecialchars(strpos($blogConfig['bg_image'], 'http') === 0 ? $blogConfig['bg_image'] : "../imgs/blog/{$blogConfig['bg_image']}") ?>");
       <?php endif; ?>
     }
+    body * {
+      border-color: <?= $blogConfig['text_color'] ?> !important;
+    }
     body,
     .index > .post > .post-container a,
     .single > .post .poster a,

@@ -41,6 +41,14 @@ return [
     '/comments/store' => CommentController::class . '@store',
     '/comments/update/{id}' => CommentController::class . '@update',
     '/comments/delete' => CommentController::class . '@delete',
+    // Contacts
+    '/contact' => ContactController::class . '@contact',
+    // Friends
+    '/friends' => FriendController::class . '@friends',
+    // Links
+    '/links' => LinkController::class . '@links',
+    // About
+    '/about' => SettingController::class . '@about',
     // --------------------- Admin --------------------- //
     // Settings
     '/admin/settings' => SettingController::class . '@settings',
@@ -53,14 +61,7 @@ return [
     '/admin/settings/text' => SettingController::class . '@updateTextColor',
     '/admin/settings/text-dim' => SettingController::class . '@updateTextDim',
     '/admin/settings/icon' => SettingController::class . '@updateIcon',
-    '/admin/settings/about' => SettingController::class . '@about',
     // Moderation
     '/admin/reports' => ReportController::class . '@index',
     '/report' => ReportController::class . '@create',
-    // Contacts
-    '/contact' => ContactController::class . '@contact',
-    // Friends
-    '/friends' => FriendController::class . '@friends',
-    // Links
-    '/links' => LinkController::class . '@links',
 ];
