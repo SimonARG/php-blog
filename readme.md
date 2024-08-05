@@ -9,6 +9,4 @@ This is a PHP project that, when installed, allows you to run, configure and wri
 
 ## Installation:
 
-1.  Download the project [as a .zip](https://github.com/SimonARG/chrome-newtab/archive/refs/heads/main.zip).
-2. Unzip download contents into a folder of your choosing.
-3. Run `setup.bat` to create storage folders.
+Coming soon...
