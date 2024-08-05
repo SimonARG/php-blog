@@ -19,7 +19,7 @@ class PostController extends Controller
         parent::__construct();
         $this->post = new Post();
         $this->comment = new Comment();
-        $this->service = new postService();
+        $this->service = new PostService();
     }
 
     public function index(): void

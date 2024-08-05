@@ -6,7 +6,7 @@
         <a href="/" class="no-select"><?= $blogConfig['title'] ?></a>
       </div>
     </div>
-    <span class="material-symbols-rounded pos-ab sidebar-btn point no-select">menu</span>
+    <span class="material-symbols-rounded pos-ab sidebar-btn point no-select">view_sidebar</span>
 
     <nav class="nav-menu">
       <ul>

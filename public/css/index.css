@@ -1,8 +1,6 @@
 :root {
   font-size: 16px;
   --black-panel-h: rgb(141, 141, 141);
-  --pag-h: rgba(50, 50, 50, 0.622);
-  --pag-a: rgba(86, 86, 86, 0.668);
   --solid-h: rgb(70, 70, 70);
   --blue: rgb(45, 45, 180);
   --red: rgb(178, 46, 46);
@@ -433,6 +431,10 @@ textarea:hover {
 }
 
 .btn:active {
+  background-color: var(--panel-a);
+}
+
+.btn:active {
   transform: scale(95%);
 }
 
@@ -507,14 +509,14 @@ header {
 }
 
 .menu-btn {
-  font-size: 3.7rem;
+  font-size: 3.4rem;
   top: 51%;
   left: 3%;
   transform: translateY(-50%);
 }
 
 .sidebar-btn {
-  font-size: 3.7rem;
+  font-size: 3rem;
   top: 51%;
   right: 3%;
   transform: translateY(-50%);
@@ -791,12 +793,12 @@ header {
 }
 
 .pagination > a:hover {
-  background-color: var(--pag-h);
+  background-color: var(--panel-h);
 }
 
 .pagination > a.active,
 .pagination > a:active {
-  background-color: var(--pag-a);
+  background-color: var(--panel-a);
 }
 
 /*
@@ -1287,14 +1289,14 @@ header {
   margin-bottom: 2rem;
 }
 
-.file-up-btn {
+.new-post-form .file-up-btn {
   padding: .1rem .7rem;
   border: 1px solid white;
   border-right: none;
   font-size: 1.7rem;
 }
 
-.file-up-field {
+.new-post-form .file-up-field {
   border-left: none;
   width: 100%;
   padding: .5rem .4rem;
@@ -1899,6 +1901,75 @@ input:-webkit-autofill:active{
 | Settings
 |------------------------------------------------------------
 */
+
+.settings-container {
+  background-color: var(--panel-bg);
+  min-height: 96vh;
+  margin-bottom: 2px;
+  padding: .6rem 1rem;
+  display: flex;
+  flex-direction: column;
+}
+
+.settings-container > form {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  margin-bottom: .8rem;
+}
+
+.settings-container > form > div {
+  display: flex;
+}
+
+.settings-container > form > label {
+  font-size: 1.2rem;
+}
+
+.settings-container > form > span {
+  font-size: .9rem;
+  font-weight: 200;
+  margin-bottom: .2rem;
+}
+
+.settings-container > form > div > input[type='text']:not(.file-up-field) {
+  font-size: 1.1rem;
+  padding: .2rem .4rem;
+  text-align: center;
+}
+
+.settings-container > form > div > input[type='submit'] {
+  border: 1px solid white;
+  border-left: none;
+  padding: 0 .7rem;
+}
+
+.settings-container > form > div > .file-up-btn {
+  display: flex;
+  align-items: center;
+  padding: 0 .55rem;
+  border: 1px solid white;
+  border-right: none;
+}
+
+.settings-container > form > div > .file-up-field {
+  font-size: 1.1rem;
+  padding: .2rem .4rem;
+}
+
+input[type="color"] {
+	border: 1px solid white;
+	width: 10rem;
+	height: calc(1.1rem * 1.4 + .2rem * 2 + 2px);
+}
+
+input[type="color"]::-webkit-color-swatch-wrapper {
+	padding: 0;
+}
+
+input[type="color"]:hover {
+  cursor: pointer;
+}
 
 /*
 |------------------------------------------------------------

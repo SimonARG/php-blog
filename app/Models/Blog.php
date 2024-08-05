@@ -42,4 +42,82 @@ class Blog extends Model
 
         return $result ? $result : 0;
     }
+
+    public function updateTitle(string $newTitle) : array|int
+    {
+        $sql = "UPDATE config SET title = :title;";
+        $result = $this->db->query($sql,[":title" => $newTitle]);
+
+        return $result ? 1 : 0;
+    }
+
+    public function updateBgImage(string $newBgImg) : array|int
+    {
+        $sql = "UPDATE config SET bg_image = :bg_image;";
+        $result = $this->db->query($sql,[":bg_image" => $newBgImg]);
+
+        $sql = "UPDATE config SET bg_color = NULL;";
+        $this->db->query($sql);
+
+        return $result ? 1 : 0;
+    }
+
+    public function updateIcon(string $newIcon) : array|int
+    {
+        $sql = "UPDATE config SET icon = :icon;";
+        $result = $this->db->query($sql,[":icon" => $newIcon]);
+
+        return $result ? 1 : 0;
+    }
+
+    public function updateBgColor(string $newBgColor) : array|int
+    {
+        $sql = "UPDATE config SET bg_color = :bg_color;";
+        $result = $this->db->query($sql,[":bg_color" => $newBgColor]);
+
+        $sql = "UPDATE config SET bg_image = NULL;";
+        $this->db->query($sql);
+
+        return $result ? 1 : 0;
+    }
+
+    public function updateTextColor(string $newTextColor) : array|int
+    {
+        $sql = "UPDATE config SET text_color = :text_color;";
+        $result = $this->db->query($sql,[":text_color" => $newTextColor]);
+
+        return $result ? 1 : 0;
+    }
+
+    public function updateTextDim(string $newTextColor) : array|int
+    {
+        $sql = "UPDATE config SET text_dim = :text_dim;";
+        $result = $this->db->query($sql,[":text_dim" => $newTextColor]);
+
+        return $result ? 1 : 0;
+    }
+
+    public function updatePanelBg(string $newBgColor) : array|int
+    {
+        $sql = "UPDATE config SET panel_color = :panel_color;";
+        $result = $this->db->query($sql,[":panel_color" => $newBgColor]);
+
+        return $result ? 1 : 0;
+    }
+
+    public function updatePanelHover(string $newHoverColor) : array|int
+    {
+        $sql = "UPDATE config SET panel_hover = :panel_hover;";
+        $result = $this->db->query($sql,[":panel_hover" => $newHoverColor]);
+
+        return $result ? 1 : 0;
+    }
+
+    public function updatePanelActive(string $newActiveColor) : array|int
+    {
+        $sql = "UPDATE config SET panel_active = :panel_active;";
+        $result = $this->db->query($sql,[":panel_active" => $newActiveColor]);
+
+        return $result ? 1 : 0;
+    }
 }

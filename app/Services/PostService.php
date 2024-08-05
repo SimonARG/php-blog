@@ -104,9 +104,12 @@ class PostService
         // Move the file to storage
         move_uploaded_file($_FILES["thumb"]["tmp_name"], $storageDir . $newThumbName . '.' . $extension);
 
+        // Get the root directory of the project
+        $rootDir = dirname(dirname(dirname(__DIR__)));
+
         // Process image
-        $sourcePath = 'D:/Programs/Apache/Apache24/htdocs/blog/public/imgs/thumbs/' . $newThumbName . '.' . $extension;
-        $destinationPath = 'D:/Programs/Apache/Apache24/htdocs/blog/public/imgs/thumbs/' . $newThumbName . '2.webp';
+        $sourcePath = $rootDir . '/public/imgs/blog/' . $newThumbName . '.' . $extension;
+        $destinationPath = $rootDir . '/public/imgs/blog/' . $newThumbName . '2.webp';
 
         $imgError = $this->helpers->processImage($sourcePath, $destinationPath);
 

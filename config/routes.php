@@ -38,11 +38,19 @@ return [
     '/comments/store' => CommentController::class . '@store',
     '/comments/update/{id}' => CommentController::class . '@update',
     '/comments/delete' => CommentController::class . '@delete',
-    // Reports
+    // Admin & moderation
+    '/admin/settings' => BlogController::class . '@settings',
+    '/admin/title' => BlogController::class . '@updateTitle',
+    '/admin/bg-color' => BlogController::class . '@updateBgColor',
+    '/admin/bg-image' => BlogController::class . '@updateBgImage',
+    '/admin/panel-bg' => BlogController::class . '@updatePanelBgColor',
+    '/admin/panel-h' => BlogController::class . '@updatePanelHoverColor',
+    '/admin/panel-a' => BlogController::class . '@updatePanelActiveColor',
+    '/admin/text' => BlogController::class . '@updateTextColor',
+    '/admin/text-dim' => BlogController::class . '@updateTextDim',
+    '/admin/icon' => BlogController::class . '@updateIcon',
     '/admin/reports' => ReportController::class . '@index',
     '/report' => ReportController::class . '@create',
-    // Admin
-    '/admin/settings' => BlogController::class . '@settings',
     // Misc
     '/contact' => BlogController::class . '@contact',
     '/friends' => BlogController::class . '@friends',

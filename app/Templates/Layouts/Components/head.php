@@ -6,7 +6,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <meta name="description" content="Blog">
 
-  <link rel="icon" type="image/x-icon" href="/imgs/blog/favicon.png">
+  <link rel="icon" type="image/x-icon" href="../imgs/blog/<?= $blogConfig['icon'] ?>">
 
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -27,20 +27,16 @@
 
   <style>
     :root {
-      --panel-bg: <?= $blogConfig['panel_color'] ?>;
-      --panel-h: <?= $blogConfig['panel_hover'] ?>;
-      --panel-a: <?= $blogConfig['panel_active'] ?>;
-      --text-2: <?= $blogConfig['text_dim'] ?>;
+      --panel-bg: <?= htmlspecialchars($blogConfig['panel_color'] . '7a' ?? '') ?>;
+      --panel-h: <?= htmlspecialchars($blogConfig['panel_hover'] . '7a' ?? '') ?>;
+      --panel-a: <?= htmlspecialchars($blogConfig['panel_active'] . '7a' ?? '') ?>;
+      --text-2: <?= htmlspecialchars($blogConfig['text_dim'] ?? '') ?>;
     }
     body {
-      <?php if($blogConfig['bg_color']): ?>
-        background-color: <?= $blogConfig['bg_color'] ?>;
-      <?php else: ?>
-        <?php if(preg_match('/http[s]?:\/\//', $blogConfig['bg_image'])): ?>
-          background-image: url("<?= $blogConfig['bg_image'] ?>");
-        <?php else: ?>
-          background-image: url("../imgs/blog/<?= $blogConfig['bg_image'] ?>");
-        <?php endif; ?>
+      <?php if(!empty($blogConfig['bg_color'])): ?>
+        background-color: <?= htmlspecialchars($blogConfig['bg_color']) ?>;
+      <?php elseif(!empty($blogConfig['bg_image'])): ?>
+        background-image: url("<?= htmlspecialchars(strpos($blogConfig['bg_image'], 'http') === 0 ? $blogConfig['bg_image'] : "../imgs/blog/{$blogConfig['bg_image']}") ?>");
       <?php endif; ?>
     }
     body,

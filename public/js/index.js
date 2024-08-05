@@ -129,34 +129,42 @@ for (let index = 0; index < posts.length; index++) {
 }
 
 // Replace text field value on file upload
-const fileText = document.querySelector("#thumb");
-const child = document.querySelector(".file-up-field");
+const fileInputs = document.querySelectorAll('input[type="file"]');
 
 // Get uploaded file name and write it to the value attribute
-const getFileData = () => {
-  const file = fileText.files[0];
-
-  child.setAttribute('value', file.name);
+const getFileData = (fileField, textField) => {
+    const file = fileField.files[0];
+    if (file) {
+        textField.value = file.name;
+    }
 }
 
-// Make text input readonly
-if (fileText) {
-  child.addEventListener('keydown', (event) => {
-    event.preventDefault();
-  })
-  child.addEventListener('paste', (event) => {
-    event.preventDefault();
-  })
-  child.addEventListener('focus', (event) => {
-    event.preventDefault();
-  })
-  child.addEventListener('mousedown', (event) => {
-    event.preventDefault();
-  })
+// Make text input readonly and handle file input changes
+const setupFileInput = (fileField, textField) => {
+    if (fileField && textField) {
+        textField.readOnly = true;
 
-  fileText.addEventListener('change', getFileData);
+        // Prevent default actions on text input
+        ['keydown', 'paste', 'focus', 'mousedown'].forEach(eventType => {
+            textField.addEventListener(eventType, (event) => {
+                event.preventDefault();
+            });
+        });
+
+        // Add change event listener to file input
+        fileField.addEventListener('change', () => getFileData(fileField, textField));
+    }
 }
 
+// Setup each file input and its corresponding text field
+fileInputs.forEach(fileField => {
+    const parent = fileField.parentElement;
+    const textField = parent.querySelector(".file-up-field");
+
+    setupFileInput(fileField, textField);
+});
+
+// Popup
 const popupContainer = document.querySelector('.popup-container');
 const popup = document.querySelector('.popup');
 
