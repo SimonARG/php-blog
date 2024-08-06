@@ -454,8 +454,6 @@ textarea:hover {
 
 body {
   font-family: "Noto Sans", sans-serif;
-  /* background-image: url('../imgs/blog/bg.avif'); */
-  /* background-color: blue; */
   background-position: center;
   background-repeat: no-repeat;
   background-size: cover;
@@ -1790,12 +1788,13 @@ input:-webkit-autofill:active{
   align-items: center;
   margin-bottom: .6rem;
   width: 100%;
+  padding: 0 3rem;
 }
 
-.contacts-container > div > hr {
+.contacts-container hr {
   background-color: white;
   width: 100%;
-  margin-top: .3rem;
+  margin: .3rem 0 .8rem 0;
 }
 
 .contacts-container > div > .email {
@@ -1804,6 +1803,93 @@ input:-webkit-autofill:active{
 
 .contacts-container > div > a:hover {
   text-decoration: underline;
+}
+
+.contacts-container > div > div {
+  font-size: 1.2rem;
+}
+
+.contacts-container > div > .email,
+.contacts-container > div > a {
+  word-wrap: break-word;
+  text-align: center;
+  font-size: 1.4rem;
+}
+
+.contacts-container .add-contact {
+  font-size: 2.5rem;
+}
+
+.new-contact,
+.update-contact {
+  position: fixed;
+  left: 50%;
+  top: 20%;
+  transform: translateX(-50%);
+  background-color: black;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 1rem;
+  border: 1px solid white;
+  width: 90vw;
+  visibility: hidden;
+  opacity: 0;
+  transition: opacity .2s ease-in-out;
+  z-index: 20;
+}
+
+.new-contact > div,
+.update-contact > div {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  font-size: 1.2rem;
+  width: 100%;
+}
+
+.new-contact > h1,
+.update-contact > h1 {
+  font-size: 1.8rem;
+  font-weight: 600;
+}
+
+.new-contact > div > input[type="text"],
+.update-contact > div > input[type="text"] {
+  padding: .2rem .4rem;
+  text-align: center;
+  width: 100%;
+}
+
+.new-contact > input[type="submit"],
+.update-contact > input[type="submit"] {
+  font-size: 1.4rem;
+  border: 1px solid white;
+  padding: .3rem .5rem;
+  margin-top: .6rem;
+}
+
+.new-contact > span,
+.update-contact > span {
+  position: absolute;
+  top: 0;
+  right: 0;
+  font-size: 2.4rem;
+}
+
+.edit-contact {
+  position: absolute;
+  right: 90%;
+  font-size: 2.2rem;
+}
+
+.delete-contact {
+  position: absolute;
+  left: 90%;
+}
+
+.delete-contact > button > span {
+  font-size: 2.2rem;
 }
 
 /*
@@ -1831,7 +1917,11 @@ input:-webkit-autofill:active{
 }
 
 .friends-container > div > a {
-  font-size: 1.2rem;
+  width: 100%;
+  padding: 0 4rem;
+  word-wrap: break-word;
+  text-align: center;
+  font-size: 1.4rem;
   margin-bottom: .2rem;
 }
 
@@ -1871,6 +1961,14 @@ input:-webkit-autofill:active{
   align-items: center;
   margin-bottom: .6rem;
   width: 100%;
+}
+
+.links-container > div > a {
+  width: 100%;
+  padding: 0 4rem;
+  word-wrap: break-word;
+  text-align: center;
+  font-size: 1.4rem;
 }
 
 .links-container > div > hr {

@@ -8,7 +8,6 @@ use App\Controllers\Controller;
 class FriendController extends Controller
 {
     protected $friend;
-    protected $service;
 
     public function __construct()
     {

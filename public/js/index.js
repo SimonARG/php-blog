@@ -74,8 +74,11 @@ sidebarBtn.addEventListener('click', () => {
   } else {
     sidebar.style.transform = 'scalex(0%)';
     body.style.transform = 'translateX(0)';
-    resetBodyTransform();
     sidebarStatus = !sidebarStatus;
+
+    if (!navMenuStatus) {
+      resetBodyTransform();
+    }
   }
 })
 
@@ -358,6 +361,85 @@ if (reportBtns) {
         }, 200);
 
         showReport = false;
+      }
+    });
+  });
+}
+
+// New contact logic
+const newContactBtn = document.querySelector('.add-contact');
+const newContact = document.querySelector('.new-contact');
+const closeNewContact = document.querySelector('.new-contact > span');
+
+let showNewContact = false;
+
+if (newContactBtn) {
+  newContactBtn.addEventListener('click', () => {
+    if (!showNewContact) {
+      newContact.style.opacity = 1;
+      newContact.style.visibility = 'visible';
+
+      showNewContact = true;
+    }
+  });
+
+  closeNewContact.addEventListener('click', () => {
+    newContact.style.opacity = 0;
+    setTimeout(() => {
+      newContact.style.visibility = 'hidden';
+    }, 200); 
+
+    showNewContact = false;
+  });
+
+  window.addEventListener('click', (event) => {
+    if (showNewContact && !newContact.contains(event.target) && event.target !== newContactBtn) {
+      newContact.style.opacity = 0;
+      setTimeout(() => {
+        newContact.style.visibility = 'hidden';
+      }, 200);
+
+      showNewContact = false;
+    }
+  });
+}
+
+const contacts = document.querySelectorAll('.contact');
+
+if (contacts) {
+  contacts.forEach(contact => {
+    const editContactBtn = contact.querySelector('.edit-contact');
+    const editContact = contact.querySelector('.update-contact');
+    const closeEditContact = contact.querySelector('.close-edit-contact');
+
+    let showEditContact = false;
+
+    editContactBtn.addEventListener('click', () => {
+      if (!showEditContact) {
+        editContact.style.opacity = 1;
+        editContact.style.visibility = 'visible';
+  
+        showEditContact = true;
+      }
+    });
+  
+    closeEditContact.addEventListener('click', () => {
+      editContact.style.opacity = 0;
+      setTimeout(() => {
+        editContact.style.visibility = 'hidden';
+      }, 200); 
+  
+      showEditContact = false;
+    });
+  
+    window.addEventListener('click', (event) => {
+      if (showEditContact && !editContact.contains(event.target) && event.target !== editContactBtn) {
+        editContact.style.opacity = 0;
+        setTimeout(() => {
+          editContact.style.visibility = 'hidden';
+        }, 200);
+  
+        showEditContact = false;
       }
     });
   });

@@ -8,7 +8,6 @@ use App\Controllers\Controller;
 class LinkController extends Controller
 {
     protected $link;
-    protected $service;
 
     public function __construct()
     {

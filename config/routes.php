@@ -42,7 +42,7 @@ return [
     '/comments/update/{id}' => CommentController::class . '@update',
     '/comments/delete' => CommentController::class . '@delete',
     // Contacts
-    '/contact' => ContactController::class . '@contact',
+    '/contact' => ContactController::class . '@index',
     // Friends
     '/friends' => FriendController::class . '@friends',
     // Links
@@ -64,4 +64,8 @@ return [
     // Moderation
     '/admin/reports' => ReportController::class . '@index',
     '/report' => ReportController::class . '@create',
+    // New contact medium
+    '/admin/contact/store' => ContactController::class . '@store',
+    '/admin/contact/update' => ContactController::class . '@update',
+    '/admin/contact/delete' => ContactController::class . '@delete',
 ];
