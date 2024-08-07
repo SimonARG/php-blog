@@ -28,7 +28,8 @@ class Helpers
 
         $converter = new GithubFlavoredMarkdownConverter([]);
 
-        $blogConfig['info'] = $converter->convert($blogConfig['info']);
+        $convertedContent = $converter->convert($blogConfig['info']);
+        $blogConfig['info'] = $convertedContent->getContent();
 
         // Capture the view output
         ob_start();

@@ -2,9 +2,9 @@
 
 namespace App\Controllers;
 
-use App\Controllers\Controller;
 use App\Models\Blog;
 use App\Services\BlogService;
+use App\Controllers\Controller;
 
 class SettingController extends Controller
 {
@@ -21,7 +21,22 @@ class SettingController extends Controller
 
     public function about(): void
     {
-        $this->helpers->view('blog.about');
+        $blogInfoRaw = $this->blog->getBlogConfig()['info'];
+
+        $this->helpers->view('blog.about', ['blogInfoRaw' => $blogInfoRaw]);
+
+        return;
+    }
+
+    public function updateAbout(array $request): void
+    {
+        $about = $request['about'];
+
+        $result = $this->blog->updateAbout($about);
+
+        $this->helpers->setPopup('Informacion actualizada');
+
+        header('Location: /about');
 
         return;
     }

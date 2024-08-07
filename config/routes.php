@@ -41,8 +41,6 @@ return [
     '/comments/store' => CommentController::class . '@store',
     '/comments/update/{id}' => CommentController::class . '@update',
     '/comments/delete/{id}' => CommentController::class . '@delete',
-    // About
-    '/about' => SettingController::class . '@about',
     // Settings
     '/admin/settings' => SettingController::class . '@settings',
     '/admin/settings/title' => SettingController::class . '@updateTitle',
@@ -55,8 +53,8 @@ return [
     '/admin/settings/text-dim' => SettingController::class . '@updateTextDim',
     '/admin/settings/icon' => SettingController::class . '@updateIcon',
     // Moderation
-    '/admin/reports' => ReportController::class . '@index',
     '/report' => ReportController::class . '@create',
+    '/admin/reports' => ReportController::class . '@index',
     // Contact
     '/contact' => ContactController::class . '@index',
     '/admin/contact/store' => ContactController::class . '@store',
@@ -72,4 +70,7 @@ return [
     '/admin/links/store' => LinkController::class . '@store',
     '/admin/links/update/{id}' => LinkController::class . '@update',
     '/admin/links/delete/{id}' => LinkController::class . '@delete',
+    // About
+    '/about' => SettingController::class . '@about',
+    '/admin/about/update' => SettingController::class . '@updateAbout'
 ];

@@ -2144,7 +2144,59 @@ input:-webkit-autofill:active{
   background-color: var(--panel-bg);
   min-height: 96vh;
   margin-bottom: 2px;
-  padding: .6rem 1rem;
+  padding: 1rem 1rem;
+}
+
+.about-container > div {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  visibility: visible;
+  opacity: 1;
+  transition: opacity .2s;
+}
+
+.about-container > div > hr {
+  border-top: 1px solid white;
+  width: 100%;
+  margin: .2rem 0 .8rem 0;
+}
+
+.about-container > div > .edit {
+  font-size: 2.2rem;
+}
+
+.about-container > form {
+  width: 100%;
+  visibility: hidden;
+  opacity: 0;
+  transition: opacity .2s;
+  position: fixed;
+}
+
+.about-container > form > textarea {
+  width: 100%;
+  padding: .8rem;
+}
+
+.about-container > form > textarea::-webkit-scrollbar {
+  background-color: transparent;
+  width: 2px;
+}
+
+.about-container > form > textarea::-webkit-scrollbar-thumb {
+  background-color: white;
+}
+
+.about-container > form > div {
+  display: flex;
+  justify-content: space-between;
+}
+
+.about-container > form > div > .btn {
+  border: 1px solid white;
+  padding: .3rem .6rem;
+  font-size: 1.3rem;
 }
 
 /*

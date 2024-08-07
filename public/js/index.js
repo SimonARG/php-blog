@@ -468,3 +468,76 @@ editPopupForms(friends);
 
 const links = document.querySelectorAll('.link');
 editPopupForms(links);
+
+// About edit logic
+const about = document.querySelector('.about-container > div');
+const aboutEditBtn = document.querySelector('.about-container > div > .edit');
+const aboutEditForm = document.querySelector('.about-container > form');
+const aboutCancel = document.querySelector('.about-container > form > div > button');
+
+if (about) {
+  let aboutStatus = true;
+
+  aboutEditBtn.addEventListener('click', () => {
+    if (aboutStatus) {
+        about.style.opacity = 0;
+        setTimeout(() => {
+          about.style.visibility = 'hidden';
+          about.style.position = 'absolute';
+        }, 200);
+
+      setTimeout(() => {
+        aboutEditForm.style.position = 'static';
+        aboutEditForm.style.opacity = 1;
+        aboutEditForm.style.visibility = 'visible';
+      }, 200);
+
+      aboutStatus = !aboutStatus;
+    } else {
+      setTimeout(() => {
+        about.style.position = 'static';
+        about.style.opacity = 1;
+        about.style.visibility = 'visible';
+      }, 200);
+
+      aboutEditForm.style.opacity = 0;
+      setTimeout(() => {
+        aboutEditForm.style.position = 'fixed';
+        aboutEditForm.style.visibility = 'hidden';
+      }, 200);
+
+      aboutStatus = !aboutStatus;
+    }
+  });
+
+  aboutCancel.addEventListener('click', (event) => {
+    event.preventDefault();
+
+    setTimeout(() => {
+      about.style.position = 'static';
+      about.style.opacity = 1;
+      about.style.visibility = 'visible';
+    }, 200);
+
+    aboutEditForm.style.opacity = 0;
+    setTimeout(() => {
+      aboutEditForm.style.position = 'fixed';
+      aboutEditForm.style.visibility = 'hidden';
+    }, 200);
+
+    aboutStatus = !aboutStatus;
+  })
+}
+
+// Resize about textarea
+const resizeTextarea = () => {
+  const textarea = document.querySelector('.about-container > form > textarea');
+  
+  // Reset height to auto to get the correct scrollHeight
+  textarea.style.height = 'auto';
+  
+  // Set the height to match the scrollHeight
+  textarea.style.height = textarea.scrollHeight + 'px';
+}
+
+window.addEventListener('load', resizeTextarea);

@@ -120,4 +120,12 @@ class Blog extends Model
 
         return $result ? 1 : 0;
     }
+
+    public function updateAbout(string $about): array|int
+    {
+        $sql = "UPDATE config SET info = :info;";
+        $result = $this->db->query($sql,[":info" => $about]);
+
+        return $result ? 1 : 0;
+    }
 }
