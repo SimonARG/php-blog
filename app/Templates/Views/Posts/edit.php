@@ -1,4 +1,3 @@
-<?php print_r($request)?>
 <div class="edit-post">
   <form enctype="multipart/form-data" class="update-post-form" action="<?= '/post/update/' . $post['id'] ?>" method="POST">
     <input type="hidden" name="csrf" value="<?php echo $_SESSION['csrf'] ?? '' ?>">

@@ -291,11 +291,9 @@ class PostController extends Controller
         header('Location: /post/' . $post['id']);
     }
 
-    public function delete(array $request): void
+    public function delete(int $id, array $request): void
     {
         $this->security->verifyCsrf($request['csrf'] ?? '');
-
-        $id = $request['post_id'];
 
         $post = $this->post->getPostById($id);
 

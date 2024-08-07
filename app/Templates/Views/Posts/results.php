@@ -67,7 +67,7 @@ function truncateHTML($html_string, $length, $append = '&hellip;', $is_html = tr
                 <a href="<?= '/post/edit/' . $post['id'] ?>">Editar</a>
               </li>
               <li>
-                <form action="/post/delete" method="POST">
+                <form action="/post/delete/<?= $post['id'] ?>" method="POST">
                   <input type="hidden" name="csrf" value="<?php echo $_SESSION['csrf'] ?? '' ?>">
 
                   <input type="hidden" name="post_id" value="<?= $post['id'] ?>">

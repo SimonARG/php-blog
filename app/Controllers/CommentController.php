@@ -87,7 +87,7 @@ class CommentController extends Controller
         header('Location: /post/' . $request['post_id'] . '#comment-1');
     }
 
-    public function delete(array $request) : void
+    public function delete(int $id, array $request) : void
     {
         $this->security->verifyCsrf($request['csrf'] ?? '');
         

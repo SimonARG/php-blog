@@ -33,7 +33,7 @@
         <div class="report-btn btn">Reportar</div>
         <?php if (($_SESSION['user_id'] == $post['user_id']) || $_SESSION['role'] == 'admin' || $_SESSION['role'] == 'mod'): ?>
           <a class="btn" href="<?= '/post/edit/' . $post['id'] ?>">Editar</a>
-          <form class="btn" action="/post/delete" method="POST">
+          <form class="btn" action="/post/delete/<?= $post['id'] ?>" method="POST">
             <input type="hidden" name="csrf" value="<?php echo $_SESSION['csrf'] ?? '' ?>">
             <input type="hidden" name="post_id" value="<?= $post['id'] ?>">
             <input type="submit" value="Eliminar">
@@ -79,7 +79,7 @@
             <div class="report-btn btn">Reportar</div>
 
             <?php if ($_SESSION && ($_SESSION['user_id'] == $comment['user_id'] || ($_SESSION['role'] == 'mod' || $_SESSION['role'] == 'admin'))): ?>
-              <form class="del" action="/comments/delete" method="POST">
+              <form class="del" action="/comments/delete/<?= $comment['id'] ?>" method="POST">
                 <input type="hidden" name="csrf" value="<?php echo $_SESSION['csrf'] ?? '' ?>">
 
                 <input type="hidden" name="post_id" value="<?= $post['id'] ?>">

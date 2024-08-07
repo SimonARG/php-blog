@@ -12,7 +12,6 @@ use App\Controllers\ContactController;
 use App\Controllers\SettingController;
 
 return [
-    '/' => PostController::class . '@index',
     // Users
     '/user/{id}' => UserController::class . '@show',
     '/user/update/{id}' => UserController::class . '@update',
@@ -26,6 +25,7 @@ return [
     '/auth' => AuthController::class . '@authenticate',
     '/logout' => AuthController::class . '@logout',
     // Posts
+    '/' => PostController::class . '@index',
     '/post/new' => PostController::class . '@create',
     '/post/store' => PostController::class . '@store',
     '/post/{id}' => PostController::class . '@show',
@@ -40,7 +40,7 @@ return [
     // Comments
     '/comments/store' => CommentController::class . '@store',
     '/comments/update/{id}' => CommentController::class . '@update',
-    '/comments/delete' => CommentController::class . '@delete',
+    '/comments/delete/{id}' => CommentController::class . '@delete',
     // About
     '/about' => SettingController::class . '@about',
     // Settings
