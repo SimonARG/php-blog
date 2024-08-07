@@ -475,6 +475,17 @@ const aboutEditBtn = document.querySelector('.about-container > div > .edit');
 const aboutEditForm = document.querySelector('.about-container > form');
 const aboutCancel = document.querySelector('.about-container > form > div > button');
 
+// Resize about textarea
+const resizeTextarea = () => {
+  const textarea = document.querySelector('.about-container > form > textarea');
+  
+  // Reset height to auto to get the correct scrollHeight
+  textarea.style.height = 'auto';
+  
+  // Set the height to match the scrollHeight
+  textarea.style.height = textarea.scrollHeight + 'px';
+}
+
 if (about) {
   let aboutStatus = true;
 
@@ -527,17 +538,6 @@ if (about) {
 
     aboutStatus = !aboutStatus;
   })
-}
 
-// Resize about textarea
-const resizeTextarea = () => {
-  const textarea = document.querySelector('.about-container > form > textarea');
-  
-  // Reset height to auto to get the correct scrollHeight
-  textarea.style.height = 'auto';
-  
-  // Set the height to match the scrollHeight
-  textarea.style.height = textarea.scrollHeight + 'px';
+  window.addEventListener('load', resizeTextarea);
 }
-
-window.addEventListener('load', resizeTextarea);

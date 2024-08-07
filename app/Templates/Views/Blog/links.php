@@ -15,7 +15,7 @@
         <a href="<?= $link['url'] ?>" target="_blank"><?= $link['title'] ?></a>
 
         <?php if ($_SESSION && $_SESSION['role'] == 'admin'): ?>
-            <form class="update" method="POST" action="/admin/link/update/<?= $link['id'] ?>">
+            <form class="update" method="POST" action="/admin/links/update/<?= $link['id'] ?>">
             <span class="material-symbols-rounded btn close-edit">close</span>
             <h1>Editar Link</h1>
 
