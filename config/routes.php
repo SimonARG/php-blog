@@ -31,7 +31,7 @@ return [
     '/post/{id}' => PostController::class . '@show',
     '/post/edit/{id}' => PostController::class . '@edit',
     '/post/update/{id}' => PostController::class . '@update',
-    '/post/delete' => PostController::class . '@delete',
+    '/post/delete/{id}' => PostController::class . '@delete',
     '/post/save' => PostController::class . '@save',
     // Search
     '/search' => SearchController::class . '@search',

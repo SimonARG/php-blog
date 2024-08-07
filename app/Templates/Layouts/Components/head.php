@@ -6,7 +6,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <meta name="description" content="Blog">
 
-  <link rel="icon" type="image/x-icon" href="../imgs/blog/<?= $blogConfig['icon'] ?>">
+  <link rel="icon" type="image/x-icon" href="/imgs/blog/<?= $blogConfig['icon'] ?>">
 
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -36,7 +36,7 @@
       <?php if(!empty($blogConfig['bg_color'])): ?>
         background-color: <?= htmlspecialchars($blogConfig['bg_color']) ?>;
       <?php elseif(!empty($blogConfig['bg_image'])): ?>
-        background-image: url("<?= htmlspecialchars(strpos($blogConfig['bg_image'], 'http') === 0 ? $blogConfig['bg_image'] : "../imgs/blog/{$blogConfig['bg_image']}") ?>");
+        background-image: url("/<?= htmlspecialchars(strpos($blogConfig['bg_image'], 'http') === 0 ? $blogConfig['bg_image'] : "../imgs/blog/{$blogConfig['bg_image']}") ?>");
       <?php endif; ?>
     }
     body *:not(.comment-count) {
