@@ -1287,14 +1287,15 @@ header {
   margin-bottom: 2rem;
 }
 
-.new-post-form .file-up-btn {
+.new-post-form .file-up-btn,
+.update-post-form .file-up-btn {
   padding: .1rem .7rem;
   border: 1px solid white;
-  border-right: none;
   font-size: 1.7rem;
 }
 
-.new-post-form .file-up-field {
+.new-post-form .file-up-field,
+.update-post-form .file-up-field {
   border-left: none;
   width: 100%;
   padding: .5rem .4rem;
