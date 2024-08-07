@@ -41,12 +41,6 @@ return [
     '/comments/store' => CommentController::class . '@store',
     '/comments/update/{id}' => CommentController::class . '@update',
     '/comments/delete' => CommentController::class . '@delete',
-    // Contacts
-    '/contact' => ContactController::class . '@index',
-    // Friends
-    '/friends' => FriendController::class . '@friends',
-    // Links
-    '/links' => LinkController::class . '@links',
     // About
     '/about' => SettingController::class . '@about',
     // --------------------- Admin --------------------- //
@@ -64,8 +58,16 @@ return [
     // Moderation
     '/admin/reports' => ReportController::class . '@index',
     '/report' => ReportController::class . '@create',
-    // New contact medium
+    // Contact
+    '/contact' => ContactController::class . '@index',
     '/admin/contact/store' => ContactController::class . '@store',
     '/admin/contact/update' => ContactController::class . '@update',
     '/admin/contact/delete' => ContactController::class . '@delete',
+    // Friend
+    '/friends' => FriendController::class . '@friends',
+    '/admin/friend/store' => FriendController::class . '@store',
+    '/admin/friend/update/{id}' => FriendController::class . '@update',
+    '/admin/friend/delete/{id}' => FriendController::class . '@delete',
+    // Link
+    '/links' => LinkController::class . '@links',
 ];

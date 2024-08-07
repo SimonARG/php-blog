@@ -4,8 +4,7 @@
   <?php else : ?>
     <?php foreach ($contacts as $key => $contact) : ?>
       <div class="contact">
-        <form class="delete-contact" method="POST" action="/admin/contact/delete">
-          <input type="hidden" name="id" value="<?= $contact['id'] ?>">
+        <form class="delete-contact" method="POST" action="/admin/contact/delete/<?= $contact['id'] ?>">
           <button type="submit"><span class="material-symbols-rounded btn">delete</span></button>
         </form>
 
@@ -20,11 +19,9 @@
             <a href="<?= $contact['url'] ?>" target="_blank"><?= $contact['title'] ?></a>
         <?php endif; ?>
 
-        <form class="update-contact" method="POST" action="/admin/contact/update">
+        <form class="update-contact" method="POST" action="/admin/contact/update/<?= $contact['id'] ?>">
           <span class="material-symbols-rounded btn close-edit-contact">close</span>
           <h1>Editar Contacto</h1>
-
-          <input type="hidden" name="id" value="<?= $contact['id'] ?>">
 
           <div>
             <label for="name">Nombre</label>
