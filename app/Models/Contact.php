@@ -11,7 +11,7 @@ class Contact extends Model
         parent::__construct();
     }
 
-    public function getContacts(): array|int
+    public function getAll(): array|int
     {
         $sql = "SELECT * FROM contact;";
         $result = $this->db->fetchAll($sql);

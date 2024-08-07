@@ -43,7 +43,6 @@ return [
     '/comments/delete' => CommentController::class . '@delete',
     // About
     '/about' => SettingController::class . '@about',
-    // --------------------- Admin --------------------- //
     // Settings
     '/admin/settings' => SettingController::class . '@settings',
     '/admin/settings/title' => SettingController::class . '@updateTitle',
@@ -61,13 +60,16 @@ return [
     // Contact
     '/contact' => ContactController::class . '@index',
     '/admin/contact/store' => ContactController::class . '@store',
-    '/admin/contact/update' => ContactController::class . '@update',
-    '/admin/contact/delete' => ContactController::class . '@delete',
+    '/admin/contact/update/{id}' => ContactController::class . '@update',
+    '/admin/contact/delete/{id}' => ContactController::class . '@delete',
     // Friend
-    '/friends' => FriendController::class . '@friends',
-    '/admin/friend/store' => FriendController::class . '@store',
-    '/admin/friend/update/{id}' => FriendController::class . '@update',
-    '/admin/friend/delete/{id}' => FriendController::class . '@delete',
+    '/friends' => FriendController::class . '@index',
+    '/admin/friends/store' => FriendController::class . '@store',
+    '/admin/friends/update/{id}' => FriendController::class . '@update',
+    '/admin/friends/delete/{id}' => FriendController::class . '@delete',
     // Link
-    '/links' => LinkController::class . '@links',
+    '/links' => LinkController::class . '@index',
+    '/admin/links/store' => LinkController::class . '@store',
+    '/admin/links/update/{id}' => LinkController::class . '@update',
+    '/admin/links/delete/{id}' => LinkController::class . '@delete',
 ];

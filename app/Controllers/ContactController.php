@@ -18,7 +18,7 @@ class ContactController extends Controller
 
     public function index(): void
     {
-        $contacts = $this->contact->getContacts();
+        $contacts = $this->contact->getAll();
 
         if (!$contacts) {
             $this->helpers->view('blog.contact');
@@ -53,11 +53,10 @@ class ContactController extends Controller
         return;
     }
 
-    public function update(array $request): void
+    public function update(int $id, array $request): void
     {
         $contact['title'] = $request['name'];
         $contact['url'] = $request['url'];
-        $id = $request['id'];
 
         $result = $this->contact->update($id, $contact);
 
@@ -76,10 +75,8 @@ class ContactController extends Controller
         return;
     }
 
-    public function delete(array $request): void
+    public function delete(int $id): void
     {
-        $id = $request['id'];
-
         $result = $this->contact->delete($id);
 
         if (!$result) {

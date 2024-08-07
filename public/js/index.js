@@ -366,81 +366,105 @@ if (reportBtns) {
   });
 }
 
-// New contact logic
+// Popup for new contact mediums, friends and links
 const newContactBtn = document.querySelector('.add-contact');
 const newContact = document.querySelector('.new-contact');
 const closeNewContact = document.querySelector('.new-contact > span');
 
-let showNewContact = false;
+const newFriendBtn = document.querySelector('.add-friend');
+const newFriend = document.querySelector('.new-friend')
+const closeNewFriend = document.querySelector('.new-friend > span');
 
-if (newContactBtn) {
-  newContactBtn.addEventListener('click', () => {
-    if (!showNewContact) {
-      newContact.style.opacity = 1;
-      newContact.style.visibility = 'visible';
+const newLinkBtn = document.querySelector('.add-link');
+const newLink = document.querySelector('.new-link');
+const closeNewLink = document.querySelector('.new-link > span');
 
-      showNewContact = true;
-    }
-  });
+const newPopupForm = (newEl, newBtn, closeBtn) => {
+  if (newBtn) {
+    let showNewPopup = false;
 
-  closeNewContact.addEventListener('click', () => {
-    newContact.style.opacity = 0;
-    setTimeout(() => {
-      newContact.style.visibility = 'hidden';
-    }, 200); 
+    newBtn.addEventListener('click', () => {
+      if (!showNewPopup) {
+        newEl.style.opacity = 1;
+        newEl.style.visibility = 'visible';
 
-    showNewContact = false;
-  });
+        showNewPopup = true;
+      }
+    });
 
-  window.addEventListener('click', (event) => {
-    if (showNewContact && !newContact.contains(event.target) && event.target !== newContactBtn) {
-      newContact.style.opacity = 0;
+    closeBtn.addEventListener('click', () => {
+      newEl.style.opacity = 0;
       setTimeout(() => {
-        newContact.style.visibility = 'hidden';
-      }, 200);
+        newEl.style.visibility = 'hidden';
+      }, 200); 
 
-      showNewContact = false;
-    }
-  });
+      showNewPopup = false;
+    });
+
+    window.addEventListener('click', (event) => {
+      if (showNewPopup && !newEl.contains(event.target) && event.target !== newBtn) {
+        newEl.style.opacity = 0;
+        setTimeout(() => {
+          newEl.style.visibility = 'hidden';
+        }, 200);
+
+        showNewPopup = false;
+      }
+    });
+  }
+}
+
+newPopupForm(newContact, newContactBtn, closeNewContact);
+newPopupForm(newFriend, newFriendBtn, closeNewFriend);
+newPopupForm(newLink, newLinkBtn, closeNewLink);
+
+// Popups for editing contact mediums, friends and links
+const editPopupForms = (elements) => {
+  if (elements) {
+    elements.forEach(element => {
+      const editElementBtn = element.querySelector('.edit');
+      const editElement = element.querySelector('.update');
+      const closeEditElement = element.querySelector('.close-edit');
+  
+      let showEditElement = false;
+  
+      editElementBtn.addEventListener('click', () => {
+        if (!showEditElement) {
+          editElement.style.opacity = 1;
+          editElement.style.visibility = 'visible';
+    
+          showEditElement = true;
+        }
+      });
+    
+      closeEditElement.addEventListener('click', () => {
+        editElement.style.opacity = 0;
+        setTimeout(() => {
+          editElement.style.visibility = 'hidden';
+        }, 200); 
+    
+        showEditElement = false;
+      });
+    
+      window.addEventListener('click', (event) => {
+        if (showEditElement && !editElement.contains(event.target) && event.target !== editElementBtn) {
+          editElement.style.opacity = 0;
+          setTimeout(() => {
+            editElement.style.visibility = 'hidden';
+          }, 200);
+    
+          showEditElement = false;
+        }
+      });
+    });
+  }
 }
 
 const contacts = document.querySelectorAll('.contact');
+editPopupForms(contacts);
 
-if (contacts) {
-  contacts.forEach(contact => {
-    const editContactBtn = contact.querySelector('.edit-contact');
-    const editContact = contact.querySelector('.update-contact');
-    const closeEditContact = contact.querySelector('.close-edit-contact');
+const friends = document.querySelectorAll('.friend');
+editPopupForms(friends);
 
-    let showEditContact = false;
-
-    editContactBtn.addEventListener('click', () => {
-      if (!showEditContact) {
-        editContact.style.opacity = 1;
-        editContact.style.visibility = 'visible';
-  
-        showEditContact = true;
-      }
-    });
-  
-    closeEditContact.addEventListener('click', () => {
-      editContact.style.opacity = 0;
-      setTimeout(() => {
-        editContact.style.visibility = 'hidden';
-      }, 200); 
-  
-      showEditContact = false;
-    });
-  
-    window.addEventListener('click', (event) => {
-      if (showEditContact && !editContact.contains(event.target) && event.target !== editContactBtn) {
-        editContact.style.opacity = 0;
-        setTimeout(() => {
-          editContact.style.visibility = 'hidden';
-        }, 200);
-  
-        showEditContact = false;
-      }
-    });
-  });
-}
+const links = document.querySelectorAll('.link');
+editPopupForms(links);

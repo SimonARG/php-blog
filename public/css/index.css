@@ -1821,7 +1821,7 @@ input:-webkit-autofill:active{
 }
 
 .new-contact,
-.update-contact {
+.contact .update {
   position: fixed;
   left: 50%;
   top: 20%;
@@ -1840,7 +1840,7 @@ input:-webkit-autofill:active{
 }
 
 .new-contact > div,
-.update-contact > div {
+.contact .update > div {
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -1849,20 +1849,20 @@ input:-webkit-autofill:active{
 }
 
 .new-contact > h1,
-.update-contact > h1 {
+.contact .update > h1 {
   font-size: 1.8rem;
   font-weight: 600;
 }
 
 .new-contact > div > input[type="text"],
-.update-contact > div > input[type="text"] {
+.contact .update > div > input[type="text"] {
   padding: .2rem .4rem;
   text-align: center;
   width: 100%;
 }
 
 .new-contact > input[type="submit"],
-.update-contact > input[type="submit"] {
+.contact .update > input[type="submit"] {
   font-size: 1.4rem;
   border: 1px solid white;
   padding: .3rem .5rem;
@@ -1870,14 +1870,14 @@ input:-webkit-autofill:active{
 }
 
 .new-contact > span,
-.update-contact > span {
+.contact .update > span {
   position: absolute;
   top: 0;
   right: 0;
   font-size: 2.4rem;
 }
 
-.edit-contact {
+.contact .edit {
   position: absolute;
   right: 90%;
   font-size: 2.2rem;
@@ -1939,6 +1939,82 @@ input:-webkit-autofill:active{
   text-decoration: underline;
 }
 
+.friends-container .add-friend {
+  font-size: 2.5rem;
+}
+
+.new-friend,
+.friend .update {
+  position: fixed;
+  left: 50%;
+  top: 20%;
+  transform: translateX(-50%);
+  background-color: black;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 1rem;
+  border: 1px solid white;
+  width: 90vw;
+  visibility: hidden;
+  opacity: 0;
+  transition: opacity .2s ease-in-out;
+  z-index: 20;
+}
+
+.new-friend > div,
+.friend .update > div {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  font-size: 1.2rem;
+  width: 100%;
+}
+
+.new-friend > h1,
+.friend .update > h1 {
+  font-size: 1.8rem;
+  font-weight: 600;
+}
+
+.new-friend > div > input[type="text"],
+.friend .update > div > input[type="text"] {
+  padding: .2rem .4rem;
+  text-align: center;
+  width: 100%;
+}
+
+.new-friend > input[type="submit"],
+.friend .update > input[type="submit"] {
+  font-size: 1.4rem;
+  border: 1px solid white;
+  padding: .3rem .5rem;
+  margin-top: .6rem;
+}
+
+.new-friend > span,
+.friend .update > span {
+  position: absolute;
+  top: 0;
+  right: 0;
+  font-size: 2.4rem;
+}
+
+.friend .edit {
+  position: absolute;
+  right: 90%;
+  font-size: 2.2rem;
+}
+
+.delete-friend {
+  position: absolute;
+  left: 90%;
+}
+
+.delete-friend > button > span {
+  font-size: 2.2rem;
+}
+
 /*
 |------------------------------------------------------------
 | Links
@@ -1971,14 +2047,91 @@ input:-webkit-autofill:active{
   font-size: 1.4rem;
 }
 
-.links-container > div > hr {
+.links-container hr {
   background-color: white;
   width: 100%;
-  margin-top: .3rem;
+  margin-top: .4rem;
+  margin-bottom: .8rem;
 }
 
 .links-container > div > a:hover {
   text-decoration: underline;
+}
+
+.links-container .add-link {
+  font-size: 2.5rem;
+}
+
+.new-link,
+.link .update {
+  position: fixed;
+  left: 50%;
+  top: 20%;
+  transform: translateX(-50%);
+  background-color: black;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 1rem;
+  border: 1px solid white;
+  width: 90vw;
+  visibility: hidden;
+  opacity: 0;
+  transition: opacity .2s ease-in-out;
+  z-index: 20;
+}
+
+.new-link > div,
+.link .update > div {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  font-size: 1.2rem;
+  width: 100%;
+}
+
+.new-link > h1,
+.link .update > h1 {
+  font-size: 1.8rem;
+  font-weight: 600;
+}
+
+.new-link > div > input[type="text"],
+.contact .update > div > input[type="text"] {
+  padding: .2rem .4rem;
+  text-align: center;
+  width: 100%;
+}
+
+.new-link > input[type="submit"],
+.link .update > input[type="submit"] {
+  font-size: 1.4rem;
+  border: 1px solid white;
+  padding: .3rem .5rem;
+  margin-top: .6rem;
+}
+
+.new-link > span,
+.link .update > span {
+  position: absolute;
+  top: 0;
+  right: 0;
+  font-size: 2.4rem;
+}
+
+.link .edit {
+  position: absolute;
+  right: 90%;
+  font-size: 2.2rem;
+}
+
+.delete-link {
+  position: absolute;
+  left: 90%;
+}
+
+.delete-link > button > span {
+  font-size: 2.2rem;
 }
 
 /*
