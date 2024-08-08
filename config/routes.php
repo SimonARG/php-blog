@@ -16,7 +16,7 @@ return [
     '/user/{id}' => UserController::class . '@show',
     '/user/update/{id}' => UserController::class . '@update',
     '/user/saved/save' => UserController::class . '@save',
-    '/user/saved/delete' => UserController::class . '@deleteSaved',
+    '/user/saved/delete/' => UserController::class . '@deleteSaved',
     '/user/role/{id}' => UserController::class . '@changeRole',
     // Auth
     '/register' => UserController::class . '@create',
@@ -53,8 +53,9 @@ return [
     '/admin/settings/text-dim' => SettingController::class . '@updateTextDim',
     '/admin/settings/icon' => SettingController::class . '@updateIcon',
     // Moderation
-    '/report' => ReportController::class . '@create',
     '/admin/reports' => ReportController::class . '@index',
+    '/report' => ReportController::class . '@store',
+    '/admin/report/{id}' => ReportController::class . '@show',
     // Contact
     '/contact' => ContactController::class . '@index',
     '/admin/contact/store' => ContactController::class . '@store',

@@ -1728,21 +1728,36 @@ input:-webkit-autofill:active{
   background-color: var(--panel-bg);
   margin-bottom: 2px;
   padding: 1.4rem 0rem;
-  border: 6px solid red;
+  border: 3px solid red;
 }
 
 .index > .report.done {
-  border: 6px solid green;
+  border: 3px solid green;
 }
 
-.index > .report > .report-container > div {
+.index > .report > .report-container > div:not(.see) {
   display: grid;
   grid-template-columns: 50% 50%;
   padding: .2rem 1.2rem;
   border-bottom: 1px solid white;
+  overflow-wrap: break-word;
 }
 
-.index > .report > .report-container > div:nth-child(odd) {
+.index > .report > .report-container > .see {
+  display: flex;
+  justify-content: center;
+  position: relative;
+  padding: .3rem 0 1.2rem 0;
+}
+
+.index > .report > .report-container > div > a {
+  border: 1px solid white;
+  padding: .2rem 1rem;
+  position: absolute;
+  font-size: 1.3rem;
+}
+
+.index > .report > .report-container > div:nth-child(odd):not(.see) {
   background-color: var(--panel-h);
 }
 

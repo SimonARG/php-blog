@@ -39,7 +39,7 @@
         background-image: url("/<?= htmlspecialchars(strpos($blogConfig['bg_image'], 'http') === 0 ? $blogConfig['bg_image'] : "../imgs/blog/{$blogConfig['bg_image']}") ?>");
       <?php endif; ?>
     }
-    body *:not(.comment-count) {
+    body *:not(.comment-count, .report) {
       border-color: <?= $blogConfig['text_color'] ?> !important;
     }
     body,

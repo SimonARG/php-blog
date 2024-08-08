@@ -218,4 +218,14 @@ class Report extends Model
 
         return $result ? $result : false;
     }
+
+    public function get(int $id): array|bool
+    {
+        $sql = "SELECT * FROM reports
+                WHERE id = :id";
+
+        $result = $this->db->fetch($sql, [':id' => $id]);
+
+        return $result ? $result : false;
+    }
 }

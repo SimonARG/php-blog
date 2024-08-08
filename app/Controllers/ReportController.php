@@ -63,7 +63,7 @@ class ReportController extends Controller
         ]);
     }
 
-    public function create(array $request) : void
+    public function store(array $request) : void
     {
         $this->security->verifyCsrf($request['csrf'] ?? '');
         
@@ -117,5 +117,14 @@ class ReportController extends Controller
         }
 
         header('Location: ' . $url);
+    }
+
+    public function show(int $id): void
+    {
+        $report = $this->report->get($id);
+
+        $this->helpers->view('admin.report', [
+            'report' => $report
+        ]);
     }
 }

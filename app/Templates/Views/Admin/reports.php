@@ -1,48 +1,4 @@
 <?php
-function truncateHTML($html_string, $length, $append = '&hellip;', $is_html = true)
-{
-  $html_string = trim($html_string);
-  $plain_text_length = strlen(strip_tags($html_string));
-  $append = ($plain_text_length > $length) ? $append : '';
-  $i = 0;
-  $tags = [];
-  $output = '';
-
-  if ($is_html) {
-    preg_match_all('/(<[^>]+>)?([^<]*)/', $html_string, $tag_matches, PREG_OFFSET_CAPTURE | PREG_SET_ORDER);
-
-    foreach ($tag_matches as $tag_match) {
-      $tag_text_length = strlen(strip_tags($tag_match[2][0]));
-
-      if ($i + $tag_text_length > $length) {
-        $remaining_length = $length - $i;
-        $output .= substr($tag_match[2][0], 0, $remaining_length) . $append;
-        break;
-      }
-
-      $output .= $tag_match[0][0];
-      $i += $tag_text_length;
-
-      if (!empty($tag_match[1][0])) {
-        $tag = substr(strtok($tag_match[1][0], " \t\n\r\0\x0B>"), 1);
-        if ($tag[0] != '/') {
-          $tags[] = $tag;
-        } elseif (end($tags) == substr($tag, 1)) {
-          array_pop($tags);
-        }
-      }
-    }
-
-    while (!empty($tags)) {
-      $output .= '</' . array_pop($tags) . '>';
-    }
-  } else {
-    $output = substr($html_string, 0, $length) . $append;
-  }
-
-  return $output;
-}
-
 $currUrl = $actual_link = (empty($_SERVER['HTTPS']) ? 'http' : 'https') . "://$_SERVER[HTTP_HOST]$_SERVER[REQUEST_URI]";
 ?>
 
@@ -93,6 +49,12 @@ $currUrl = $actual_link = (empty($_SERVER['HTTPS']) ? 'http' : 'https') . "://$_
           <div>Reported by:</div>
           <div><a href="/user/<?= $report['reporter_id'] ?>"><?= $report['reporter'] ?></a></div>
         </div>
+
+        <?php if (!$report['reviewed']): ?>
+          <div class="see">
+            <a class="btn" href="/admin/report/<?= $report['id'] ?>">Ver</a>
+          </div>
+        <?php endif; ?>
 
         <?php if ($report['reviewer']): ?>
           <div>
