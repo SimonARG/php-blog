@@ -12,7 +12,9 @@
         <div>
             <button class="btn">Cancelar</button>
 
-            <input class="btn" type="submit" value="Editar">
+            <?php if ($_SESSION && $_SESSION['role'] == 'admin'): ?>
+                <input class="btn" type="submit" value="Editar">
+            <?php endif; ?>
         </div>
     </form>
 </div>
