@@ -1,5 +1,7 @@
 <div class="single">
-  <?php require __DIR__ . '/../../Layouts/Components/report.php'; ?>
+  <?php if($_SESSION && !($_SESSION['role'] == 'restricted') && !($_SESSION['role'] == 'banned')): ?>
+    <?php require __DIR__ . '/../../Layouts/Components/report.php'; ?>
+  <?php endif; ?>
 
   <div class="post">
     <h1 class="title"><?= htmlspecialchars($post['title']) ?></h1>
@@ -61,7 +63,9 @@
 
     <?php if (isset($comments)): ?>
       <?php foreach($comments as $index => $comment): ?>
-        <?php require __DIR__ . '/../../Layouts/Components/report.php'; ?>
+        <?php if($_SESSION && !($_SESSION['role'] == 'restricted') && !($_SESSION['role'] == 'banned')): ?>
+          <?php require __DIR__ . '/../../Layouts/Components/report.php'; ?>
+        <?php endif; ?>
 
         <div class="comment" id="<?= 'comment-' . $index + 1 ?>">
           <div class="dropdown">

@@ -420,14 +420,14 @@ newPopupForm(newLink, newLinkBtn, closeNewLink);
 
 // Popups for editing contact mediums, friends and links
 const editPopupForms = (elements) => {
-  if (elements) {
-    elements.forEach(element => {
-      const editElementBtn = element.querySelector('.edit');
-      const editElement = element.querySelector('.update');
-      const closeEditElement = element.querySelector('.close-edit');
-  
-      let showEditElement = false;
-  
+  elements.forEach(element => {
+    const editElementBtn = element.querySelector('.edit');
+    const editElement = element.querySelector('.update');
+    const closeEditElement = element.querySelector('.close-edit');
+
+    let showEditElement = false;
+
+    if (editElement) {
       editElementBtn.addEventListener('click', () => {
         if (!showEditElement) {
           editElement.style.opacity = 1;
@@ -436,7 +436,7 @@ const editPopupForms = (elements) => {
           showEditElement = true;
         }
       });
-    
+  
       closeEditElement.addEventListener('click', () => {
         editElement.style.opacity = 0;
         setTimeout(() => {
@@ -445,29 +445,35 @@ const editPopupForms = (elements) => {
     
         showEditElement = false;
       });
-    
-      window.addEventListener('click', (event) => {
-        if (showEditElement && !editElement.contains(event.target) && event.target !== editElementBtn) {
-          editElement.style.opacity = 0;
-          setTimeout(() => {
-            editElement.style.visibility = 'hidden';
-          }, 200);
-    
-          showEditElement = false;
-        }
-      });
+    }
+  
+    window.addEventListener('click', (event) => {
+      if (showEditElement && !editElement.contains(event.target) && event.target !== editElementBtn) {
+        editElement.style.opacity = 0;
+        setTimeout(() => {
+          editElement.style.visibility = 'hidden';
+        }, 200);
+  
+        showEditElement = false;
+      }
     });
-  }
+  });
 }
 
 const contacts = document.querySelectorAll('.contact');
-editPopupForms(contacts);
+if (contacts) {
+  editPopupForms(contacts);
+}
 
 const friends = document.querySelectorAll('.friend');
-editPopupForms(friends);
+if (friends) {
+  editPopupForms(friends);
+}
 
 const links = document.querySelectorAll('.link');
-editPopupForms(links);
+if (links) {
+  editPopupForms(links);
+}
 
 // About edit logic
 const about = document.querySelector('.about-container > div');
@@ -486,7 +492,7 @@ const resizeTextarea = () => {
   textarea.style.height = textarea.scrollHeight + 'px';
 }
 
-if (about) {
+if (aboutEditBtn) {
   let aboutStatus = true;
 
   aboutEditBtn.addEventListener('click', () => {

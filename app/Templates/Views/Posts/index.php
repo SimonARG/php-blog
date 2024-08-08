@@ -47,7 +47,9 @@ $currUrl = $actual_link = (empty($_SERVER['HTTPS']) ? 'http' : 'https') . "://$_
 
 <div class="index">
   <?php foreach ($posts as $index => $post) : ?>
-    <?php require __DIR__ . '/../../Layouts/Components/report.php'; ?>
+    <?php if($_SESSION && !($_SESSION['role'] == 'restricted') && !($_SESSION['role'] == 'banned')): ?>
+      <?php require __DIR__ . '/../../Layouts/Components/report.php'; ?>
+    <?php endif; ?>
 
     <div class="post <?= 'post-' . $index + 1 ?>">
       <?php if($_SESSION): ?>
