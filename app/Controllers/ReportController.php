@@ -2,7 +2,6 @@
 
 namespace App\Controllers;
 
-use DateTime;
 use App\Models\Report;
 use App\Models\Comment;
 
@@ -38,18 +37,10 @@ class ReportController extends Controller
         $totalPages = ceil($totalReports / $this->reportsPerPage);
 
         $unreviewed = $this->report->getUnreviewedReportCount();
+
+        $reports = $this->helpers->formatDates($reports);
         
         foreach ($reports as $key => $report) {
-            $reportDate = new DateTime($report['created_at']);
-            $reportStrdate = $reportDate->format('Y/m/d H:i');
-            $reports[$key]['created_at'] = $reportStrdate;
-    
-            if (isset($report['updated_at'])) {
-                $reportUpDate = new DateTime($report['updated_at']);
-                $reportUpStrdate = $reportUpDate->format('Y/m/d H:i');
-                $reports[$key]['updated_at'] = $reportUpStrdate;
-            }
-
             if (isset($report['mod_actions'])) {
                 $reports[$key]['mod_actions'] = json_decode($report['mod_actions'], true);
             }
@@ -122,6 +113,12 @@ class ReportController extends Controller
     public function show(int $id): void
     {
         $report = $this->report->get($id);
+
+        $report = $this->helpers->formatDates($report);
+
+        if (isset($report['mod_actions'])) {
+            $report['mod_actions'] = json_decode($report['mod_actions'], true);
+        }
 
         $this->helpers->view('admin.report', [
             'report' => $report

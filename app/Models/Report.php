@@ -28,6 +28,7 @@ class Report extends Model
                     reporter.id AS reporter_id,
                     reviewer.name AS reviewer,
                     reviewer.id AS reviewer_id,
+                    MAX(mod_actions.motive) AS motive,
                     CASE
                         WHEN rr.post_id IS NOT NULL THEN 'Post'
                         WHEN rr.comment_id IS NOT NULL THEN 'Comment'
@@ -38,6 +39,8 @@ class Report extends Model
                         WHEN rr.comment_id IS NOT NULL THEN rr.comment_id
                         WHEN rr.user_id IS NOT NULL THEN rr.user_id
                     END AS resource_id,
+                    author.name AS resource_owner,
+                    author.id AS owner_id,
                     JSON_ARRAYAGG(
                         JSON_OBJECT('consequence', consequences.consequence)
                     ) AS mod_actions
@@ -53,6 +56,17 @@ class Report extends Model
                     mod_actions ON reports.id = mod_actions.resource_id
                 LEFT JOIN 
                     consequences ON mod_actions.consequence_id = consequences.id
+                LEFT JOIN 
+                posts ON rr.post_id = posts.id
+                LEFT JOIN 
+                    comments ON rr.comment_id = comments.id
+                LEFT JOIN 
+                    users author ON 
+                        CASE
+                            WHEN rr.post_id IS NOT NULL THEN posts.user_id
+                            WHEN rr.comment_id IS NOT NULL THEN comments.user_id
+                            ELSE rr.user_id
+                        END = author.id
                 GROUP BY
                     reports.id,
                     reports.comment,
@@ -65,7 +79,8 @@ class Report extends Model
                     reviewer.id,
                     rr.post_id,
                     rr.comment_id,
-                    rr.user_id
+                    rr.user_id,
+                    author.name
                 ORDER BY 
                     reports.created_at DESC
                 LIMIT 
@@ -221,8 +236,70 @@ class Report extends Model
 
     public function get(int $id): array|bool
     {
-        $sql = "SELECT * FROM reports
-                WHERE id = :id";
+        $sql = "SELECT 
+                    reports.id,
+                    reports.comment,
+                    reports.created_at,
+                    reports.reviewed,
+                    reports.updated_at,
+                    reporter.name AS reporter,
+                    reporter.id AS reporter_id,
+                    reviewer.name AS reviewer,
+                    reviewer.id AS reviewer_id,
+                    MAX(mod_actions.motive) AS motive,
+                    CASE
+                        WHEN rr.post_id IS NOT NULL THEN 'Post'
+                        WHEN rr.comment_id IS NOT NULL THEN 'Comment'
+                        WHEN rr.user_id IS NOT NULL THEN 'User'
+                    END AS resource_type,
+                    CASE
+                        WHEN rr.post_id IS NOT NULL THEN rr.post_id
+                        WHEN rr.comment_id IS NOT NULL THEN rr.comment_id
+                        WHEN rr.user_id IS NOT NULL THEN rr.user_id
+                    END AS resource_id,
+                    author.name AS resource_owner,
+                    author.id AS owner_id,
+                    JSON_ARRAYAGG(
+                        JSON_OBJECT('consequence', consequences.consequence)
+                    ) AS mod_actions
+                FROM 
+                    reports
+                LEFT JOIN 
+                    users reporter ON reports.reported_by = reporter.id
+                LEFT JOIN 
+                    users reviewer ON reports.reviewed_by = reviewer.id
+                LEFT JOIN 
+                    reported_resources rr ON reports.resource_id = rr.id
+                LEFT JOIN 
+                    mod_actions ON reports.id = mod_actions.resource_id
+                LEFT JOIN 
+                    consequences ON mod_actions.consequence_id = consequences.id
+                LEFT JOIN 
+                    posts ON rr.post_id = posts.id
+                LEFT JOIN 
+                    comments ON rr.comment_id = comments.id
+                LEFT JOIN 
+                    users author ON 
+                        CASE
+                            WHEN rr.post_id IS NOT NULL THEN posts.user_id
+                            WHEN rr.comment_id IS NOT NULL THEN comments.user_id
+                            ELSE rr.user_id
+                        END = author.id
+                WHERE reports.id = :id
+                GROUP BY
+                    reports.id,
+                    reports.comment,
+                    reports.created_at,
+                    reports.reviewed,
+                    reports.updated_at,
+                    reporter.name,
+                    reporter.id,
+                    reviewer.name,
+                    reviewer.id,
+                    rr.post_id,
+                    rr.comment_id,
+                    rr.user_id,
+                    author.name";
 
         $result = $this->db->fetch($sql, [':id' => $id]);
 

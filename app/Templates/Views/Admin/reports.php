@@ -20,6 +20,18 @@ $currUrl = $actual_link = (empty($_SERVER['HTTPS']) ? 'http' : 'https') . "://$_
   </div>
 
   <?php foreach ($reports as $key => $report) : ?>
+    <?php
+      $type = '';
+      if ($report['resource_type'] == 'Post') {
+        $type = 'post';
+      }
+      else if ($report['resource_type'] == 'Comment') {
+        $type = 'comment';
+      }
+      else if ($report['resource_type'] == 'User') {
+        $type = 'user';
+      }
+    ?>
     <div class="<?= 'report' . ($report['reviewed'] ? ' done' : '') ?>">
       <div class="report-container">
         <div>
@@ -36,30 +48,37 @@ $currUrl = $actual_link = (empty($_SERVER['HTTPS']) ? 'http' : 'https') . "://$_
 
         <div>
           <div>Reported resource:</div>
-          <?php if ($report['resource_type'] == 'Post'): ?>
-            <div><a href="/post/<?= $report['resource_id'] ?>"><?= $report['resource_type'] ?></a></div>
-          <?php elseif ($report['resource_type'] == 'Comment'): ?>
-            <div><a href="/"><?= $report['resource_type'] ?></a></div>
-          <?php elseif ($report['resource_type'] == 'User'): ?>
-            <div><a href="/user/<?= $report['resource_id'] ?>"><?= $report['resource_type'] ?></a></div>
+          <?php if ($type == 'post'): ?>
+            <div><a target="_blank" href="/post/<?= $report['resource_id'] ?>"><?= $report['resource_type'] ?></a></div>
+          <?php elseif ($type == 'comment'): ?>
+            <div><a target="_blank" href="/"><?= $report['resource_type'] ?></a></div>
+          <?php elseif ($type == 'user'): ?>
+            <div><a target="_blank" href="/user/<?= $report['resource_id'] ?>"><?= $report['resource_type'] ?></a></div>
+          <?php endif; ?>
+        </div>
+
+        <div>
+          <?php if ($type == 'post'): ?>
+              <div>Post de:</div>
+              <div><a target="_blank" href="/user/<?= $report['owner_id'] ?>"><?= $report['resource_owner'] ?></a></div>
+          <?php elseif ($type == 'comment'): ?>
+              <div>Comentario de:</div>
+              <div><a target="_blank" href="/user/<?= $report['owner_id'] ?>"><?= $report['resource_owner'] ?></a></div>
+          <?php elseif ($type == 'user'): ?>
+              <div>Cuenta de:</div>
+              <div><a target="_blank" href="/user/<?= $report['owner_id'] ?>"><?= $report['resource_owner'] ?></a></div>
           <?php endif; ?>
         </div>
 
         <div>
           <div>Reported by:</div>
-          <div><a href="/user/<?= $report['reporter_id'] ?>"><?= $report['reporter'] ?></a></div>
+          <div><a target="_blank" href="/user/<?= $report['reporter_id'] ?>"><?= $report['reporter'] ?></a></div>
         </div>
-
-        <?php if (!$report['reviewed']): ?>
-          <div class="see">
-            <a class="btn" href="/admin/report/<?= $report['id'] ?>">Ver</a>
-          </div>
-        <?php endif; ?>
 
         <?php if ($report['reviewer']): ?>
           <div>
             <div>Reviewed by:</div>
-            <div><a href="/user/<?= $report['reviewer_id'] ?>"><?= $report['reviewer'] ?></a></div>
+            <div><a target="_blank" href="/user/<?= $report['reviewer_id'] ?>"><?= $report['reviewer'] ?></a></div>
           </div>
         <?php endif; ?>
 
@@ -85,6 +104,10 @@ $currUrl = $actual_link = (empty($_SERVER['HTTPS']) ? 'http' : 'https') . "://$_
             </div>
           </div>
         <?php endif; ?>
+
+        <div class="see">
+          <a class="btn" target="_blank" href="/admin/report/<?= $report['id'] ?>">Ver</a>
+        </div>
       </div>
     </div>
   <?php endforeach; ?>
