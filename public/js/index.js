@@ -547,3 +547,12 @@ if (aboutEditBtn) {
 
   window.addEventListener('load', resizeTextarea);
 }
+
+// Single report
+const reportReview = document.querySelector('.review');
+const reportBtn = document.querySelector('.review-report');
+
+if (reportReview) {
+  const reportCloser = reportReview.querySelector('span');
+  newPopupForm(reportReview, reportBtn, reportCloser);
+}

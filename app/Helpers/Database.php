@@ -36,6 +36,7 @@ class Database
         try {
             $stmt->execute();
         } catch (PDOException $e) {
+            // print_r($e);
             return 0;
         }
 

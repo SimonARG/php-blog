@@ -9,8 +9,6 @@
   else if ($report['resource_type'] == 'User') {
     $type = 'user';
   }
-
-  print_r($report);
 ?>
 
 <div class="report-single">
@@ -100,4 +98,57 @@
       <?php endif; ?>
     <?php endif; ?>
   </div>
+
+  <div class="review-report btn">Revisar</div>
+
+  <?php if ($report['reviewed']): ?>
+    <form method="POST" action="/admin/report/reset/<?= $report['id'] ?>">
+      <input type="hidden" name="mod-action-id" value="<?= $report['mod_action_id'] ?>">
+      <input class="btn" type="submit" value="Marcar como pendiente">
+    </form>
+  <?php endif; ?>
+
+  <form class="review" action="/admin/report/review/<?= $report['id'] ?>" method="POST">
+    <span class="material-symbols-rounded btn">close</span>
+
+    <div>
+      <label class="no-select" for="none">Nada</label>
+      <input type="checkbox" id="none" name="none" value="1">
+    </div>
+
+    <div>
+      <label class="no-select" for="warning">Advertencia</label>
+      <input type="checkbox" id="warning" name="warning" value="2">
+    </div>
+
+    <div>
+      <label class="no-select" for="modified">Recurso modificado</label>
+      <input type="checkbox" id="modified" name="modified" value="3">
+    </div>
+
+    <div>
+      <label class="no-select" for="deleted">Recurso eliminado</label>
+      <input type="checkbox" id="deleted" name="deleted" value="4">
+    </div>
+
+    <div>
+      <label class="no-select" for="restricted">Usuario restringido</label>
+      <input type="checkbox" id="restricted" name="restricted" value="5">
+    </div>
+
+    <div>
+      <label class="no-select" for="banned">Usuario banneado</label>
+      <input type="checkbox" id="banned" name="banned" value="6">
+    </div>
+
+    <hr>
+
+    <label for="motive">Motivo:</label>
+    <input required id="motive" name="motive" type="text" placeholder="...">
+
+    <input type="hidden" name="reviewer-id" value="<?= $_SESSION['user_id'] ?>">
+    <input type="hidden" name="report-id" value="<?= $report['id'] ?>">
+
+    <input class="btn" type="submit" value="Subir">
+  </form>
 </div>

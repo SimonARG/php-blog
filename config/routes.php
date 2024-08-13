@@ -56,6 +56,8 @@ return [
     '/admin/reports' => ReportController::class . '@index',
     '/report' => ReportController::class . '@store',
     '/admin/report/{id}' => ReportController::class . '@show',
+    '/admin/report/reset/{id}' => ReportController::class . '@reset',
+    '/admin/report/review/{id}' => ReportController::class . '@review',
     // Contact
     '/contact' => ContactController::class . '@index',
     '/admin/contact/store' => ContactController::class . '@store',

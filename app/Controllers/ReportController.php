@@ -124,4 +124,58 @@ class ReportController extends Controller
             'report' => $report
         ]);
     }
+
+    public function reset(int $id, array $request): void
+    {
+        $modActionId = $request['mod-action-id'];
+
+        $this->report->reset($id, $modActionId);
+
+        $report = $this->report->get($id);
+
+        $report = $this->helpers->formatDates($report);
+
+        $this->helpers->setPopup('Reporte reiniciado');
+
+        header('Location: /admin/report/1');
+    }
+
+    public function review(int $id, array $request): void
+    {
+        $reviewerId = $request['reviewer-id'];
+
+        // Set as reviewed and write reviewer_id
+        $this->report->setAsReviewed($id, $reviewerId);
+
+        // Create consequence array
+        $consequences = [];
+        if (!empty($request['none'])) {
+            $consequences[] = $request['none'];
+        }
+        if (!empty($request['warning'])) {
+            $consequences[] = $request['warning'];
+        }
+        if (!empty($request['modified'])) {
+            $consequences[] = $request['modified'];
+        }
+        if (!empty($request['deleted'])) {
+            $consequences[] = $request['deleted'];
+        }
+        if (!empty($request['restricted'])) {
+            $consequences[] = $request['restricted'];
+        }
+        if (!empty($request['banned'])) {
+            $consequences[] = $request['banned'];
+        }
+
+        $motive = $request['motive'];
+
+        foreach ($consequences as $consequence) {
+            $this->report->createModAction($reviewerId, $consequence, $id, $motive);
+        }
+
+        $this->helpers->setPopup('Revision completa');
+
+        header('Location: /admin/report/' . $id);
+    }
 }

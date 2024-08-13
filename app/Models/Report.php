@@ -53,7 +53,7 @@ class Report extends Model
                 LEFT JOIN 
                     reported_resources rr ON reports.resource_id = rr.id
                 LEFT JOIN 
-                    mod_actions ON reports.id = mod_actions.resource_id
+                    mod_actions ON reports.id = mod_actions.report_id
                 LEFT JOIN 
                     consequences ON mod_actions.consequence_id = consequences.id
                 LEFT JOIN 
@@ -112,6 +112,7 @@ class Report extends Model
                     reporter.id AS reporter_id,
                     reviewer.name AS reviewer,
                     reviewer.id AS reviewer_id,
+                    MAX(mod_actions.motive) AS motive,
                     CASE
                         WHEN rr.post_id IS NOT NULL THEN 'Post'
                         WHEN rr.comment_id IS NOT NULL THEN 'Comment'
@@ -122,6 +123,8 @@ class Report extends Model
                         WHEN rr.comment_id IS NOT NULL THEN rr.comment_id
                         WHEN rr.user_id IS NOT NULL THEN rr.user_id
                     END AS resource_id,
+                    author.name AS resource_owner,
+                    author.id AS owner_id,
                     JSON_ARRAYAGG(
                         JSON_OBJECT('consequence', consequences.consequence)
                     ) AS mod_actions
@@ -134,11 +137,22 @@ class Report extends Model
                 LEFT JOIN 
                     reported_resources rr ON reports.resource_id = rr.id
                 LEFT JOIN 
-                    mod_actions ON reports.id = mod_actions.resource_id
+                    mod_actions ON reports.id = mod_actions.report_id
                 LEFT JOIN 
                     consequences ON mod_actions.consequence_id = consequences.id
+                LEFT JOIN 
+                posts ON rr.post_id = posts.id
+                LEFT JOIN 
+                    comments ON rr.comment_id = comments.id
+                LEFT JOIN 
+                    users author ON 
+                        CASE
+                            WHEN rr.post_id IS NOT NULL THEN posts.user_id
+                            WHEN rr.comment_id IS NOT NULL THEN comments.user_id
+                            ELSE rr.user_id
+                        END = author.id
                 WHERE
-                reviewed = 0
+                    reviewed = 0
                 GROUP BY
                     reports.id,
                     reports.comment,
@@ -151,7 +165,8 @@ class Report extends Model
                     reviewer.id,
                     rr.post_id,
                     rr.comment_id,
-                    rr.user_id
+                    rr.user_id,
+                    author.name
                 ORDER BY 
                     reports.created_at DESC
                 LIMIT 
@@ -247,6 +262,7 @@ class Report extends Model
                     reviewer.name AS reviewer,
                     reviewer.id AS reviewer_id,
                     MAX(mod_actions.motive) AS motive,
+                    MAX(mod_actions.id) AS mod_action_id,
                     CASE
                         WHEN rr.post_id IS NOT NULL THEN 'Post'
                         WHEN rr.comment_id IS NOT NULL THEN 'Comment'
@@ -271,7 +287,7 @@ class Report extends Model
                 LEFT JOIN 
                     reported_resources rr ON reports.resource_id = rr.id
                 LEFT JOIN 
-                    mod_actions ON reports.id = mod_actions.resource_id
+                    mod_actions ON reports.id = mod_actions.report_id
                 LEFT JOIN 
                     consequences ON mod_actions.consequence_id = consequences.id
                 LEFT JOIN 
@@ -302,6 +318,47 @@ class Report extends Model
                     author.name";
 
         $result = $this->db->fetch($sql, [':id' => $id]);
+
+        return $result ? $result : false;
+    }
+
+    public function reset(int $id, int $modActionId): object|bool
+    {
+        $sql = "UPDATE reports SET reviewed = 0, reviewed_by = NULL WHERE id = :id;";
+
+        $result = $this->db->query($sql, [':id' => $id]);
+
+        $sql = "DELETE FROM mod_actions WHERE id = :modActionId;";
+
+        $result = $this->db->query($sql, [
+            ':modActionId' => $modActionId
+        ]);
+
+        return $result ? $result : false;
+    }
+
+    public function setAsReviewed(int $id, int $reviewerId): object|bool
+    {
+        $sql = "UPDATE reports SET reviewed = 1, reviewed_by = :reviewer WHERE id = :id; ";
+
+        $result = $this->db->query($sql, [
+            ':id' => $id,
+            ':reviewer' => $reviewerId
+        ]);
+
+        return $result ? $result : false;
+    }
+
+    public function createModAction(int $reviewerId, int $consequenceId, int $reportId, string $motive): object|bool
+    {
+        $sql = "INSERT INTO mod_actions (reviewer_id, motive, report_id, consequence_id) VALUES (:reviewer_id, :motive, :report_id, :consequence_id);";
+
+        $result = $this->db->query($sql, [
+            ':reviewer_id' => $reviewerId,
+            ':consequence_id' => $consequenceId,
+            ':report_id' => $reportId,
+            ':motive' => $motive
+        ]);
 
         return $result ? $result : false;
     }
