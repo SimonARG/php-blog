@@ -17,6 +17,7 @@ class PostController extends Controller
     public function __construct()
     {
         parent::__construct();
+
         $this->post = new Post();
         $this->comment = new Comment();
         $this->service = new PostService();
@@ -54,35 +55,31 @@ class PostController extends Controller
             'currentPage' => $currentPage,
             'totalPages' => $totalPages
         ]);
+
+        return;
     }
 
     public function create(): void
     {
-        if (!$this->security->canPost()) {
-            $this->helpers->setPopup('Operacion no autorizada');
-
-            header('Location: /');
-
-            return;
-        }
-
         $this->helpers->view('posts.create');
+
+        return;
     }
 
     public function store(array $request): void
     {
-        if (!$this->security->canPost()) {
-            $this->helpers->setPopup('Operacion no autorizada');
+        if (!$this->security->verifyCsrf($request['csrf'] ?? '')) {
+            $this->helpers->setPopup('Error de seguridad');
 
-            header('Location: /');
+            $this->helpers->view('posts.create');
 
             return;
         }
 
-        if (!$this->security->verifyCsrf($request['csrf'] ?? '')) {
+        if (!$this->security->canPost()) {
             $this->helpers->setPopup('Operacion no autorizada');
 
-            header('Location: /');
+            $this->helpers->view('posts.create');
 
             return;
         }
@@ -153,6 +150,8 @@ class PostController extends Controller
         $this->helpers->setPopup('Post creado');
 
         header('Location: /post/' . $postId);
+
+        return;
     }
 
     public function show(int $id): void
@@ -184,50 +183,40 @@ class PostController extends Controller
         $this->helpers->view('posts.single', [
             'post' => $post
         ]);
+
+        return;
     }
 
     public function edit(int $id): void
     {
-        if (!$this->security->verifyIdentity($id)) {
-            $this->helpers->setPopup('Solo puedes editar tus propios posts');
-
-            header('Location: /');
-
-            return;
-        }
-
-        if (!$this->security->canPost()) {
-            $this->helpers->setPopup('Operacion no autorizada');
-
-            header('Location: /');
-
-            return;
-        }
-
         $post = $this->post->getPostById($id);
 
         $this->helpers->view('posts.edit', [
             'post' => $post
         ]);
+
+        return;
     }
 
     public function update(int $id, array $request): void
     {
-        if (!$this->security->verifyIdentity($id)) {
-            $this->helpers->setPopup('Solo puedes editar tus propios posts');
-
-            header('Location: /');
-        }
-
-        if (!$this->security->canPost()) {
-            $this->helpers->setPopup('Operacion no autorizada');
+        if (!$this->security->verifyCsrf($request['csrf'] ?? '')) {
+            $this->helpers->setPopup('Error de seguridad');
 
             header('Location: /');
 
             return;
         }
 
-        if (!$this->security->verifyCsrf($request['csrf'] ?? '')) {
+        if (!$this->security->verifyIdentity($id)) {
+            $this->helpers->setPopup('Solo puedes editar tus propios posts');
+
+            header('Location: /');
+
+            return;
+        }
+
+        if (!$this->security->canPost()) {
             $this->helpers->setPopup('Operacion no autorizada');
 
             header('Location: /');
@@ -291,11 +280,35 @@ class PostController extends Controller
         $this->helpers->setPopup('Post editado');
 
         header('Location: /post/' . $post['id']);
+
+        return;
     }
 
     public function delete(int $id, array $request): void
     {
-        $this->security->verifyCsrf($request['csrf'] ?? '');
+        if (!$this->security->verifyCsrf($request['csrf'] ?? '')) {
+            $this->helpers->setPopup('Error de seguridad');
+
+            header('Location: /');
+
+            return;
+        }
+
+        if (!$this->security->verifyIdentity($id)) {
+            $this->helpers->setPopup('Solo puedes editar tus propios posts');
+
+            header('Location: /');
+
+            return;
+        }
+
+        if (!$this->security->canPost()) {
+            $this->helpers->setPopup('Operacion no autorizada');
+
+            header('Location: /');
+
+            return;
+        }
 
         $post = $this->post->getPostById($id);
 
@@ -310,5 +323,7 @@ class PostController extends Controller
         $this->helpers->setPopup('Post eliminado');
 
         header('Location: /');
+
+        return;
     }
 }
