@@ -11,9 +11,9 @@ class FriendController extends Controller
 
     public function __construct()
     {
-        $this->friend = new Friend();
-
         parent::__construct();
+        
+        $this->friend = new Friend();
     }
 
     public function index(): void

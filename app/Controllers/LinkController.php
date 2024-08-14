@@ -11,9 +11,9 @@ class LinkController extends Controller
 
     public function __construct()
     {
-        $this->link = new Link();
-
         parent::__construct();
+
+        $this->link = new Link();
     }
 
     public function index(): void
@@ -33,6 +33,22 @@ class LinkController extends Controller
 
     public function store(array $request): void
     {
+        if (!$this->security->verifyCsrf($request['csrf'] ?? '')) {
+            $this->helpers->setPopup('Error de seguridad');
+
+            header('Location: /links');
+
+            return;
+        }
+
+        if (!$this->security->isAdmin()) {
+            $this->helpers->setPopup('Solo el admin puede realizar esta operación');
+
+            header('Location: /links');
+
+            return;
+        }
+
         $link['title'] = $request['name'];
         $link['url'] = $request['url'];
 
@@ -55,6 +71,22 @@ class LinkController extends Controller
 
     public function update(int $id, array $request): void
     {
+        if (!$this->security->verifyCsrf($request['csrf'] ?? '')) {
+            $this->helpers->setPopup('Error de seguridad');
+
+            header('Location: /links');
+
+            return;
+        }
+
+        if (!$this->security->isAdmin()) {
+            $this->helpers->setPopup('Solo el admin puede realizar esta operación');
+
+            header('Location: /links');
+
+            return;
+        }
+
         $link['title'] = $request['name'];
         $link['url'] = $request['url'];
 
@@ -75,8 +107,24 @@ class LinkController extends Controller
         return;
     }
 
-    public function delete(int $id): void
+    public function delete(int $id, array $request): void
     {
+        if (!$this->security->verifyCsrf($request['csrf'] ?? '')) {
+            $this->helpers->setPopup('Error de seguridad');
+
+            header('Location: /links');
+
+            return;
+        }
+
+        if (!$this->security->isAdmin()) {
+            $this->helpers->setPopup('Solo el admin puede realizar esta operación');
+
+            header('Location: /links');
+
+            return;
+        }
+
         $result = $this->link->delete($id);
 
         if (!$result) {
