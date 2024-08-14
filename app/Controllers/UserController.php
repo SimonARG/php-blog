@@ -86,8 +86,6 @@ class UserController extends Controller
 
         $user = $this->user->getUserById($user['id']);
 
-        session_start();
-
         $_SESSION['saved_posts'] = [];
         $_SESSION['user_id'] = $user['id'];
         $_SESSION['username'] = $user['name'];
@@ -95,7 +93,7 @@ class UserController extends Controller
 
         $this->security->generateCsrf();
 
-        $this->helpers->setPopup('Cuenta ' . $user['name'] . ' creada');
+        $this->helpers->setPopup('Cuenta ' . $user['name'] . ' creada y sesión iniciada');
 
         header('Location: /' . 'user/' . ($user['id']));
     }

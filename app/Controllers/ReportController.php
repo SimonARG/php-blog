@@ -64,7 +64,7 @@ class ReportController extends Controller
         $type = htmlspecialchars($request['type']);
         $allowedTypes = ['post', 'comment', 'user'];
         if (!in_array($type, $allowedTypes)) {
-            $this->helpers->setPopup('Error al reportar el post');
+            $this->helpers->setPopup('Tipo de recurso desconocido');
 
             header('Location: /');
         }
@@ -83,10 +83,8 @@ class ReportController extends Controller
             $data['comment'] = $comment;
         }
 
-        // Attempt to create the reported resource
         $result = $this->report->createReportedResource($type, $resourceId);
 
-        // Else, create the report
         $result = $this->report->getReportedResourceId($type, $resourceId);
 
         $data['reported_id'] = $result['id'];

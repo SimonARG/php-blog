@@ -188,12 +188,6 @@ class PostController extends Controller
 
     public function edit(int $id): void
     {
-        if (!$this->security->verifySession($id)) {
-            header('Location: /');
-
-            return;
-        }
-
         if (!$this->security->verifyIdentity($id)) {
             $this->helpers->setPopup('Solo puedes editar tus propios posts');
 

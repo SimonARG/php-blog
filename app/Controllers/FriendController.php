@@ -40,7 +40,7 @@ class FriendController extends Controller
         $result = $this->friend->store($friend);
 
         if (!$result) {
-            $this->helpers->setPopup('Error al añadir blog');
+            $this->helpers->setPopup('Error al añadir el blog');
 
             header('Location: /friends');
 

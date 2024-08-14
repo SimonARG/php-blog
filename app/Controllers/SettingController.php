@@ -44,10 +44,6 @@ class SettingController extends Controller
     public function settings(): void
     {
         if (!$this->security->isElevatedUser()) {
-            if ($this->security->verifySession()) {
-                $this->helpers->setPopup('Operacion no autorizada');
-            }
-
             header('Location: /');
 
             return;
@@ -61,10 +57,6 @@ class SettingController extends Controller
     public function updateTitle(array $request) : void
     {
         if (!$this->security->isElevatedUser()) {
-            if ($this->security->verifySession()) {
-                $this->helpers->setPopup('Operacion no autorizada');
-            }
-
             header('Location: /');
 
             return;
@@ -74,6 +66,8 @@ class SettingController extends Controller
 
         $this->blog->updateTitle($newTitle);
 
+        $this->helpers->setPopup('Nombre del blog actualizado');
+
         header('Location: /admin/settings');
 
         return;
@@ -82,10 +76,6 @@ class SettingController extends Controller
     public function updateBgColor(array $request) : void
     {
         if (!$this->security->isElevatedUser()) {
-            if ($this->security->verifySession()) {
-                $this->helpers->setPopup('Operacion no autorizada');
-            }
-
             header('Location: /');
 
             return;
@@ -95,6 +85,8 @@ class SettingController extends Controller
 
         $this->blog->updateBgColor($newBgColor);
 
+        $this->helpers->setPopup('Color de fondo actualizado');
+
         header('Location: /admin/settings');
 
         return;
@@ -103,10 +95,6 @@ class SettingController extends Controller
     public function updateTextColor(array $request) : void
     {
         if (!$this->security->isElevatedUser()) {
-            if ($this->security->verifySession()) {
-                $this->helpers->setPopup('Operacion no autorizada');
-            }
-
             header('Location: /');
 
             return;
@@ -116,6 +104,8 @@ class SettingController extends Controller
 
         $this->blog->updateTextColor($newTextColor);
 
+        $this->helpers->setPopup('Color del texto actualizado');
+
         header('Location: /admin/settings');
 
         return;
@@ -124,10 +114,6 @@ class SettingController extends Controller
     public function updateTextDim(array $request) : void
     {
         if (!$this->security->isElevatedUser()) {
-            if ($this->security->verifySession()) {
-                $this->helpers->setPopup('Operacion no autorizada');
-            }
-
             header('Location: /');
 
             return;
@@ -137,6 +123,8 @@ class SettingController extends Controller
 
         $this->blog->updateTextDim($newTextDim);
 
+        $this->helpers->setPopup('Color del texto secundario actualizado');
+
         header('Location: /admin/settings');
 
         return;
@@ -145,10 +133,6 @@ class SettingController extends Controller
     public function updatePanelBgColor(array $request) : void
     {
         if (!$this->security->isElevatedUser()) {
-            if ($this->security->verifySession()) {
-                $this->helpers->setPopup('Operacion no autorizada');
-            }
-
             header('Location: /');
 
             return;
@@ -157,6 +141,8 @@ class SettingController extends Controller
         $newPanelBgColor = $request['panel-color'];
 
         $this->blog->updatePanelBg($newPanelBgColor);
+        
+        $this->helpers->setPopup('Color de panel actualizado');
 
         header('Location: /admin/settings');
 
@@ -166,10 +152,6 @@ class SettingController extends Controller
     public function updatePanelHoverColor(array $request) : void
     {
         if (!$this->security->isElevatedUser()) {
-            if ($this->security->verifySession()) {
-                $this->helpers->setPopup('Operacion no autorizada');
-            }
-
             header('Location: /');
 
             return;
@@ -179,6 +161,8 @@ class SettingController extends Controller
 
         $this->blog->updatePanelHover($newHoverColor);
 
+        $this->helpers->setPopup('Color del panel en hover actualizado');
+
         header('Location: /admin/settings');
 
         return;
@@ -187,10 +171,6 @@ class SettingController extends Controller
     public function updatePanelActiveColor(array $request) : void
     {
         if (!$this->security->isElevatedUser()) {
-            if ($this->security->verifySession()) {
-                $this->helpers->setPopup('Operacion no autorizada');
-            }
-
             header('Location: /');
 
             return;
@@ -200,6 +180,8 @@ class SettingController extends Controller
 
         $this->blog->updatePanelActive($newActiveColor);
 
+        $this->helpers->setPopup('Color del panel activo actualizado');
+
         header('Location: /admin/settings');
 
         return;
@@ -208,10 +190,6 @@ class SettingController extends Controller
     public function updateBgImage(array $request) : void
     {
         if (!$this->security->isElevatedUser()) {
-            if ($this->security->verifySession()) {
-                $this->helpers->setPopup('Operacion no autorizada');
-            }
-
             header('Location: /');
 
             return;
@@ -232,6 +210,8 @@ class SettingController extends Controller
 
         $this->blog->updateBgImage($newBgImg);
 
+        $this->helpers->setPopup('Imagen de fondo actualizada');
+
         header('Location: /admin/settings');
 
         return;
@@ -240,10 +220,6 @@ class SettingController extends Controller
     public function updateIcon(array $request) : void
     {
         if (!$this->security->isElevatedUser()) {
-            if ($this->security->verifySession()) {
-                $this->helpers->setPopup('Operacion no autorizada');
-            }
-
             header('Location: /');
 
             return;
@@ -272,6 +248,8 @@ class SettingController extends Controller
         $newIcon = $newIcon . '2.webp';
 
         $this->blog->updateIcon($newIcon);
+
+        $this->helpers->setPopup('Icono de pestaña actualizado');
 
         header('Location: /admin/settings');
 

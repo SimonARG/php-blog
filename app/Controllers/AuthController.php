@@ -77,9 +77,28 @@ class AuthController extends Controller
 
     public function logout() : void
     {
-        session_start();
+        // Empty session array
         $_SESSION = [];
+
+        // Unset the session cookie
+        if (ini_get("session.use_cookies")) {
+            $params = session_get_cookie_params();
+            setcookie(session_name(), '', time() - 42000,
+                $params["path"], $params["domain"],
+                $params["secure"], $params["httponly"]
+            );
+        }
+
+        // Formally destroy the session
         session_destroy();
+
+        // Restart session for guest functionalities
+        session_start();
+
+        $this->helpers->setPopup('Sesión cerrada');
+
+        // Regenerate session ID for security
+        session_regenerate_id(true);
 
         header('Location: /');
     }
