@@ -107,7 +107,7 @@ class ContactController extends Controller
         return;
     }
 
-    public function delete(int $id): void
+    public function delete(int $id, array $request): void
     {
         if (!$this->security->verifyCsrf($request['csrf'] ?? '')) {
             $this->helpers->setPopup('Error de seguridad');

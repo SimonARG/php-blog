@@ -67,7 +67,7 @@ class Security
 
     public function verifyCsrf($csrf): int
     {
-        if (empty($csrf) || !($csrf == $_SESSION['csrf'])) {
+        if (empty($csrf) || !($csrf === $_SESSION['csrf'])) {
             return 0;
         }
 
