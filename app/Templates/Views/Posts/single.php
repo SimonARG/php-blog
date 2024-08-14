@@ -18,14 +18,14 @@
       <div class="btns">
         <?php if(!in_array($post['id'], $_SESSION['saved_posts'])): ?>
           <form class="btn" method="POST" action="/user/saved/save">
-            <input type="hidden" name="csrf" value="<?php echo $_SESSION['csrf'] ?? '' ?>">
+            <input type="hidden" name="csrf" value="<?= $_SESSION['csrf'] ?? '' ?>">
             <input type="hidden" name="post_id" value="<?= $post['id'] ?>">
             <input type="hidden" name="user_id" value="<?= $_SESSION['user_id'] ?>">
             <input type="submit" value="Guardar">
           </form>
         <?php else: ?>
           <form class="btn" method="POST" action="/user/saved/delete">
-            <input type="hidden" name="csrf" value="<?php echo $_SESSION['csrf'] ?? '' ?>">
+            <input type="hidden" name="csrf" value="<?= $_SESSION['csrf'] ?? '' ?>">
 
             <input type="hidden" name="post_id" value="<?= $post['id'] ?>">
             <input type="hidden" name="user_id" value="<?= $_SESSION['user_id'] ?>">
@@ -36,7 +36,7 @@
         <?php if (($_SESSION['user_id'] == $post['user_id']) || $elevated): ?>
           <a class="btn" href="<?= '/post/edit/' . $post['id'] ?>">Editar</a>
           <form class="btn" action="/post/delete/<?= $post['id'] ?>" method="POST">
-            <input type="hidden" name="csrf" value="<?php echo $_SESSION['csrf'] ?? '' ?>">
+            <input type="hidden" name="csrf" value="<?= $_SESSION['csrf'] ?? '' ?>">
             <input type="hidden" name="post_id" value="<?= $post['id'] ?>">
             <input type="submit" value="Eliminar">
           </form>
@@ -49,7 +49,7 @@
   <div class="comments">
     <?php if (!($banned || $restricted || $guest)): ?>
       <form class="new-comment" method="POST" action="/comments/store">
-        <input type="hidden" name="csrf" value="<?php echo $_SESSION['csrf'] ?? '' ?>">
+        <input type="hidden" name="csrf" value="<?= $_SESSION['csrf'] ?? '' ?>">
 
         <label for="body">Nuevo Comentario</label>
         <textarea required maxlength="1600" name="body" id="body" placeholder="Comment..." autocomplete="off"<?php if (isset($errors['body_error'])): ?><?= "class='ph-error'" ?><?php endif; ?>></textarea>
@@ -71,11 +71,10 @@
           <div class="dropdown">
             <?php if ($_SESSION && ($_SESSION['user_id'] == $comment['user_id'] || $elevated)): ?>
               <form class="edit" action="<?= '/comments/update/' . $comment['id'] ?>" method="POST">
-                <input type="hidden" name="csrf" value="<?php echo $_SESSION['csrf'] ?? '' ?>">
+                <input type="hidden" name="csrf" value="<?= $_SESSION['csrf'] ?? '' ?>">
 
                 <textarea name="body" id="body"><?= $comment['body'] ?></textarea>
                 <input type="hidden" name="post_id" value="<?= $post['id'] ?>">
-                <input type="hidden" name="comment_id" value="<?= $comment['id'] ?>">
                 <input class="btn" type="submit" value="Editar">
               </form>
             <?php endif; ?>
@@ -84,7 +83,7 @@
 
             <?php if ($_SESSION && ($_SESSION['user_id'] == $comment['user_id'] || $elevated)): ?>
               <form class="del" action="/comments/delete/<?= $comment['id'] ?>" method="POST">
-                <input type="hidden" name="csrf" value="<?php echo $_SESSION['csrf'] ?? '' ?>">
+                <input type="hidden" name="csrf" value="<?= $_SESSION['csrf'] ?? '' ?>">
 
                 <input type="hidden" name="post_id" value="<?= $post['id'] ?>">
                 <input type="hidden" name="comment_id" value="<?= $comment['id'] ?>">

@@ -5,7 +5,6 @@ namespace App\Controllers;
 use App\Models\Post;
 use App\Models\Comment;
 use App\Controllers\Controller;
-use League\CommonMark\GithubFlavoredMarkdownConverter;
 
 class CommentController extends Controller
 {
@@ -21,7 +20,22 @@ class CommentController extends Controller
 
     public function store(array $request): void
     {
-        $this->security->verifyCsrf($request['csrf'] ?? '');
+        if (!$this->security->verifyCsrf($request['csrf'] ?? '')) {
+            $this->helpers->setPopup('Error de seguridad');
+
+            header('Location: /post/' . $request['post_id']);
+
+            return;
+        }
+
+        if (!$this->security->canComment()) {
+            $this->helpers->setPopup('No puedes publicar comentarios');
+
+            header('Location: /post/' . $request['post_id']);
+
+            return;
+        }
+
         // Sanitize
         htmlspecialchars($request['body']);
 
@@ -38,6 +52,8 @@ class CommentController extends Controller
                 'request' => $request,
                 'errors' => $errors
             ]);
+
+            return;
         }
 
         $this->comment->storeComment($request);
@@ -45,19 +61,36 @@ class CommentController extends Controller
         $this->helpers->setPopup('Comentario creado');
 
         header('Location: /post/' . $request['post_id'] . '#comment-1');
+
+        return;
     }
 
     public function update(int $id, array $request): void
     {
-        $this->security->verifyCsrf($request['csrf'] ?? '');
+        if (!$this->security->verifyCsrf($request['csrf'] ?? '')) {
+            $this->helpers->setPopup('Error de seguridad');
+
+            header('Location: /post/' . $request['post_id'] . '#comment-1');
+
+            return;
+        }
+
+        if (!$this->security->canComment()) {
+            $this->helpers->setPopup('No puedes editar comentarios');
+
+            header('Location: /post/' . $request['post_id'] . '#comment-1');
+
+            return;
+        }
 
         $comment = $this->comment->getCommentById($id);
-        $post = $this->post->getPostById($request['post_id']);
 
         if(!$this->security->verifyIdentity($comment['user_id'])) {
             $this->helpers->setPopup('Solo puedes editar tus propios comentarios');
 
             header('Location: /post/' . $request['post_id'] . '#comment-1');
+
+            return;
         }
 
         // Sanitize
@@ -85,13 +118,27 @@ class CommentController extends Controller
         $$this->helpers->setPopup('Comentario editado');
 
         header('Location: /post/' . $request['post_id'] . '#comment-1');
+
+        return;
     }
 
     public function delete(int $id, array $request): void
     {
-        $this->security->verifyCsrf($request['csrf'] ?? '');
+        if (!$this->security->verifyCsrf($request['csrf'] ?? '')) {
+            $this->helpers->setPopup('Error de seguridad');
 
-        $id = $request['comment_id'];
+            header('Location: /post/' . $request['post_id'] . '#comment-1');
+
+            return;
+        }
+
+        if (!$this->security->canComment()) {
+            $this->helpers->setPopup('No puedes eliminar comentarios');
+
+            header('Location: /post/' . $request['post_id'] . '#comment-1');
+
+            return;
+        }
 
         $comment = $this->comment->getCommentById($id);
 
@@ -99,6 +146,8 @@ class CommentController extends Controller
             $this->helpers->setPopup('Solo puedes eliminar tus propios comentarios');
 
             header('Location: /post/' . $request['post_id'] . '#comment-1');
+
+            return;
         }
 
         $this->comment->softDelete($id);

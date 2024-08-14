@@ -33,7 +33,7 @@ class Security
 
     public function canComment(): int
     {
-        if(($_SESSION['role'] == 'restricted') || ($_SESSION['role'] == 'banned')) {
+        if(($_SESSION['role'] == 'restricted') || ($_SESSION['role'] == 'banned') || ($_SESSION['role'] == 'guest')) {
             return 0;
         }
 
