@@ -22,7 +22,7 @@ class SearchController extends Controller
         $this->user = new User();
     }
 
-    public function search() : void
+    public function search(): void
     {
         $query = $_GET['query'];
 
@@ -54,7 +54,7 @@ class SearchController extends Controller
             $convertedContent = $converter->convert($post['body']);
             $posts[$key]['body'] = $convertedContent->getContent();
         }
-        
+
         $postsPerPage = $GLOBALS['config']['posts_per_page'];
 
         // Calculate the total number of pages
@@ -69,7 +69,7 @@ class SearchController extends Controller
         ]);
     }
 
-    public function getUserPosts(int $id) : void
+    public function getUserPosts(int $id): void
     {
         // Get user name
         $user = $this->user->getUserById($id);
@@ -100,7 +100,7 @@ class SearchController extends Controller
             $convertedContent = $converter->convert($post['body']);
             $posts[$key]['body'] = $convertedContent->getContent();
         }
-        
+
         $postsPerPage = $GLOBALS['config']['posts_per_page'];
 
         // Calculate the total number of pages
@@ -116,7 +116,7 @@ class SearchController extends Controller
         ]);
     }
 
-    public function saved(int $id) : void
+    public function saved(int $id): void
     {
         // Get the current page from the query parameters, default to 1 if not set
         $currentPage = isset($_GET['page']) ? (int)$_GET['page'] : 1;
@@ -145,7 +145,7 @@ class SearchController extends Controller
             $convertedContent = $converter->convert($post['body']);
             $posts[$key]['body'] = $convertedContent->getContent();
         }
-        
+
         $postsPerPage = $GLOBALS['config']['posts_per_page'];
 
         // Calculate the total number of pages

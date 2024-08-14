@@ -14,13 +14,13 @@ class ReportController extends Controller
     public function __construct()
     {
         $this->reportsPerPage = $GLOBALS['config']['reports_per_page'];
-        
+
         parent::__construct();
         $this->comment = new Comment();
         $this->report = new Report();
     }
 
-    public function index(array $request) : void
+    public function index(array $request): void
     {
         $currentPage = isset($_GET['page']) ? (int)$_GET['page'] : 1;
 
@@ -39,7 +39,7 @@ class ReportController extends Controller
         $unreviewed = $this->report->getUnreviewedReportCount();
 
         $reports = $this->helpers->formatDates($reports);
-        
+
         foreach ($reports as $key => $report) {
             if (isset($report['mod_actions'])) {
                 $reports[$key]['mod_actions'] = json_decode($report['mod_actions'], true);
@@ -54,10 +54,10 @@ class ReportController extends Controller
         ]);
     }
 
-    public function store(array $request) : void
+    public function store(array $request): void
     {
         $this->security->verifyCsrf($request['csrf'] ?? '');
-        
+
         // Sanitize
         $comment = htmlspecialchars($request['comment'] ?? '');
 
@@ -70,7 +70,7 @@ class ReportController extends Controller
         }
 
         $url = $request['curr_url'];
-        
+
         $resourceId = $request['id'];
         $reportedBy = $request['user_id'];
 
@@ -78,7 +78,7 @@ class ReportController extends Controller
             'type' => $type,
             'reported_by' => $reportedBy
         ];
-        
+
         if (($comment)) {
             $data['comment'] = $comment;
         }
@@ -99,9 +99,9 @@ class ReportController extends Controller
 
         if ($type == 'post') {
             $this->helpers->setPopup('Post reportado');
-        } else if ($type == 'comment') {
+        } elseif ($type == 'comment') {
             $this->helpers->setPopup('Comentario reportado');
-        } else if ($type == 'user') {
+        } elseif ($type == 'user') {
             $this->helpers->setPopup('Usuario reportado');
         }
 

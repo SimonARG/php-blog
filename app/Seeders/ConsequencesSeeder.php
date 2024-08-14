@@ -10,7 +10,7 @@ class ConsequencesSeeder extends Seeder
     {
         parent::__construct();
     }
-    
+
     public function run()
     {
         $consequences = [

@@ -1,5 +1,7 @@
 <div class="auth-container login">
   <form class="auth" action="/auth" method="POST">
+    <input type="hidden" name="csrf" value="<?php echo $_SESSION['csrf'] ?? '' ?>">
+    
     <label for="email">Correo Electronico</label>
     <input type="text" id="email" name="email"
     <?php if (isset($errors['error'])): ?>

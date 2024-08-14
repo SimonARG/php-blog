@@ -19,7 +19,7 @@ class CommentController extends Controller
         $this->post = new Post();
     }
 
-    public function store(array $request) : void
+    public function store(array $request): void
     {
         $this->security->verifyCsrf($request['csrf'] ?? '');
         // Sanitize
@@ -47,7 +47,7 @@ class CommentController extends Controller
         header('Location: /post/' . $request['post_id'] . '#comment-1');
     }
 
-    public function update(int $id, array $request) : void
+    public function update(int $id, array $request): void
     {
         $this->security->verifyCsrf($request['csrf'] ?? '');
 
@@ -81,16 +81,16 @@ class CommentController extends Controller
         $dbEntry['body'] = $body;
 
         $this->comment->update($dbEntry, $id);
-        
+
         $$this->helpers->setPopup('Comentario editado');
 
         header('Location: /post/' . $request['post_id'] . '#comment-1');
     }
 
-    public function delete(int $id, array $request) : void
+    public function delete(int $id, array $request): void
     {
         $this->security->verifyCsrf($request['csrf'] ?? '');
-        
+
         $id = $request['comment_id'];
 
         $comment = $this->comment->getCommentById($id);

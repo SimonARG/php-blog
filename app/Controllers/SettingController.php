@@ -54,7 +54,7 @@ class SettingController extends Controller
         return;
     }
 
-    public function updateTitle(array $request) : void
+    public function updateTitle(array $request): void
     {
         if (!$this->security->isElevatedUser()) {
             header('Location: /');
@@ -73,7 +73,7 @@ class SettingController extends Controller
         return;
     }
 
-    public function updateBgColor(array $request) : void
+    public function updateBgColor(array $request): void
     {
         if (!$this->security->isElevatedUser()) {
             header('Location: /');
@@ -92,7 +92,7 @@ class SettingController extends Controller
         return;
     }
 
-    public function updateTextColor(array $request) : void
+    public function updateTextColor(array $request): void
     {
         if (!$this->security->isElevatedUser()) {
             header('Location: /');
@@ -111,7 +111,7 @@ class SettingController extends Controller
         return;
     }
 
-    public function updateTextDim(array $request) : void
+    public function updateTextDim(array $request): void
     {
         if (!$this->security->isElevatedUser()) {
             header('Location: /');
@@ -130,7 +130,7 @@ class SettingController extends Controller
         return;
     }
 
-    public function updatePanelBgColor(array $request) : void
+    public function updatePanelBgColor(array $request): void
     {
         if (!$this->security->isElevatedUser()) {
             header('Location: /');
@@ -141,7 +141,7 @@ class SettingController extends Controller
         $newPanelBgColor = $request['panel-color'];
 
         $this->blog->updatePanelBg($newPanelBgColor);
-        
+
         $this->helpers->setPopup('Color de panel actualizado');
 
         header('Location: /admin/settings');
@@ -149,7 +149,7 @@ class SettingController extends Controller
         return;
     }
 
-    public function updatePanelHoverColor(array $request) : void
+    public function updatePanelHoverColor(array $request): void
     {
         if (!$this->security->isElevatedUser()) {
             header('Location: /');
@@ -168,7 +168,7 @@ class SettingController extends Controller
         return;
     }
 
-    public function updatePanelActiveColor(array $request) : void
+    public function updatePanelActiveColor(array $request): void
     {
         if (!$this->security->isElevatedUser()) {
             header('Location: /');
@@ -187,7 +187,7 @@ class SettingController extends Controller
         return;
     }
 
-    public function updateBgImage(array $request) : void
+    public function updateBgImage(array $request): void
     {
         if (!$this->security->isElevatedUser()) {
             header('Location: /');
@@ -217,7 +217,7 @@ class SettingController extends Controller
         return;
     }
 
-    public function updateIcon(array $request) : void
+    public function updateIcon(array $request): void
     {
         if (!$this->security->isElevatedUser()) {
             header('Location: /');
@@ -239,7 +239,7 @@ class SettingController extends Controller
             $newIcon = 'favicon.png';
 
             $this->blog->updateIcon($newIcon);
-    
+
             header('Location: /admin/settings');
 
             return;

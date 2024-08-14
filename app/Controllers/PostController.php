@@ -236,7 +236,7 @@ class PostController extends Controller
         }
 
         $post = $this->post->getPostById($id);
-        $thumb = $_FILES['thumb']['name'] ? $_FILES['thumb'] : NULL;
+        $thumb = $_FILES['thumb']['name'] ? $_FILES['thumb'] : null;
 
         $result = $this->service->sanitizeAndValidate($request);
 

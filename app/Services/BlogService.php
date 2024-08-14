@@ -13,9 +13,9 @@ class BlogService
         $this->helpers = new Helpers();
     }
 
-    public function handleImg(array $thumb) : array
+    public function handleImg(array $thumb): array
     {
-        $image = NULL;
+        $image = null;
         if ($_FILES['bg-image']) {
             $image = $_FILES['bg-image'];
         } else {
@@ -23,7 +23,7 @@ class BlogService
         }
         $storageDir = "imgs/blog/"; // Set storage directory
         $file = $storageDir . basename($thumb["name"]); // Get file URI
-        $extension = strtolower(pathinfo($file,PATHINFO_EXTENSION)); // Get file extension
+        $extension = strtolower(pathinfo($file, PATHINFO_EXTENSION)); // Get file extension
         $size = $image['size']; // / Get file size
         $imageInfo = getimagesize($image['tmp_name']); // Get image info
 
@@ -41,12 +41,12 @@ class BlogService
             return [
                 'new_thumb_name' => $newImgName,
                 'errors' => $errors];
-        } else if (!in_array($extension, $allowedMimes)) {
+        } elseif (!in_array($extension, $allowedMimes)) {
             $errors['thumb_error'] = 'Solo se permiten imagenes jpeg, png, jfif, avif, webp, gif y jpg';
             return [
                 'new_thumb_name' => $newImgName,
                 'errors' => $errors];
-        } else if ($imageInfo === false) {
+        } elseif ($imageInfo === false) {
             $errors['thumb_error'] = 'La imagen no es valida';
             return [
                 'new_thumb_name' => $newImgName,

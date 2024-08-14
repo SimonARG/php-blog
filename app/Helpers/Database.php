@@ -20,10 +20,10 @@ class Database
         }
     }
 
-    public function query(string $sql, array $params = [], array $types = []) : object|int
+    public function query(string $sql, array $params = [], array $types = []): object|int
     {
         $stmt = $this->pdo->prepare($sql);
-        
+
         foreach ($params as $key => $value) {
             if (isset($types[$key])) {
                 $type = isset($types[$key]) ? $types[$key] : PDO::PARAM_INT;
@@ -43,13 +43,13 @@ class Database
         return $stmt;
     }
 
-    public function fetchAll(string $sql, array $params = [], array $types = []) : array|false
+    public function fetchAll(string $sql, array $params = [], array $types = []): array|false
     {
         $stmt = $this->query($sql, $params, $types);
         return $stmt->fetchAll(PDO::FETCH_ASSOC);
     }
 
-    public function fetch(string $sql, array $params = [], array $types = []) : array|false
+    public function fetch(string $sql, array $params = [], array $types = []): array|false
     {
         $stmt = $this->query($sql, $params, $types);
         return $stmt->fetch(PDO::FETCH_ASSOC);

@@ -13,7 +13,7 @@ class PostService
         $this->helpers = new Helpers();
     }
 
-    public function sanitize(array $request) : array
+    public function sanitize(array $request): array
     {
         $title = htmlspecialchars($request['title']);
         $subtitle = htmlspecialchars($request['subtitle']);
@@ -29,13 +29,13 @@ class PostService
         return $sanitizedRequest;
     }
 
-    public function sanitizeAndValidate(array $request) : array
+    public function sanitizeAndValidate(array $request): array
     {
         $sanitizedRequest = $this->sanitize($request);
 
         // Validate title
         $errors = [];
-        
+
         if (strlen($sanitizedRequest['title']) < 4) {
             $errors['title_error'] = 'El titulo es demasiado corto';
         } elseif (strlen($sanitizedRequest['title']) > 40) {
@@ -67,11 +67,11 @@ class PostService
         ];
     }
 
-    public function handleThumb(array $thumb) : array
+    public function handleThumb(array $thumb): array
     {
         $storageDir = "imgs/thumbs/"; // Set storage directory
         $file = $storageDir . basename($thumb["name"]); // Get file URI
-        $extension = strtolower(pathinfo($file,PATHINFO_EXTENSION)); // Get file extension
+        $extension = strtolower(pathinfo($file, PATHINFO_EXTENSION)); // Get file extension
         $size = $_FILES['thumb']['size']; // / Get file size
         $imageInfo = getimagesize($_FILES['thumb']['tmp_name']); // Get image info
 
@@ -89,12 +89,12 @@ class PostService
             return [
                 'new_thumb_name' => $newThumbName,
                 'errors' => $errors];
-        } else if (!in_array($extension, $allowedMimes)) {
+        } elseif (!in_array($extension, $allowedMimes)) {
             $errors['thumb_error'] = 'Solo se permiten imagenes jpeg, png, jfif, avif, webp y jpg';
             return [
                 'new_thumb_name' => $newThumbName,
                 'errors' => $errors];
-        } else if ($imageInfo === false) {
+        } elseif ($imageInfo === false) {
             $errors['thumb_error'] = 'La imagen no es valida';
             return [
                 'new_thumb_name' => $newThumbName,

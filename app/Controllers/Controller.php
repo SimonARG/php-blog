@@ -18,7 +18,7 @@ class Controller
         $this->security = new Security();
         $this->helpers = new Helpers();
         $this->blogModel = new Blog();
-        
+
         $this->blogConfig = $this->blogModel->getBlogConfig();
     }
 }

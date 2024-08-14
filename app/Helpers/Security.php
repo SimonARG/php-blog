@@ -4,7 +4,7 @@ namespace App\Helpers;
 
 class Security
 {
-    public function verifyIdentity(int $resourceOwnerId) : int
+    public function verifyIdentity(int $resourceOwnerId): int
     {
         if(!($resourceOwnerId == $_SESSION['user_id']) && !($_SESSION['role'] == 'admin') && !($_SESSION['role'] == 'mod')) {
             return 0;
@@ -13,7 +13,7 @@ class Security
         return 1;
     }
 
-    public function isElevatedUser() : int
+    public function isElevatedUser(): int
     {
         if(!(($_SESSION['role'] == 'admin') || ($_SESSION['role'] == 'mod'))) {
             return 0;
@@ -22,7 +22,7 @@ class Security
         return 1;
     }
 
-    public function canPost() : int
+    public function canPost(): int
     {
         if(($_SESSION['role'] == 'admin') || ($_SESSION['role'] == 'mod') || ($_SESSION['role'] == 'poster')) {
             return 1;
@@ -31,7 +31,7 @@ class Security
         return 0;
     }
 
-    public function canComment() : int
+    public function canComment(): int
     {
         if(($_SESSION['role'] == 'restricted') || ($_SESSION['role'] == 'banned')) {
             return 0;
@@ -40,14 +40,25 @@ class Security
         return 1;
     }
 
-    public function generateCsrf() : void
+    public function generateCsrf(): void
     {
-        $_SESSION['csrf'] = md5(uniqid(mt_rand(), true));
+        if (empty($_SESSION['csrf'])) {
+            $_SESSION['csrf'] = md5(uniqid(mt_rand(), true));
+        }
+
+        return;
     }
 
-    public function verifyCsrf($csrf) : int
+    public function regenerateCsrf(): void
     {
-        if (!$csrf || $csrf !== $_SESSION['csrf']) {
+        $_SESSION['csrf'] = md5(uniqid(mt_rand(), true));
+
+        return;
+    }
+
+    public function verifyCsrf($csrf): int
+    {
+        if (empty($csrf) || !($csrf == $_SESSION['csrf'])) {
             return 0;
         }
 

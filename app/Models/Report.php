@@ -14,10 +14,10 @@ class Report extends Model
         $this->reportsPerPage = $GLOBALS['config']['reports_per_page'];
     }
 
-    public function getAllReportsSortNew(int $currentPage = 1) : array|bool
+    public function getAllReportsSortNew(int $currentPage = 1): array|bool
     {
         $offset = ($currentPage - 1) * $this->reportsPerPage;
-        
+
         $sql = "SELECT 
                     reports.id,
                     reports.comment,
@@ -85,7 +85,7 @@ class Report extends Model
                     reports.created_at DESC
                 LIMIT 
                     :offset, :limit;";
-        
+
         // Bind parameters with explicit data types
         $result = $this->db->fetchAll($sql, [
             ':limit' => $this->reportsPerPage,
@@ -98,10 +98,10 @@ class Report extends Model
         return $result ? $result : false;
     }
 
-    public function getAllReportsSortUnreviewed(int $currentPage = 1) : array|bool
+    public function getAllReportsSortUnreviewed(int $currentPage = 1): array|bool
     {
         $offset = ($currentPage - 1) * $this->reportsPerPage;
-        
+
         $sql = "SELECT 
                     reports.id,
                     reports.comment,
@@ -171,7 +171,7 @@ class Report extends Model
                     reports.created_at DESC
                 LIMIT 
                     :offset, :limit;";
-        
+
         // Bind parameters with explicit data types
         $result = $this->db->fetchAll($sql, [
             ':limit' => $this->reportsPerPage,
@@ -184,10 +184,10 @@ class Report extends Model
         return $result ? $result : false;
     }
 
-    public function getReportedResourceId(string $type, int $resourceId) : array|null
+    public function getReportedResourceId(string $type, int $resourceId): array|null
     {
         $columnName = $type . "_id";
-    
+
         $sql = "SELECT id FROM reported_resources WHERE ($columnName) = :resource_id;";
 
         $result = $this->db->fetch($sql, [
@@ -197,7 +197,7 @@ class Report extends Model
         return $result ? $result : false;
     }
 
-    public function getReportCount() : int|null
+    public function getReportCount(): int|null
     {
         $sql = "SELECT COUNT(*) FROM reports";
         $result = $this->db->fetch($sql)['COUNT(*)'];
@@ -205,7 +205,7 @@ class Report extends Model
         return $result ? $result : false;
     }
 
-    public function getUnreviewedReportCount() : int|null
+    public function getUnreviewedReportCount(): int|null
     {
         $sql = "SELECT COUNT(*) FROM reports WHERE reviewed = 0";
         $result = $this->db->fetch($sql)['COUNT(*)'];
@@ -213,10 +213,10 @@ class Report extends Model
         return $result ? $result : false;
     }
 
-    public function createReportedResource(string $type, int $resourceId) : object|null
+    public function createReportedResource(string $type, int $resourceId): object|null
     {
         $columnName = $type . "_id";
-    
+
         $sql = "INSERT INTO reported_resources ($columnName) VALUES (:resource_id)";
 
         $result = $this->db->query($sql, [
@@ -226,7 +226,7 @@ class Report extends Model
         return $result ? $result : false;
     }
 
-    public function createReport(array $data) : object|null
+    public function createReport(array $data): object|null
     {
         $fields = ['resource_id', 'reported_by'];
         $placeholders = [':resource_id', ':reported_by'];
@@ -234,16 +234,16 @@ class Report extends Model
             ':resource_id' => $data['reported_id'],
             ':reported_by' => $data['reported_by'],
         ];
-    
+
         if (isset($data['comment'])) {
             $fields[] = 'comment';
             $placeholders[] = ':comment';
             $params[':comment'] = $data['comment'];
         }
-    
+
         $sql = "INSERT INTO reports (" . implode(', ', $fields) . ") 
                 VALUES (" . implode(', ', $placeholders) . ")";
-    
+
         $result = $this->db->query($sql, $params);
 
         return $result ? $result : false;

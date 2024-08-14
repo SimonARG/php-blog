@@ -1,14 +1,12 @@
 <?php
-  $type = '';
-  if ($report['resource_type'] == 'Post') {
+$type = '';
+if ($report['resource_type'] == 'Post') {
     $type = 'post';
-  }
-  else if ($report['resource_type'] == 'Comment') {
+} elseif ($report['resource_type'] == 'Comment') {
     $type = 'comment';
-  }
-  else if ($report['resource_type'] == 'User') {
+} elseif ($report['resource_type'] == 'User') {
     $type = 'user';
-  }
+}
 ?>
 
 <div class="report-single">

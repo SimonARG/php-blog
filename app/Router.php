@@ -39,7 +39,7 @@ class Router
         $controllerAction = explode('@', $controllerAction);
         $controllerName = $controllerAction[0];
         $actionName = $controllerAction[1];
-    
+
         $controller = new $controllerName();
         // Call the controller action with parameters if provided
         if (!empty($params)) {
@@ -47,5 +47,5 @@ class Router
         } else {
             $controller->$actionName();
         }
-    }    
+    }
 }

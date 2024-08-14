@@ -14,7 +14,7 @@ class Post extends Model
         $this->postsPerPage = $GLOBALS['config']['posts_per_page'];
     }
 
-    public function getPosts(int $currentPage = 1) : array|bool
+    public function getPosts(int $currentPage = 1): array|bool
     {
         $offset = ($currentPage - 1) * $this->postsPerPage;
         $sql = "SELECT posts.*,
@@ -27,7 +27,7 @@ class Post extends Model
             GROUP BY posts.id, users.name
             ORDER BY created_at DESC
             LIMIT :offset, :limit;";
-        
+
         // Bind parameters with explicit data types
         $result = $this->db->fetchAll($sql, [
             ':limit' => $this->postsPerPage,
@@ -40,7 +40,7 @@ class Post extends Model
         return $result ? $result : false;
     }
 
-    public function getPostCount() : int|bool
+    public function getPostCount(): int|bool
     {
         $sql = "SELECT COUNT(*) FROM posts WHERE deleted_at IS NULL";
 
@@ -49,7 +49,7 @@ class Post extends Model
         return $result ? $result : false;
     }
 
-    public function getPostById(int $id) : array|bool
+    public function getPostById(int $id): array|bool
     {
         $sql = "SELECT posts.*,
             users.name AS username,
@@ -58,7 +58,7 @@ class Post extends Model
         INNER JOIN users ON posts.user_id = users.id
         LEFT JOIN comments ON posts.id = comments.post_id AND comments.deleted_at IS NULL
         WHERE posts.id = :id";
-        
+
         // Bind parameters with explicit data types
         $result = $this->db->fetch($sql, [
             ':id' => $id
@@ -69,13 +69,13 @@ class Post extends Model
         return $result ? $result : false;
     }
 
-    public function getPostByTitle(string $title) : array|bool
+    public function getPostByTitle(string $title): array|bool
     {
         $sql = "SELECT posts.*, users.name AS username 
         FROM posts
         INNER JOIN users ON posts.user_id = users.id
         WHERE title = :title";
-        
+
         $result = $this->db->fetch($sql, [
             ':title' => $title
         ]);
@@ -83,7 +83,7 @@ class Post extends Model
         return $result ? $result : false;
     }
 
-    public function create(array $data) : object|bool
+    public function create(array $data): object|bool
     {
         $sql = "INSERT INTO posts (title, subtitle, thumb, body, user_id) VALUES (:title, :subtitle, :thumb, :body, :user_id)";
 
@@ -98,7 +98,7 @@ class Post extends Model
         return $result ? $result : false;
     }
 
-    public function update(array $data, int $id) : object|bool
+    public function update(array $data, int $id): object|bool
     {
         $sql = "UPDATE posts SET title = :title, subtitle = :subtitle, thumb = :thumb, body = :body WHERE id = :id";
 
@@ -113,7 +113,7 @@ class Post extends Model
         return $result ? $result : false;
     }
 
-    public function softDelete(int $id) : object|bool
+    public function softDelete(int $id): object|bool
     {
         $currentTime = date('Y-m-d H:i:s');
 
@@ -127,7 +127,7 @@ class Post extends Model
         return $result ? $result : false;
     }
 
-    public function hardDelete() : array|bool
+    public function hardDelete(): array|bool
     {
         $sql = "SELECT id FROM posts WHERE deleted_at IS NOT NULL";
 
@@ -144,7 +144,7 @@ class Post extends Model
         return $result ? [$deletionList, $thumbList] : false;
     }
 
-    public function search(string $query, int $currentPage = 1) : array|bool
+    public function search(string $query, int $currentPage = 1): array|bool
     {
         $offset = ($currentPage - 1) * $this->postsPerPage;
 
@@ -189,7 +189,7 @@ class Post extends Model
         return $result ? ['count' => $count, 'posts' => $result] : false;
     }
 
-    public function save(int $postId, int $userId) : bool
+    public function save(int $postId, int $userId): bool
     {
         $sql = "INSERT INTO saved_posts (user_id, post_id)
         VALUES (:user_id, :post_id)";
@@ -202,7 +202,7 @@ class Post extends Model
         return $result ? true : false;
     }
 
-    public function deleteSaved(int $postId, int $userId) : bool
+    public function deleteSaved(int $postId, int $userId): bool
     {
         $sql = "DELETE FROM saved_posts
                 WHERE user_id = :user_id

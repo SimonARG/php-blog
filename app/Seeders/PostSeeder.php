@@ -15,7 +15,7 @@ class PostSeeder extends Seeder
     {
         parent::__construct();
 
-        $this->postFactory = new PostFactory;
+        $this->postFactory = new PostFactory();
     }
 
     public function run()

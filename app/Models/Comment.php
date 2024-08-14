@@ -14,7 +14,7 @@ class Comment extends Model
         $this->commentsPerPage = $GLOBALS['config']['comments_per_page'];
     }
 
-    public function getCommentsForPost(int $id, int $currentPage = 1) : array|bool
+    public function getCommentsForPost(int $id, int $currentPage = 1): array|bool
     {
         $offset = ($currentPage - 1) * $this->commentsPerPage;
 
@@ -29,7 +29,7 @@ class Comment extends Model
                 ORDER BY created_at DESC
                 LIMIT :offset,
                     :limit";
-        
+
         // Bind parameters with explicit data types
         $result = $this->db->fetchAll($sql, [
             ':id' => $id,
@@ -43,8 +43,8 @@ class Comment extends Model
 
         return $result ? $result : false;
     }
-    
-    public function getCommentById(int $id) : array|bool
+
+    public function getCommentById(int $id): array|bool
     {
         $sql = "SELECT * FROM comments WHERE id = :id";
 
@@ -53,7 +53,7 @@ class Comment extends Model
         return $result ? $result : false;
     }
 
-    public function getPostIdForComment(int $id) : array|bool
+    public function getPostIdForComment(int $id): array|bool
     {
         $sql = "SELECT post_id
                 FROM comments
@@ -64,7 +64,7 @@ class Comment extends Model
         return $result ? $result : false;
     }
 
-    public function storeComment(array $comment) : object|bool
+    public function storeComment(array $comment): object|bool
     {
         $sql  = "INSERT INTO comments (body, user_id, post_id) VALUES (:body, :user_id, :post_id)";
 
@@ -82,7 +82,7 @@ class Comment extends Model
         return $result ? $result : false;
     }
 
-    public function update(array $data, int $id) : object|bool
+    public function update(array $data, int $id): object|bool
     {
         $sql = "UPDATE comments SET body = :body WHERE id = :id";
 
@@ -94,7 +94,7 @@ class Comment extends Model
         return $result ? $result : false;
     }
 
-    public function softDelete(int $id) : object|bool
+    public function softDelete(int $id): object|bool
     {
         $currentTime = date('Y-m-d H:i:s');
 

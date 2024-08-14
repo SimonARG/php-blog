@@ -23,15 +23,13 @@ $currUrl = $actual_link = (empty($_SERVER['HTTPS']) ? 'http' : 'https') . "://$_
     <?php
       $type = '';
       if ($report['resource_type'] == 'Post') {
-        $type = 'post';
+          $type = 'post';
+      } elseif ($report['resource_type'] == 'Comment') {
+          $type = 'comment';
+      } elseif ($report['resource_type'] == 'User') {
+          $type = 'user';
       }
-      else if ($report['resource_type'] == 'Comment') {
-        $type = 'comment';
-      }
-      else if ($report['resource_type'] == 'User') {
-        $type = 'user';
-      }
-    ?>
+      ?>
     <div class="<?= 'report' . ($report['reviewed'] ? ' done' : '') ?>">
       <div class="report-container">
         <div>

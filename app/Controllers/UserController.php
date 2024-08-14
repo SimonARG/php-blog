@@ -20,12 +20,12 @@ class UserController extends Controller
         $this->comment = new Comment();
     }
 
-    public function create() : void
+    public function create(): void
     {
         $this->helpers->view('users.create');
     }
 
-    public function store(array $request) : void
+    public function store(array $request): void
     {
         $errors = [];
 
@@ -34,7 +34,7 @@ class UserController extends Controller
         $email = filter_var($request['email'], FILTER_SANITIZE_EMAIL);
         $password = htmlspecialchars($request['password']);
         $password_repeat = htmlspecialchars($request['password-r']);
-    
+
         // Validate name
         if (strlen($name) < 5) {
             $errors['name_error'] = 'El nombre es demasiado corto';
@@ -43,24 +43,24 @@ class UserController extends Controller
         } elseif (!preg_match('/^[A-Za-z0-9_.-]+$/', $name)) {
             $errors['name_error'] = 'El nombre contiene caracteres prohibidos';
         }
-    
+
         // Validate email
         if (!filter_var($email, FILTER_VALIDATE_EMAIL)) {
             $errors['email_error'] = 'El e-mail no es valido';
         }
-    
+
         // Validate password
         if (strlen($password) < 8) {
             $errors['password_error'] = 'La contraseña es demasiado corta';
         } elseif (!preg_match('/^(?=.*[A-Z])(?=.*[a-z])(?=.*\d)(?=.*[\W_]).+$/', $password)) {
             $errors['password_error'] = 'La contraseña no cumple los requisitos';
         }
-    
+
         // Validate password confirmation
         if ($password != $password_repeat) {
             $errors['password_r_error'] = 'Las contraseñas no coinciden';
         }
-    
+
         // Return errors if any
         if (!empty($errors)) {
             $this->helpers->view('users.create', ['request' => $request, 'errors' => $errors]);
@@ -69,9 +69,9 @@ class UserController extends Controller
         $password = password_hash($password, PASSWORD_DEFAULT);
 
         $data['name'] = $name;
-        $data['email'] = $email; 
-        $data['password'] = $password; 
-    
+        $data['email'] = $email;
+        $data['password'] = $password;
+
         $this->user->create($data);
 
         $user = $this->user->getUserByEmail($email);
@@ -98,14 +98,14 @@ class UserController extends Controller
         header('Location: /' . 'user/' . ($user['id']));
     }
 
-    public function show(int $id) : void
+    public function show(int $id): void
     {
         $user = $this->user->getUserById($id);
 
         $lastPostId = $this->user->getLatestUserPostId($id);
 
         $lastCommentId = $this->user->getLatestUserCommentId($id);
-        
+
         $lastCommentPostId = $this->comment->getPostIdForComment($lastCommentId['id']);
 
         $savedPosts = $this->user->getSavedPostsCount($id)['posts'];
@@ -120,7 +120,7 @@ class UserController extends Controller
         ]);
     }
 
-    public function update(int $id, array $request) : void
+    public function update(int $id, array $request): void
     {
         $this->security->verifyCsrf($request['csrf'] ?? '');
 
@@ -140,13 +140,13 @@ class UserController extends Controller
         $password = htmlspecialchars($request['password']);
         $newPassword = htmlspecialchars($request['new-password']);
         $newPasswordRepeat = htmlspecialchars($request['new-password-r']);
-        $avatar = $_FILES['avatar']['name'] ? $_FILES['avatar'] : NULL;
+        $avatar = $_FILES['avatar']['name'] ? $_FILES['avatar'] : null;
 
         // Get values for view
         $lastPostId = $this->user->getLatestUserPostId($id);
 
         $lastCommentId = $this->user->getLatestUserCommentId($id);
-        
+
         $lastCommentPostId = $this->comment->getPostIdForComment($lastCommentId['id']);
 
         $savedPosts = $this->user->getSavedPostsCount($id)['posts'];
@@ -170,7 +170,7 @@ class UserController extends Controller
                 return;
             }
         }
-    
+
         // Validate name
         if (strlen($name) < 5) {
             $errors['name_error'] = 'El nombre es demasiado corto';
@@ -179,12 +179,12 @@ class UserController extends Controller
         } elseif (!preg_match('/^[A-Za-z0-9_.-]+$/', $name)) {
             $errors['name_error'] = 'El nombre contiene caracteres prohibidos';
         }
-    
+
         // Validate email
         if (!filter_var($email, FILTER_VALIDATE_EMAIL)) {
             $errors['email_error'] = 'El e-mail no es valido';
         }
-    
+
         // Validate new password
         if ($newPassword) {
             if (strlen($newPassword) < 8) {
@@ -195,7 +195,7 @@ class UserController extends Controller
 
             $newPassword = password_hash($newPassword, PASSWORD_DEFAULT);
         }
-    
+
         // Validate new password confirmation
         if ($newPassword != $newPasswordRepeat) {
             $errors['new_password_r_error'] = 'Las contraseñas no coinciden';
@@ -207,7 +207,7 @@ class UserController extends Controller
         } else {
             $storage_dir = "imgs/avatars/";
             $file = $storage_dir . basename($avatar["name"]);
-            $extension = strtolower(pathinfo($file,PATHINFO_EXTENSION));
+            $extension = strtolower(pathinfo($file, PATHINFO_EXTENSION));
             $size = $_FILES['avatar']['size'];
             $imageInfo = getimagesize($_FILES['avatar']['tmp_name']);
 
@@ -217,9 +217,9 @@ class UserController extends Controller
 
             if ($size > $maxFileSize) {
                 $errors['avatar_error'] = 'La imagen pesa mas que 40MB';
-            } else if (!in_array($extension, $allowedMimeTypes)) {
+            } elseif (!in_array($extension, $allowedMimeTypes)) {
                 $errors['avatar_error'] = 'Solo se permiten imagenes jpeg, png, jfif, avif, webp y jpg';
-            } else if ($imageInfo === false) {
+            } elseif ($imageInfo === false) {
                 $errors['avatar_error'] = 'La imagen no es valida';
             }
 
@@ -230,10 +230,10 @@ class UserController extends Controller
 
             $sourcePath = 'D:/Programs/Apache/Apache24/htdocs/blog/public/imgs/avatars/' . $new_avatar_name . '.' . $extension;
             $destinationPath = 'D:/Programs/Apache/Apache24/htdocs/blog/public/imgs/avatars/' . $new_avatar_name . '2.webp';
-    
+
             $imgError = $this->helpers->processImage($sourcePath, $destinationPath);
         }
-    
+
         // Return errors if any
         if (!empty($errors)) {
             $this->helpers->view('users.single', [
@@ -265,7 +265,7 @@ class UserController extends Controller
         ]);
     }
 
-    public function save(array $request) : void
+    public function save(array $request): void
     {
         $this->security->verifyCsrf($request['csrf'] ?? '');
 
@@ -293,16 +293,16 @@ class UserController extends Controller
         }
     }
 
-    public function deleteSaved(array $request) : void
+    public function deleteSaved(array $request): void
     {
         $this->security->verifyCsrf($request['csrf'] ?? '');
 
         $postId = $request['post_id'];
         $userId = $request['user_id'];
-        $request['total_posts'] ? $savedPosts = $request['total_posts'] : $savedPosts = NULL;
-    
+        $request['total_posts'] ? $savedPosts = $request['total_posts'] : $savedPosts = null;
+
         $result = $this->post->deleteSaved($postId, $userId);
-    
+
         if (!$result) {
             $this->helpers->setPopup('Error al remover el post');
         } else {
@@ -324,7 +324,7 @@ class UserController extends Controller
 
             return;
         }
-    
+
         if (isset($request['curr_page'])) {
             $currPage = $request['curr_page'];
             $totalPages = $request['total_pages'];
@@ -343,10 +343,10 @@ class UserController extends Controller
         header('Location: /post/' . $postId);
     }
 
-    public function changeRole(int $id, array $request) : void
+    public function changeRole(int $id, array $request): void
     {
         $this->security->verifyCsrf($request['csrf'] ?? '');
-        
+
         $newRole = $request['role'];
 
         $url = $request['curr-url'];
