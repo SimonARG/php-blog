@@ -14,7 +14,7 @@ class CommentController extends Controller
     public function __construct()
     {
         parent::__construct();
-        
+
         $this->comment = new Comment();
         $this->post = new Post();
     }
@@ -156,5 +156,7 @@ class CommentController extends Controller
         $this->helpers->setPopup('Comentario eliminado');
 
         header('Location: /post/' . $request['post_id'] . '#comment-1');
+
+        return;
     }
 }

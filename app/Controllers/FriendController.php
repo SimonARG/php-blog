@@ -33,6 +33,22 @@ class FriendController extends Controller
 
     public function store(array $request): void
     {
+        if (!$this->security->verifyCsrf($request['csrf'] ?? '')) {
+            $this->helpers->setPopup('Error de seguridad');
+
+            header('Location: /friends');
+
+            return;
+        }
+
+        if (!$this->security->isAdmin()) {
+            $this->helpers->setPopup('Solo el admin puede realizar esta operación');
+
+            header('Location: /friends');
+
+            return;
+        }
+
         $friend['title'] = $request['name'];
         $friend['url'] = $request['url'];
         $friend['comment'] = $request['comment'];
@@ -56,6 +72,22 @@ class FriendController extends Controller
 
     public function update(int $id, array $request): void
     {
+        if (!$this->security->verifyCsrf($request['csrf'] ?? '')) {
+            $this->helpers->setPopup('Error de seguridad');
+
+            header('Location: /friends');
+
+            return;
+        }
+
+        if (!$this->security->isAdmin()) {
+            $this->helpers->setPopup('Solo el admin puede realizar esta operación');
+
+            header('Location: /friends');
+
+            return;
+        }
+
         $friend['title'] = $request['name'];
         $friend['url'] = $request['url'];
         $friend['comment'] = $request['comment'];
@@ -77,8 +109,24 @@ class FriendController extends Controller
         return;
     }
 
-    public function delete(int $id): void
+    public function delete(int $id, array $request): void
     {
+        if (!$this->security->verifyCsrf($request['csrf'] ?? '')) {
+            $this->helpers->setPopup('Error de seguridad');
+
+            header('Location: /friends');
+
+            return;
+        }
+
+        if (!$this->security->isAdmin()) {
+            $this->helpers->setPopup('Solo el admin puede realizar esta operación');
+
+            header('Location: /friends');
+
+            return;
+        }
+        
         $result = $this->friend->delete($id);
 
         if (!$result) {
