@@ -8,12 +8,14 @@
           <form class="delete-friend" method="POST" action="/admin/friends/delete/<?= $friend['id'] ?>">
             <input type="hidden" name="csrf" value="<?= $_SESSION['csrf'] ?? '' ?>">
 
+            <input type="hidden" name="title" value="<?= $friend['title'] ?>">
+
             <button type="submit"><span class="material-symbols-rounded btn">delete</span></button>
           </form>
 
           <span class="material-symbols-rounded btn edit">edit_square</span>
 
-          <form class="update" method="POST" action="/admin/contact/update/<?= $friend['id'] ?>">
+          <form class="update" method="POST" action="/admin/friends/update/<?= $friend['id'] ?>">
             <input type="hidden" name="csrf" value="<?= $_SESSION['csrf'] ?? '' ?>">
 
             <span class="material-symbols-rounded btn close-edit">close</span>

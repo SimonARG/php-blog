@@ -63,7 +63,7 @@ class FriendController extends Controller
             return;
         }
 
-        $this->helpers->setPopup('Blog agregado');
+        $this->helpers->setPopup($friend['title'] . ' agregado');
 
         header('Location: /friends');
 
@@ -102,7 +102,7 @@ class FriendController extends Controller
             return;
         }
 
-        $this->helpers->setPopup('Blog editado');
+        $this->helpers->setPopup($friend['title'] . ' editado');
 
         header('Location: /friends');
 
@@ -126,7 +126,7 @@ class FriendController extends Controller
 
             return;
         }
-        
+
         $result = $this->friend->delete($id);
 
         if (!$result) {
@@ -137,7 +137,9 @@ class FriendController extends Controller
             return;
         }
 
-        $this->helpers->setPopup('Blog eliminado');
+        $title = $request['title'];
+
+        $this->helpers->setPopup($title . ' eliminado');
 
         header('Location: /friends');
 
