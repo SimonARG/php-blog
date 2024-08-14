@@ -11,9 +11,9 @@ class ContactController extends Controller
 
     public function __construct()
     {
-        $this->contact = new Contact();
-
         parent::__construct();
+
+        $this->contact = new Contact();
     }
 
     public function index(): void
@@ -33,6 +33,22 @@ class ContactController extends Controller
 
     public function store(array $request): void
     {
+        if (!$this->security->verifyCsrf($request['csrf'] ?? '')) {
+            $this->helpers->setPopup('Error de seguridad');
+
+            header('Location: /contact');
+
+            return;
+        }
+
+        if (!$this->security->isAdmin()) {
+            $this->helpers->setPopup('Solo el admin puede realizar esta operación');
+
+            header('Location: /contact');
+
+            return;
+        }
+
         $contact['title'] = $request['name'];
         $contact['url'] = $request['url'];
 
@@ -55,6 +71,22 @@ class ContactController extends Controller
 
     public function update(int $id, array $request): void
     {
+        if (!$this->security->verifyCsrf($request['csrf'] ?? '')) {
+            $this->helpers->setPopup('Error de seguridad');
+
+            header('Location: /contact');
+
+            return;
+        }
+
+        if (!$this->security->isAdmin()) {
+            $this->helpers->setPopup('Solo el admin puede realizar esta operación');
+
+            header('Location: /contact');
+
+            return;
+        }
+
         $contact['title'] = $request['name'];
         $contact['url'] = $request['url'];
 
@@ -77,6 +109,22 @@ class ContactController extends Controller
 
     public function delete(int $id): void
     {
+        if (!$this->security->verifyCsrf($request['csrf'] ?? '')) {
+            $this->helpers->setPopup('Error de seguridad');
+
+            header('Location: /contact');
+
+            return;
+        }
+
+        if (!$this->security->isAdmin()) {
+            $this->helpers->setPopup('Solo el admin puede realizar esta operación');
+
+            header('Location: /contact');
+
+            return;
+        }
+
         $result = $this->contact->delete($id);
 
         if (!$result) {

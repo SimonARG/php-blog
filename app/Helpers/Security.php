@@ -13,6 +13,15 @@ class Security
         return 1;
     }
 
+    public function isAdmin(): int
+    {
+        if(!($_SESSION['role'] == 'admin')) {
+            return 0;
+        }
+
+        return 1;
+    }
+
     public function isElevatedUser(): int
     {
         if(!(($_SESSION['role'] == 'admin') || ($_SESSION['role'] == 'mod'))) {

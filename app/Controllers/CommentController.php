@@ -14,6 +14,7 @@ class CommentController extends Controller
     public function __construct()
     {
         parent::__construct();
+        
         $this->comment = new Comment();
         $this->post = new Post();
     }

@@ -6,6 +6,8 @@
       <div class="contact">
         <?php if ($admin): ?>
           <form class="delete-contact" method="POST" action="/admin/contact/delete/<?= $contact['id'] ?>">
+            <input type="hidden" name="csrf" value="<?= $_SESSION['csrf'] ?? '' ?>">
+
             <button type="submit"><span class="material-symbols-rounded btn">delete</span></button>
           </form>
 
@@ -22,6 +24,8 @@
 
         <?php if ($admin): ?>
           <form class="update" method="POST" action="/admin/contact/update/<?= $contact['id'] ?>">
+            <input type="hidden" name="csrf" value="<?= $_SESSION['csrf'] ?? '' ?>">
+            
             <span class="material-symbols-rounded btn close-edit">close</span>
             <h1>Editar Contacto</h1>
 
@@ -50,6 +54,8 @@
 
 <?php if ($admin): ?>
   <form class="new-contact" method="POST" action="/admin/contact/store">
+    <input type="hidden" name="csrf" value="<?= $_SESSION['csrf'] ?? '' ?>">
+
     <span class="material-symbols-rounded btn">close</span>
     <h1>Nuevo Contacto</h1>
 
