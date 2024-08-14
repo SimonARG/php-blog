@@ -1,22 +1,22 @@
 <div class="about-container">
-    <div>
-        <div class="body body-preview"><?= $blogConfig['info'] ?></div>
-        <hr>
-        <?php if ($_SESSION && $_SESSION['role'] == 'admin'): ?>
-            <span class="material-symbols-rounded btn edit">edit_square</span>
-        <?php endif ?>
-    </div>
+  <div>
+    <div class="body body-preview"><?= $blogConfig['info'] ?></div>
+    <hr>
+    <?php if ($admin): ?>
+      <span class="material-symbols-rounded btn edit">edit_square</span>
+    <?php endif ?>
+  </div>
 
-    <?php if ($_SESSION && $_SESSION['role'] == 'admin'): ?>
-        <form action="/admin/about/update" method="POST">
+  <?php if ($admin): ?>
+    <form action="/admin/about/update" method="POST">
 
-            <textarea name="about" id="about"><?= $blogInfoRaw ?></textarea>
+      <textarea name="about" id="about"><?= $blogInfoRaw ?></textarea>
 
-            <div>
-                <button class="btn">Cancelar</button>
+      <div>
+        <button class="btn">Cancelar</button>
 
-                <input class="btn" type="submit" value="Editar">
-            </div>
-        </form>
-    <?php endif; ?>
+        <input class="btn" type="submit" value="Editar">
+      </div>
+    </form>
+  <?php endif; ?>
 </div>

@@ -31,6 +31,37 @@ class Helpers
         $convertedContent = $converter->convert($blogConfig['info']);
         $blogConfig['info'] = $convertedContent->getContent();
 
+        $guest = false;
+        $admin = false;
+        $elevated = false;
+        $canReport = false;
+        $restricted = false;
+        $banned = false;
+
+        if ($_SESSION['role'] == 'guest') {
+            $guest = true;
+        }
+
+        if ($_SESSION['role'] == 'admin') {
+            $admin = true;
+        }
+
+        if ($_SESSION['role'] == 'restricted') {
+            $restricted = true;
+        }
+
+        if ($_SESSION['role'] == 'banned') {
+            $banned = true;
+        }
+
+        if ($_SESSION['role'] == 'admin' || $_SESSION['role'] == 'mod') {
+            $elevated = true;
+        }
+
+        if (!($_SESSION['role'] == 'guest') && !($_SESSION['role'] == 'banned')) {
+            $canReport = true;
+        }
+
         // Capture the view output
         ob_start();
         $viewPath = __DIR__ . '/../Templates/Views/' . str_replace('.', '/', $viewName) . '.php';

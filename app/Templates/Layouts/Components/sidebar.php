@@ -1,11 +1,11 @@
 <div class="sidebar">
   <div class="side-btns">
-    <?php if (!$_SESSION): ?>
+    <?php if ($guest): ?>
       <a href="/login">Iniciar Sesion</a>
       <a href="/register">Crear Cuenta</a>
     <?php endif; ?>
 
-    <?php if ($_SESSION): ?>
+    <?php if (!$guest): ?>
       <a href="/post/new">Nuevo Post</a>
 
       <a href="<?= '/user/' . $_SESSION['user_id'] ?>">Mi Perfil</a>
@@ -14,11 +14,11 @@
         <input class="form-btn" type="submit" value="Cerrar Sesion">
       </form>
 
-      <?php if ($_SESSION['role'] == 'admin' || $_SESSION['role'] == 'mod'): ?>
+      <?php if ($elevated): ?>
         <a href="/admin/reports">Mod Panel</a>
       <?php endif; ?>
 
-      <?php if ($_SESSION['role'] == 'admin'): ?>
+      <?php if ($admin): ?>
         <a href="/admin/settings">Configuracion</a>
       <?php endif; ?>
     <?php endif; ?>

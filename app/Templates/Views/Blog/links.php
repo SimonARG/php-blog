@@ -4,7 +4,7 @@
   <?php else : ?>
     <?php foreach ($links as $key => $link) : ?>
       <div class="link">
-        <?php if ($_SESSION && $_SESSION['role'] == 'admin'): ?>
+        <?php if ($admin): ?>
             <form class="delete-link" method="POST" action="/admin/links/delete/<?= $link['id'] ?>">
             <button type="submit"><span class="material-symbols-rounded btn">delete</span></button>
             </form>
@@ -14,7 +14,7 @@
 
         <a href="<?= $link['url'] ?>" target="_blank"><?= $link['title'] ?></a>
 
-        <?php if ($_SESSION && $_SESSION['role'] == 'admin'): ?>
+        <?php if ($admin): ?>
             <form class="update" method="POST" action="/admin/links/update/<?= $link['id'] ?>">
             <span class="material-symbols-rounded btn close-edit">close</span>
             <h1>Editar Link</h1>
@@ -37,12 +37,12 @@
     <?php endforeach; ?>
   <?php endif; ?>
 
-  <?php if ($_SESSION && $_SESSION['role'] == 'admin'): ?>
+  <?php if ($admin): ?>
     <span class="material-symbols-rounded add-link btn">add_box</span>
   <?php endif; ?>
 </div>
 
-<?php if ($_SESSION && $_SESSION['role'] == 'admin'): ?>
+<?php if ($admin): ?>
     <form class="new-link" method="POST" action="/admin/links/store">
     <span class="material-symbols-rounded btn">close</span>
     <h1>Nuevo Link</h1>

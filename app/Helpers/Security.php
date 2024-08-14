@@ -4,15 +4,6 @@ namespace App\Helpers;
 
 class Security
 {
-    public function verifySession() : int
-    {
-        if (!$_SESSION) {
-            return 0;
-        }
-
-        return 1;
-    }
-
     public function verifyIdentity(int $resourceOwnerId) : int
     {
         if(!($resourceOwnerId == $_SESSION['user_id']) && !($_SESSION['role'] == 'admin') && !($_SESSION['role'] == 'mod')) {
@@ -24,10 +15,6 @@ class Security
 
     public function isElevatedUser() : int
     {
-        if(!(isset($_SESSION))) {
-            return 0;
-        }
-
         if(!(($_SESSION['role'] == 'admin') || ($_SESSION['role'] == 'mod'))) {
             return 0;
         }
@@ -37,10 +24,6 @@ class Security
 
     public function canPost() : int
     {
-        if(!(isset($_SESSION))) {
-            return 0;
-        }
-
         if(($_SESSION['role'] == 'admin') || ($_SESSION['role'] == 'mod') || ($_SESSION['role'] == 'poster')) {
             return 1;
         }
@@ -50,10 +33,6 @@ class Security
 
     public function canComment() : int
     {
-        if(!(isset($_SESSION))) {
-            return 0;
-        }
-
         if(($_SESSION['role'] == 'restricted') || ($_SESSION['role'] == 'banned')) {
             return 0;
         }

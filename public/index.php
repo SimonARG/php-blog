@@ -7,6 +7,10 @@ use App\Router;
 
 session_start();
 
+if (!isset($_SESSION['role'])) {
+    $_SESSION['role'] = 'guest';
+}
+
 // Initialize Router
 $router = new Router();
 

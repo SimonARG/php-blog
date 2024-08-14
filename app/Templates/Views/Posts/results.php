@@ -55,14 +55,16 @@ function truncateHTML($html_string, $length, $append = '&hellip;', $is_html = tr
     <?php endif; ?>
   </div>
   <?php foreach ($posts as $index => $post) : ?>
-    <?php require __DIR__ . '/../../Layouts/Components/report.php'; ?>
+    <?php if ($canReport): ?>
+      <?php require __DIR__ . '/../../Layouts/Components/report.php'; ?>
+    <?php endif; ?>
 
     <div class="post <?= 'post-' . $index + 1 ?>">
-      <?php if ($_SESSION) : ?>
+      <?php if (!($banned || $guest)) : ?>
         <div class="menu">
           <div class="arrow">⯈</div>
           <ul class="dropdown">
-            <?php if ($post['username'] == $_SESSION['username']) : ?>
+            <?php if(($post['username'] == $_SESSION['username']) || $elevated): ?>
               <li>
                 <a href="<?= '/post/edit/' . $post['id'] ?>">Editar</a>
               </li>

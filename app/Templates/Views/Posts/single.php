@@ -1,5 +1,5 @@
 <div class="single">
-  <?php if($_SESSION && !($_SESSION['role'] == 'restricted') && !($_SESSION['role'] == 'banned')): ?>
+  <?php if($canReport): ?>
     <?php require __DIR__ . '/../../Layouts/Components/report.php'; ?>
   <?php endif; ?>
 
@@ -14,7 +14,7 @@
     </div>
     <div class="body body-preview"><?= $post['body'] ?></div>
     <hr>
-    <?php if ($_SESSION): ?>
+    <?php if (!($banned || $guest)): ?>
       <div class="btns">
         <?php if(!in_array($post['id'], $_SESSION['saved_posts'])): ?>
           <form class="btn" method="POST" action="/user/saved/save">
@@ -33,7 +33,7 @@
           </form>
         <?php endif; ?>
         <div class="report-btn btn">Reportar</div>
-        <?php if (($_SESSION['user_id'] == $post['user_id']) || $_SESSION['role'] == 'admin' || $_SESSION['role'] == 'mod'): ?>
+        <?php if (($_SESSION['user_id'] == $post['user_id']) || $elevated): ?>
           <a class="btn" href="<?= '/post/edit/' . $post['id'] ?>">Editar</a>
           <form class="btn" action="/post/delete/<?= $post['id'] ?>" method="POST">
             <input type="hidden" name="csrf" value="<?php echo $_SESSION['csrf'] ?? '' ?>">
@@ -47,7 +47,7 @@
   </div>
 
   <div class="comments">
-    <?php if ($_SESSION): ?>
+    <?php if (!($banned || $restricted || $guest)): ?>
       <form class="new-comment" method="POST" action="/comments/store">
         <input type="hidden" name="csrf" value="<?php echo $_SESSION['csrf'] ?? '' ?>">
 
@@ -63,13 +63,13 @@
 
     <?php if (isset($comments)): ?>
       <?php foreach($comments as $index => $comment): ?>
-        <?php if($_SESSION && !($_SESSION['role'] == 'restricted') && !($_SESSION['role'] == 'banned')): ?>
+        <?php if ($canReport): ?>
           <?php require __DIR__ . '/../../Layouts/Components/report.php'; ?>
         <?php endif; ?>
 
         <div class="comment" id="<?= 'comment-' . $index + 1 ?>">
           <div class="dropdown">
-            <?php if ($_SESSION && ($_SESSION['user_id'] == $comment['user_id'] || ($_SESSION['role'] == 'mod' || $_SESSION['role'] == 'admin'))): ?>
+            <?php if ($_SESSION && ($_SESSION['user_id'] == $comment['user_id'] || $elevated)): ?>
               <form class="edit" action="<?= '/comments/update/' . $comment['id'] ?>" method="POST">
                 <input type="hidden" name="csrf" value="<?php echo $_SESSION['csrf'] ?? '' ?>">
 
@@ -82,7 +82,7 @@
 
             <div class="report-btn btn">Reportar</div>
 
-            <?php if ($_SESSION && ($_SESSION['user_id'] == $comment['user_id'] || ($_SESSION['role'] == 'mod' || $_SESSION['role'] == 'admin'))): ?>
+            <?php if ($_SESSION && ($_SESSION['user_id'] == $comment['user_id'] || $elevated)): ?>
               <form class="del" action="/comments/delete/<?= $comment['id'] ?>" method="POST">
                 <input type="hidden" name="csrf" value="<?php echo $_SESSION['csrf'] ?? '' ?>">
 
@@ -92,7 +92,7 @@
               </form>
             <?php endif; ?>
           </div>
-          <?php if ($_SESSION && !($_SESSION['role'] == 'restricted' || $_SESSION['role'] == 'banned')): ?>
+          <?php if (!($banned || $guest)): ?>
             <div class="arrow">⯆</div>
           <?php endif; ?>
 

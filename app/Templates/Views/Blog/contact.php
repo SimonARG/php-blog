@@ -4,7 +4,7 @@
   <?php else : ?>
     <?php foreach ($contacts as $key => $contact) : ?>
       <div class="contact">
-        <?php if ($_SESSION && $_SESSION['role'] == 'admin'): ?>
+        <?php if ($admin): ?>
           <form class="delete-contact" method="POST" action="/admin/contact/delete/<?= $contact['id'] ?>">
             <button type="submit"><span class="material-symbols-rounded btn">delete</span></button>
           </form>
@@ -20,7 +20,7 @@
             <a href="<?= $contact['url'] ?>" target="_blank"><?= $contact['title'] ?></a>
         <?php endif; ?>
 
-        <?php if ($_SESSION && $_SESSION['role'] == 'admin'): ?>
+        <?php if ($admin): ?>
           <form class="update" method="POST" action="/admin/contact/update/<?= $contact['id'] ?>">
             <span class="material-symbols-rounded btn close-edit">close</span>
             <h1>Editar Contacto</h1>
@@ -43,12 +43,12 @@
     <?php endforeach; ?>
   <?php endif; ?>
 
-  <?php if ($_SESSION && $_SESSION['role'] == 'admin'): ?>
+  <?php if ($admin): ?>
     <span class="material-symbols-rounded add-contact btn">add_box</span>
   <?php endif; ?>
 </div>
 
-<?php if ($_SESSION && $_SESSION['role'] == 'admin'): ?>
+<?php if ($admin): ?>
   <form class="new-contact" method="POST" action="/admin/contact/store">
     <span class="material-symbols-rounded btn">close</span>
     <h1>Nuevo Contacto</h1>

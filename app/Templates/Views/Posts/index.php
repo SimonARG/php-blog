@@ -47,17 +47,17 @@ $currUrl = $actual_link = (empty($_SERVER['HTTPS']) ? 'http' : 'https') . "://$_
 
 <div class="index">
   <?php foreach ($posts as $index => $post) : ?>
-    <?php if($_SESSION && !($_SESSION['role'] == 'restricted') && !($_SESSION['role'] == 'banned')): ?>
+    <?php if ($canReport): ?>
       <?php require __DIR__ . '/../../Layouts/Components/report.php'; ?>
     <?php endif; ?>
 
     <div class="post <?= 'post-' . $index + 1 ?>">
-      <?php if($_SESSION): ?>
+      <?php if(!($banned || $guest)): ?>
           <div class="menu">
             <div class="arrow">⯈</div>
 
             <ul class="dropdown">
-              <?php if(($post['username'] == $_SESSION['username']) || $_SESSION['role'] == 'admin' || $_SESSION['role'] == 'mod'): ?>
+              <?php if(($post['username'] == $_SESSION['username']) || $elevated): ?>
                 <li>
                   <a href="<?= '/post/edit/' . $post['id'] ?>">Editar</a>
                 </li>
