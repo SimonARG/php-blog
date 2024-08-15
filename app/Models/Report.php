@@ -184,7 +184,7 @@ class Report extends Model
         return $result ? $result : false;
     }
 
-    public function getReportedResourceId(string $type, int $resourceId): array|null
+    public function getReportedResourceId(string $type, int $resourceId): array|bool
     {
         $columnName = $type . "_id";
 
@@ -197,7 +197,7 @@ class Report extends Model
         return $result ? $result : false;
     }
 
-    public function getReportCount(): int|null
+    public function getReportCount(): int|bool
     {
         $sql = "SELECT COUNT(*) FROM reports";
         $result = $this->db->fetch($sql)['COUNT(*)'];
@@ -205,7 +205,7 @@ class Report extends Model
         return $result ? $result : false;
     }
 
-    public function getUnreviewedReportCount(): int|null
+    public function getUnreviewedReportCount(): int|bool
     {
         $sql = "SELECT COUNT(*) FROM reports WHERE reviewed = 0";
         $result = $this->db->fetch($sql)['COUNT(*)'];
@@ -213,7 +213,7 @@ class Report extends Model
         return $result ? $result : false;
     }
 
-    public function createReportedResource(string $type, int $resourceId): object|null
+    public function createReportedResource(string $type, int $resourceId): object|bool
     {
         $columnName = $type . "_id";
 
@@ -226,7 +226,7 @@ class Report extends Model
         return $result ? $result : false;
     }
 
-    public function createReport(array $data): object|null
+    public function createReport(array $data): object|bool
     {
         $fields = ['resource_id', 'reported_by'];
         $placeholders = [':resource_id', ':reported_by'];
