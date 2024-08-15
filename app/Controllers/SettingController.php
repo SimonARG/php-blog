@@ -30,6 +30,22 @@ class SettingController extends Controller
 
     public function updateAbout(array $request): void
     {
+        if (!$this->security->verifyCsrf($request['csrf'] ?? '')) {
+            $this->helpers->setPopup('Error de seguridad');
+
+            header('Location: /about');
+
+            return;
+        }
+
+        if (!$this->security->isAdmin()) {
+            $this->helpers->setPopup('Operacion no autorizada');
+
+            header('Location: /about');
+
+            return;
+        }
+
         $about = $request['about'];
 
         $result = $this->blog->updateAbout($about);
@@ -43,7 +59,9 @@ class SettingController extends Controller
 
     public function settings(): void
     {
-        if (!$this->security->isElevatedUser()) {
+        if (!$this->security->isAdmin()) {
+            $this->helpers->setPopup('Operacion no autorizada');
+
             header('Location: /');
 
             return;
@@ -56,7 +74,17 @@ class SettingController extends Controller
 
     public function updateTitle(array $request): void
     {
-        if (!$this->security->isElevatedUser()) {
+        if (!$this->security->verifyCsrf($request['csrf'] ?? '')) {
+            $this->helpers->setPopup('Error de seguridad');
+
+            header('Location: /');
+
+            return;
+        }
+
+        if (!$this->security->isAdmin()) {
+            $this->helpers->setPopup('Operacion no autorizada');
+
             header('Location: /');
 
             return;
@@ -75,7 +103,17 @@ class SettingController extends Controller
 
     public function updateBgColor(array $request): void
     {
-        if (!$this->security->isElevatedUser()) {
+        if (!$this->security->verifyCsrf($request['csrf'] ?? '')) {
+            $this->helpers->setPopup('Error de seguridad');
+
+            header('Location: /');
+
+            return;
+        }
+
+        if (!$this->security->isAdmin()) {
+            $this->helpers->setPopup('Operacion no autorizada');
+
             header('Location: /');
 
             return;
@@ -94,7 +132,17 @@ class SettingController extends Controller
 
     public function updateTextColor(array $request): void
     {
-        if (!$this->security->isElevatedUser()) {
+        if (!$this->security->verifyCsrf($request['csrf'] ?? '')) {
+            $this->helpers->setPopup('Error de seguridad');
+
+            header('Location: /');
+
+            return;
+        }
+
+        if (!$this->security->isAdmin()) {
+            $this->helpers->setPopup('Operacion no autorizada');
+
             header('Location: /');
 
             return;
@@ -113,7 +161,17 @@ class SettingController extends Controller
 
     public function updateTextDim(array $request): void
     {
-        if (!$this->security->isElevatedUser()) {
+        if (!$this->security->verifyCsrf($request['csrf'] ?? '')) {
+            $this->helpers->setPopup('Error de seguridad');
+
+            header('Location: /');
+
+            return;
+        }
+
+        if (!$this->security->isAdmin()) {
+            $this->helpers->setPopup('Operacion no autorizada');
+
             header('Location: /');
 
             return;
@@ -132,7 +190,17 @@ class SettingController extends Controller
 
     public function updatePanelBgColor(array $request): void
     {
-        if (!$this->security->isElevatedUser()) {
+        if (!$this->security->verifyCsrf($request['csrf'] ?? '')) {
+            $this->helpers->setPopup('Error de seguridad');
+
+            header('Location: /');
+
+            return;
+        }
+
+        if (!$this->security->isAdmin()) {
+            $this->helpers->setPopup('Operacion no autorizada');
+
             header('Location: /');
 
             return;
@@ -151,7 +219,17 @@ class SettingController extends Controller
 
     public function updatePanelHoverColor(array $request): void
     {
-        if (!$this->security->isElevatedUser()) {
+        if (!$this->security->verifyCsrf($request['csrf'] ?? '')) {
+            $this->helpers->setPopup('Error de seguridad');
+
+            header('Location: /');
+
+            return;
+        }
+
+        if (!$this->security->isAdmin()) {
+            $this->helpers->setPopup('Operacion no autorizada');
+
             header('Location: /');
 
             return;
@@ -170,7 +248,17 @@ class SettingController extends Controller
 
     public function updatePanelActiveColor(array $request): void
     {
-        if (!$this->security->isElevatedUser()) {
+        if (!$this->security->verifyCsrf($request['csrf'] ?? '')) {
+            $this->helpers->setPopup('Error de seguridad');
+
+            header('Location: /');
+
+            return;
+        }
+
+        if (!$this->security->isAdmin()) {
+            $this->helpers->setPopup('Operacion no autorizada');
+
             header('Location: /');
 
             return;
@@ -189,7 +277,17 @@ class SettingController extends Controller
 
     public function updateBgImage(array $request): void
     {
-        if (!$this->security->isElevatedUser()) {
+        if (!$this->security->verifyCsrf($request['csrf'] ?? '')) {
+            $this->helpers->setPopup('Error de seguridad');
+
+            header('Location: /');
+
+            return;
+        }
+
+        if (!$this->security->isAdmin()) {
+            $this->helpers->setPopup('Operacion no autorizada');
+
             header('Location: /');
 
             return;
@@ -219,7 +317,17 @@ class SettingController extends Controller
 
     public function updateIcon(array $request): void
     {
-        if (!$this->security->isElevatedUser()) {
+        if (!$this->security->verifyCsrf($request['csrf'] ?? '')) {
+            $this->helpers->setPopup('Error de seguridad');
+
+            header('Location: /');
+
+            return;
+        }
+
+        if (!$this->security->isAdmin()) {
+            $this->helpers->setPopup('Operacion no autorizada');
+
             header('Location: /');
 
             return;

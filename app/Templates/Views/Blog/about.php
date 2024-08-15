@@ -9,6 +9,7 @@
 
   <?php if ($admin): ?>
     <form action="/admin/about/update" method="POST">
+      <input type="hidden" name="csrf" value="<?= $_SESSION['csrf'] ?? '' ?>">
 
       <textarea name="about" id="about"><?= $blogInfoRaw ?></textarea>
 
