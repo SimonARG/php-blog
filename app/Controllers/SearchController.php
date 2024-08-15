@@ -38,96 +38,7 @@ class SearchController extends Controller
             $this->helpers->setPopup('No hay resultados');
 
             header('Location: /');
-        }
 
-        $posts = $result['posts'];
-
-        // Get the total number of posts to calculate pagination
-        $totalPosts = $result['count'];
-
-        $converter = new GithubFlavoredMarkdownConverter([
-        ]);
-
-        $posts = $this->helpers->formatDates($posts);
-
-        foreach ($posts as $key => $post) {
-            $convertedContent = $converter->convert($post['body']);
-            $posts[$key]['body'] = $convertedContent->getContent();
-        }
-
-        $postsPerPage = $GLOBALS['config']['posts_per_page'];
-
-        // Calculate the total number of pages
-        $totalPages = ceil($totalPosts / $postsPerPage);
-
-        // Pass the necessary data to the view
-        $this->helpers->view('posts.results', [
-            'posts' => $posts,
-            'currentPage' => $currentPage,
-            'totalPages' => $totalPages,
-            'totalPosts' => $totalPosts
-        ]);
-    }
-
-    public function getUserPosts(int $id): void
-    {
-        // Get user name
-        $user = $this->user->getUserById($id);
-
-        // Get the current page from the query parameters, default to 1 if not set
-        $currentPage = isset($_GET['page']) ? (int)$_GET['page'] : 1;
-
-        // Get the posts for the current page
-        $result = $this->user->getUserPosts($id, $currentPage);
-
-        if(!$result) {
-            $this->helpers->setPopup('No hay resultados');
-
-            header('Location: /');
-        }
-
-        $posts = $result['posts'];
-
-        // Get the total number of posts to calculate pagination
-        $totalPosts = $result['count'];
-
-        $converter = new GithubFlavoredMarkdownConverter([
-        ]);
-
-        $posts = $this->helpers->formatDates($posts);
-
-        foreach ($posts as $key => $post) {
-            $convertedContent = $converter->convert($post['body']);
-            $posts[$key]['body'] = $convertedContent->getContent();
-        }
-
-        $postsPerPage = $GLOBALS['config']['posts_per_page'];
-
-        // Calculate the total number of pages
-        $totalPages = ceil($totalPosts / $postsPerPage);
-
-        // Pass the necessary data to the view
-        $this->helpers->view('posts.results', [
-            'posts' => $posts,
-            'user' => $user,
-            'currentPage' => $currentPage,
-            'totalPages' => $totalPages,
-            'totalPosts' => $totalPosts
-        ]);
-    }
-
-    public function saved(int $id): void
-    {
-        // Get the current page from the query parameters, default to 1 if not set
-        $currentPage = isset($_GET['page']) ? (int)$_GET['page'] : 1;
-
-        // Get the posts for the current page
-        $result = $this->user->getSavedPosts($id, $currentPage);
-
-        if(!$result) {
-            $this->helpers->setPopup('No hay resultados');
-
-            header('Location: /');
             return;
         }
 
@@ -158,5 +69,105 @@ class SearchController extends Controller
             'totalPages' => $totalPages,
             'totalPosts' => $totalPosts
         ]);
+
+        return;
+    }
+
+    public function getUserPosts(int $id): void
+    {
+        // Get user name
+        $user = $this->user->getUserById($id);
+
+        // Get the current page from the query parameters, default to 1 if not set
+        $currentPage = isset($_GET['page']) ? (int)$_GET['page'] : 1;
+
+        // Get the posts for the current page
+        $result = $this->user->getUserPosts($id, $currentPage);
+
+        if(!$result) {
+            $this->helpers->setPopup('No hay resultados');
+
+            header('Location: /');
+
+            return;
+        }
+
+        $posts = $result['posts'];
+
+        // Get the total number of posts to calculate pagination
+        $totalPosts = $result['count'];
+
+        $converter = new GithubFlavoredMarkdownConverter([
+        ]);
+
+        $posts = $this->helpers->formatDates($posts);
+
+        foreach ($posts as $key => $post) {
+            $convertedContent = $converter->convert($post['body']);
+            $posts[$key]['body'] = $convertedContent->getContent();
+        }
+
+        $postsPerPage = $GLOBALS['config']['posts_per_page'];
+
+        // Calculate the total number of pages
+        $totalPages = ceil($totalPosts / $postsPerPage);
+
+        // Pass the necessary data to the view
+        $this->helpers->view('posts.results', [
+            'posts' => $posts,
+            'user' => $user,
+            'currentPage' => $currentPage,
+            'totalPages' => $totalPages,
+            'totalPosts' => $totalPosts
+        ]);
+
+        return;
+    }
+
+    public function saved(int $id): void
+    {
+        // Get the current page from the query parameters, default to 1 if not set
+        $currentPage = isset($_GET['page']) ? (int)$_GET['page'] : 1;
+
+        // Get the posts for the current page
+        $result = $this->user->getSavedPosts($id, $currentPage);
+
+        if(!$result) {
+            $this->helpers->setPopup('No hay resultados');
+
+            header('Location: /');
+            
+            return;
+        }
+
+        $posts = $result['posts'];
+
+        // Get the total number of posts to calculate pagination
+        $totalPosts = $result['count'];
+
+        $converter = new GithubFlavoredMarkdownConverter([
+        ]);
+
+        $posts = $this->helpers->formatDates($posts);
+
+        foreach ($posts as $key => $post) {
+            $convertedContent = $converter->convert($post['body']);
+            $posts[$key]['body'] = $convertedContent->getContent();
+        }
+
+        $postsPerPage = $GLOBALS['config']['posts_per_page'];
+
+        // Calculate the total number of pages
+        $totalPages = ceil($totalPosts / $postsPerPage);
+
+        // Pass the necessary data to the view
+        $this->helpers->view('posts.results', [
+            'posts' => $posts,
+            'currentPage' => $currentPage,
+            'totalPages' => $totalPages,
+            'totalPosts' => $totalPosts
+        ]);
+        
+        return;
     }
 }
