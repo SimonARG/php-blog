@@ -13,15 +13,24 @@ class ReportController extends Controller
 
     public function __construct()
     {
+        parent::__construct();
+
         $this->reportsPerPage = $GLOBALS['config']['reports_per_page'];
 
-        parent::__construct();
         $this->comment = new Comment();
         $this->report = new Report();
     }
 
     public function index(array $request): void
     {
+        if (!$this->security->isElevatedUser()) {
+            $this->helpers->setPopup('Operacion no autorizada');
+
+            header('Location: /');
+
+            return;
+        }
+
         $currentPage = isset($_GET['page']) ? (int)$_GET['page'] : 1;
 
         $reports = '';
@@ -52,10 +61,30 @@ class ReportController extends Controller
             'totalPages' => $totalPages,
             'unreviewed' => $unreviewed
         ]);
+
+        return;
     }
 
     public function store(array $request): void
     {
+        $url = $request['curr_url'];
+
+        if (!$this->security->verifyCsrf($request['csrf'] ?? '')) {
+            $this->helpers->setPopup('Error de seguridad');
+
+            header('Location: ' . $url);
+
+            return;
+        }
+
+        if (!$this->security->canReport()) {
+            $this->helpers->setPopup('No puedes realizar esta accion');
+
+            header('Location: ' . $url);
+
+            return;
+        }
+
         $this->security->verifyCsrf($request['csrf'] ?? '');
 
         // Sanitize
@@ -68,8 +97,6 @@ class ReportController extends Controller
 
             header('Location: /');
         }
-
-        $url = $request['curr_url'];
 
         $resourceId = $request['id'];
         $reportedBy = $request['user_id'];
@@ -95,6 +122,8 @@ class ReportController extends Controller
             $this->helpers->setPopup('Ya has reportado este ' . $type);
 
             header('Location: ' . $url);
+
+            return;
         }
 
         if ($type == 'post') {
@@ -106,10 +135,20 @@ class ReportController extends Controller
         }
 
         header('Location: ' . $url);
+
+        return;
     }
 
     public function show(int $id): void
     {
+        if (!$this->security->isElevatedUser()) {
+            $this->helpers->setPopup('Operacion no autorizada');
+
+            header('Location: /');
+
+            return;
+        }
+
         $report = $this->report->get($id);
 
         $report = $this->helpers->formatDates($report);
@@ -121,10 +160,28 @@ class ReportController extends Controller
         $this->helpers->view('admin.report', [
             'report' => $report
         ]);
+
+        return;
     }
 
     public function reset(int $id, array $request): void
     {
+        if (!$this->security->verifyCsrf($request['csrf'] ?? '')) {
+            $this->helpers->setPopup('Error de seguridad');
+
+            header('Location: /');
+
+            return;
+        }
+
+        if (!$this->security->isElevatedUser()) {
+            $this->helpers->setPopup('Operacion no autorizada');
+
+            header('Location: /');
+
+            return;
+        }
+
         $modActionId = $request['mod-action-id'];
 
         $this->report->reset($id, $modActionId);
@@ -135,11 +192,29 @@ class ReportController extends Controller
 
         $this->helpers->setPopup('Reporte reiniciado');
 
-        header('Location: /admin/report/1');
+        header('Location: /admin/report/' . $id);
+
+        return;
     }
 
     public function review(int $id, array $request): void
     {
+        if (!$this->security->verifyCsrf($request['csrf'] ?? '')) {
+            $this->helpers->setPopup('Error de seguridad');
+
+            header('Location: /');
+
+            return;
+        }
+
+        if (!$this->security->isElevatedUser()) {
+            $this->helpers->setPopup('Operacion no autorizada');
+
+            header('Location: /');
+
+            return;
+        }
+        
         $reviewerId = $request['reviewer-id'];
 
         // Set as reviewed and write reviewer_id
@@ -175,5 +250,7 @@ class ReportController extends Controller
         $this->helpers->setPopup('Revision completa');
 
         header('Location: /admin/report/' . $id);
+
+        return;
     }
 }

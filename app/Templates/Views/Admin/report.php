@@ -101,12 +101,16 @@ if ($report['resource_type'] == 'Post') {
 
   <?php if ($report['reviewed']): ?>
     <form method="POST" action="/admin/report/reset/<?= $report['id'] ?>">
+      <input type="hidden" name="csrf" value="<?= $_SESSION['csrf'] ?? '' ?>">
+
       <input type="hidden" name="mod-action-id" value="<?= $report['mod_action_id'] ?>">
       <input class="btn" type="submit" value="Marcar como pendiente">
     </form>
   <?php endif; ?>
 
   <form class="review" action="/admin/report/review/<?= $report['id'] ?>" method="POST">
+    <input type="hidden" name="csrf" value="<?= $_SESSION['csrf'] ?? '' ?>">
+
     <span class="material-symbols-rounded btn">close</span>
 
     <div>

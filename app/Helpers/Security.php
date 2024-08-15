@@ -49,6 +49,15 @@ class Security
         return 1;
     }
 
+    public function canReport(): int
+    {
+        if(($_SESSION['role'] == 'banned') || ($_SESSION['role'] == 'guest')) {
+            return 0;
+        }
+
+        return 1;
+    }
+
     public function generateCsrf(): void
     {
         if (empty($_SESSION['csrf'])) {
