@@ -122,15 +122,39 @@ class UserController extends Controller
 
     public function update(int $id, array $request): void
     {
-        $this->security->verifyCsrf($request['csrf'] ?? '');
+        // Get values for view
+        $user = $this->user->getUserById($id);
+        $lastPostId = $this->user->getLatestUserPostId($id);
+        $lastCommentId = $this->user->getLatestUserCommentId($id);
+        $lastCommentPostId = $this->comment->getPostIdForComment($lastCommentId['id']);
+        $savedPosts = $this->user->getSavedPostsCount($id)['posts'];
+        $user = $this->helpers->formatDates($user);
+
+        if (!$this->security->verifyCsrf($request['csrf'] ?? '')) {
+            $this->helpers->setPopup('Error de seguridad');
+
+            $this->helpers->view('users.single', [
+                'user' => $user,
+                'lastPostId' => $lastPostId,
+                'lastCommentPostId' => $lastCommentPostId,
+                'savedPosts' => $savedPosts
+            ]);
+
+            return;
+        }
 
         if(!$this->security->verifyIdentity($id)) {
             $this->helpers->setPopup('Solo puedes editar tu propio perfil');
 
-            header('Location: /user/' . $_SESSION['user_id']);
-        }
+            $this->helpers->view('users.single', [
+                'user' => $user,
+                'lastPostId' => $lastPostId,
+                'lastCommentPostId' => $lastCommentPostId,
+                'savedPosts' => $savedPosts
+            ]);
 
-        $user = $this->user->getUserById($id);
+            return;
+        }
 
         $errors = [];
 
@@ -141,17 +165,6 @@ class UserController extends Controller
         $newPassword = htmlspecialchars($request['new-password']);
         $newPasswordRepeat = htmlspecialchars($request['new-password-r']);
         $avatar = $_FILES['avatar']['name'] ? $_FILES['avatar'] : null;
-
-        // Get values for view
-        $lastPostId = $this->user->getLatestUserPostId($id);
-
-        $lastCommentId = $this->user->getLatestUserCommentId($id);
-
-        $lastCommentPostId = $this->comment->getPostIdForComment($lastCommentId['id']);
-
-        $savedPosts = $this->user->getSavedPostsCount($id)['posts'];
-
-        $user = $this->helpers->formatDates($user);
 
         // Perform current password validation
         if (!$this->security->isElevatedUser()) {
@@ -234,7 +247,7 @@ class UserController extends Controller
             $imgError = $this->helpers->processImage($sourcePath, $destinationPath);
         }
 
-        // Return errors if any
+        // Return with errors if any
         if (!empty($errors)) {
             $this->helpers->view('users.single', [
                 'user' => $user,
@@ -263,14 +276,28 @@ class UserController extends Controller
             'lastCommentPostId' => $lastCommentPostId,
             'savedPosts' => $savedPosts
         ]);
+
+        return;
     }
 
     public function save(array $request): void
     {
-        $this->security->verifyCsrf($request['csrf'] ?? '');
-
         $postId = $request['post_id'];
         $userId = $request['user_id'];
+
+        if (!$this->security->verifyCsrf($request['csrf'] ?? '')) {
+            $this->helpers->setPopup('Error de seguridad');
+
+            if (isset($request['curr_page'])) {
+                $currPage = $request['curr_page'];
+
+                header('Location: /?page=' . $currPage);
+            }
+
+            header('Location: /post/' . $postId);
+
+            return;
+        }
 
         // Check if post is already saved and perform action
         if (in_array($postId, $_SESSION['saved_posts'])) {
@@ -283,23 +310,93 @@ class UserController extends Controller
             $this->helpers->setPopup('Post guardado');
         }
 
-        // Return to index or single with message
+        // Return to index or single URL
         if (isset($request['curr_page'])) {
             $currPage = $request['curr_page'];
 
             header('Location: /?page=' . $currPage);
-        } else {
-            header('Location: /post/' . $postId);
         }
+
+        header('Location: /post/' . $postId);
+
+        return;
     }
 
     public function deleteSaved(array $request): void
     {
-        $this->security->verifyCsrf($request['csrf'] ?? '');
-
         $postId = $request['post_id'];
         $userId = $request['user_id'];
         $request['total_posts'] ? $savedPosts = $request['total_posts'] : $savedPosts = null;
+
+        if (!$this->security->verifyCsrf($request['csrf'] ?? '')) {
+            $this->helpers->setPopup('Error de seguridad');
+
+            if (isset($savedPosts) && $savedPosts == 1) {
+                header('Location: /');
+    
+                return;
+            }
+    
+            if (isset($savedPosts) && $savedPosts == 7) {
+                header('Location: /search/user/saved/' . $userId);
+    
+                return;
+            }
+    
+            if (isset($request['curr_page'])) {
+                $currPage = $request['curr_page'];
+                $totalPages = $request['total_pages'];
+    
+                if ($totalPages > 1) {
+                    header('Location: /search/user/saved/' . $userId . '?page=' . $currPage);
+    
+                    return;
+                } else {
+                    header('Location: /search/user/saved/' . $userId);
+    
+                    return;
+                }
+            }
+    
+            header('Location: /post/' . $postId);
+
+            return;
+        }
+
+        if (!$this->security->verifyIdentity($postId)) {
+            $this->helpers->setPopup('Error de seguridad');
+
+            if (isset($savedPosts) && $savedPosts == 1) {
+                header('Location: /');
+    
+                return;
+            }
+    
+            if (isset($savedPosts) && $savedPosts == 7) {
+                header('Location: /search/user/saved/' . $userId);
+    
+                return;
+            }
+    
+            if (isset($request['curr_page'])) {
+                $currPage = $request['curr_page'];
+                $totalPages = $request['total_pages'];
+    
+                if ($totalPages > 1) {
+                    header('Location: /search/user/saved/' . $userId . '?page=' . $currPage);
+    
+                    return;
+                } else {
+                    header('Location: /search/user/saved/' . $userId);
+    
+                    return;
+                }
+            }
+    
+            header('Location: /post/' . $postId);
+
+            return;
+        }
 
         $result = $this->post->deleteSaved($postId, $userId);
 
@@ -341,23 +438,29 @@ class UserController extends Controller
         }
 
         header('Location: /post/' . $postId);
+
+        return;
     }
 
     public function changeRole(int $id, array $request): void
     {
-        $this->security->verifyCsrf($request['csrf'] ?? '');
+        if (!$this->security->verifyCsrf($request['csrf'] ?? '')) {
+            $this->helpers->setPopup('Error de seguridad');
+
+            header('Location: /user/' . $id);
+
+            return;
+        }
+
+        if (!$this->security->isElevatedUser($request['csrf'] ?? '')) {
+            $this->helpers->setPopup('Operacion no autorizada');
+
+            header('Location: /user/' . $id);
+
+            return;
+        }
 
         $newRole = $request['role'];
-
-        $url = $request['curr-url'];
-
-        $position = strpos($url, '?');
-
-        if ($position !== false) {
-            $url = substr($url, 0, $position);
-        } else {
-            $url = $url;
-        }
 
         $result = $this->user->changeRole($id, $newRole);
 
@@ -367,6 +470,8 @@ class UserController extends Controller
             $this->helpers->setPopup('Error');
         }
 
-        header('Location: ' . $url);
+        header('Location: /user/' . $id);
+
+        return;
     }
 }

@@ -70,7 +70,7 @@ function truncateHTML($html_string, $length, $append = '&hellip;', $is_html = tr
               </li>
               <li>
                 <form action="/post/delete/<?= $post['id'] ?>" method="POST">
-                  <input type="hidden" name="csrf" value="<?php echo $_SESSION['csrf'] ?? '' ?>">
+                  <input type="hidden" name="csrf" value="<?= $_SESSION['csrf'] ?? '' ?>">
 
                   <input type="hidden" name="post_id" value="<?= $post['id'] ?>">
                   <input type="submit" value="Eliminar">
@@ -82,7 +82,7 @@ function truncateHTML($html_string, $length, $append = '&hellip;', $is_html = tr
             <?php if(!in_array($post['id'], $_SESSION['saved_posts'])) : ?>
                 <li>
                   <form method="POST" action="/user/saved/save">
-                    <input type="hidden" name="csrf" value="<?php echo $_SESSION['csrf'] ?? '' ?>">
+                    <input type="hidden" name="csrf" value="<?= $_SESSION['csrf'] ?? '' ?>">
 
                     <input type="hidden" name="post_id" value="<?= $post['id'] ?>">
                     <input type="hidden" name="user_id" value="<?= $_SESSION['user_id'] ?>">
@@ -94,7 +94,7 @@ function truncateHTML($html_string, $length, $append = '&hellip;', $is_html = tr
               <?php if(in_array($post['id'], $_SESSION['saved_posts'])) : ?>
                 <li>
                   <form method="POST" action="/user/saved/delete">
-                    <input type="hidden" name="csrf" value="<?php echo $_SESSION['csrf'] ?? '' ?>">
+                    <input type="hidden" name="csrf" value="<?= $_SESSION['csrf'] ?? '' ?>">
                     
                     <input type="hidden" name="post_id" value="<?= $post['id'] ?>">
                     <input type="hidden" name="user_id" value="<?= $_SESSION['user_id'] ?>">
