@@ -2235,7 +2235,7 @@ input:-webkit-autofill:active{
 }
 
 .new-link > div > input[type="text"],
-.contact .update > div > input[type="text"] {
+.link .update > div > input[type="text"] {
   padding: .2rem .4rem;
   text-align: center;
   width: 100%;

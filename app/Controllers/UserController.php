@@ -315,6 +315,8 @@ class UserController extends Controller
             $currPage = $request['curr_page'];
 
             header('Location: /?page=' . $currPage);
+
+            return;
         }
 
         header('Location: /post/' . $postId);
@@ -329,41 +331,6 @@ class UserController extends Controller
         $request['total_posts'] ? $savedPosts = $request['total_posts'] : $savedPosts = null;
 
         if (!$this->security->verifyCsrf($request['csrf'] ?? '')) {
-            $this->helpers->setPopup('Error de seguridad');
-
-            if (isset($savedPosts) && $savedPosts == 1) {
-                header('Location: /');
-    
-                return;
-            }
-    
-            if (isset($savedPosts) && $savedPosts == 7) {
-                header('Location: /search/user/saved/' . $userId);
-    
-                return;
-            }
-    
-            if (isset($request['curr_page'])) {
-                $currPage = $request['curr_page'];
-                $totalPages = $request['total_pages'];
-    
-                if ($totalPages > 1) {
-                    header('Location: /search/user/saved/' . $userId . '?page=' . $currPage);
-    
-                    return;
-                } else {
-                    header('Location: /search/user/saved/' . $userId);
-    
-                    return;
-                }
-            }
-    
-            header('Location: /post/' . $postId);
-
-            return;
-        }
-
-        if (!$this->security->verifyIdentity($postId)) {
             $this->helpers->setPopup('Error de seguridad');
 
             if (isset($savedPosts) && $savedPosts == 1) {
