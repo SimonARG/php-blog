@@ -54,12 +54,12 @@
         <input type="hidden" name="csrf" value="<?= $_SESSION['csrf'] ?? '' ?>">
 
         <label for="body">Nuevo Comentario</label>
-        <textarea required maxlength="1600" name="body" id="body" placeholder="Comment..." autocomplete="off"<?php if (isset($errors['body_error'])): ?><?= "class='ph-error'" ?><?php endif; ?>></textarea>
+        <textarea required maxlength="1600" name="body" id="body" placeholder="<?= htmlspecialchars($errors['body_error'] ?? '') ?>" autocomplete="off"<?php if (isset($errors['body_error'])): ?><?= "class='ph-error'" ?><?php endif; ?>></textarea>
+
+        <input type="hidden" name="user_id" value="<?= $_SESSION['user_id'] ?>">
+        <input type="hidden" name="post_id" value="<?= $post['id'] ?>">
+
         <input class="btn" type="submit" value="Comentar">
-        <?php if (!($banned || $guest)): ?>
-          <input type="hidden" name="user_id" value="<?= $_SESSION['user_id'] ?>">
-          <input type="hidden" name="post_id" value="<?= $post['id'] ?>">
-        <?php endif; ?>
       </form>
     <?php endif; ?>
 

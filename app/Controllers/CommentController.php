@@ -5,6 +5,7 @@ namespace App\Controllers;
 use App\Models\Post;
 use App\Models\Comment;
 use App\Controllers\Controller;
+use League\CommonMark\GithubFlavoredMarkdownConverter;
 
 class CommentController extends Controller
 {
@@ -37,20 +38,70 @@ class CommentController extends Controller
             return;
         }
 
+        function sanitizeComment($comment)
+        {
+            // Remove HTML tags
+            $comment = strip_tags($comment);
+    
+            // Convert special characters to HTML entities
+            $comment = htmlspecialchars($comment, ENT_QUOTES | ENT_HTML5, 'UTF-8');
+    
+            return $comment;
+        }
+
+        $comment = $request['body'];
+        $userId = $request['user_id'];
+        $postId = $request['post_id'];
+
+        $errors = [];
+
         // Sanitize
-        htmlspecialchars($request['body']);
+        $comment = sanitizeComment($comment);
+        $userId = sanitizeComment($userId);
+        $postId = sanitizeComment($postId);
 
         // Validate
-        if (strlen($request['body']) < 1) {
+        if (!is_string($comment)) {
+            $errors['body_error'] = 'Error de seguridad';
+        } elseif (strlen($comment) < 1) {
             $errors['body_error'] = 'El comentario es demasiado corto';
-        } elseif (strlen($request['body']) > 1600) {
+        } elseif (strlen($comment) > 1600) {
             $errors['body_error'] = 'El comentario es demasiado largo';
+        }
+
+        if (!is_string($userId) || !is_string($postId)) {
+            $errors['body_error'] = 'Error de seguridad';
         }
 
         // Return errors if any
         if (!empty($errors)) {
-            view('posts.single', [
-                'request' => $request,
+            $post = $this->post->getPostById($postId);
+
+            $converter = new GithubFlavoredMarkdownConverter();
+    
+            $convertedContent = $converter->convert($post['body']);
+            $post['body'] = $convertedContent->getContent();
+    
+            // Get the current page from the query parameters, default to 1 if not set
+            $currentPage = isset($_GET['page']) ? (int)$_GET['page'] : 1;
+    
+            $comments = $this->comment->getCommentsForPost($postId, $currentPage);
+    
+            $post = $this->helpers->formatDates($post);
+    
+            if ($comments) {
+                $comments = $this->helpers->formatDates($comments);
+    
+                $this->helpers->view('posts.single', [
+                    'post' => $post,
+                    'comments' => $comments,
+                    'errors' => $errors
+                ]);
+                return;
+            }
+    
+            $this->helpers->view('posts.single', [
+                'post' => $post,
                 'errors' => $errors
             ]);
 
