@@ -6,7 +6,9 @@
     <?php endif; ?>
 
     <?php if (!$guest): ?>
-      <a href="/post/new">Nuevo Post</a>
+      <?php if (!$restricted): ?>
+        <a href="/post/new">Nuevo Post</a>
+      <?php endif; ?>
 
       <a href="<?= '/user/' . $_SESSION['user_id'] ?>">Mi Perfil</a>
 
