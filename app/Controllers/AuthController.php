@@ -155,6 +155,7 @@ class AuthController extends Controller
         // Restart session for guest functionalities
         session_start();
 
+        // Regenerate session CSRF token for guest
         $this->security->regenerateCsrf();
 
         $this->helpers->setPopup('Sesión cerrada');
