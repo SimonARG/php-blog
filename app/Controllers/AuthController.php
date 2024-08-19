@@ -12,6 +12,7 @@ class AuthController extends Controller
     public function __construct()
     {
         parent::__construct();
+
         $this->user = new User();
     }
 
@@ -32,59 +33,97 @@ class AuthController extends Controller
             return;
         }
 
+        // Initialize variables
         $errors = [];
+        $email = '';
+        $password = '';
 
-        $email = $request['email'];
-        $password = $request['password'];
+        // Check if email is missing, sanitize & validate
+        if (empty($request['email'])) {
+            $errors['email'] = 'El E-Mail es necesario';
+        } else {
+            $email = filter_var($request['email'], FILTER_SANITIZE_EMAIL);
+            if (!filter_var($email, FILTER_VALIDATE_EMAIL)) {
+                $errors['email'] = 'E-Mail inválido';
+            }
+        }
+
+        // Check if password is missing
+        if (empty($request['password'])) {
+            $errors['password'] = 'La contraseña es necesaria';
+        } else {
+            $password = $request['password'];
+        }
+
+        if (!empty($errors)) {
+            $this->helpers->view('users.login', [
+                'request' => $request,
+                'errors' => $errors
+            ]);
+
+            return;
+        }
 
         $user = $this->user->getUserByEmailWithRole($email);
 
-        if ($user) {
+        // If user is not found, return with errors
+        if (!$user) {
+            $errors['login'] = 'Credenciales invalidas';
+
+            $this->helpers->view('users.login', [
+                'request' => $request,
+                'errors' => $errors
+            ]);
+
+            return;
+        }
+
+        // If password doesn't match / else
+        if (!password_verify($password, $user['password'])) {
+            $errors['login'] = 'Credenciales invalidas';
+        } else {
+            // If user is banned
             if ($user['role'] == 'banned') {
                 $this->helpers->setPopup('La cuenta ' . $user['name'] . ' se encuentra banneada');
-
-                header('Location: /');
-
+    
+                header('Location: /login');
+    
                 return;
             }
 
-            if (password_verify($password, $user['password'])) {
+            $savedPostsArr = $this->user->getSavedPostsIds($user['id']);
 
-                $savedPostsArr = $this->user->getSavedPostsIds($user['id']);
+            $savedPosts = [];
 
-                $savedPosts = [];
-
-                if(!$savedPostsArr) {
-                    $_SESSION['saved_posts'] = [];
-                } else {
-                    foreach ($savedPostsArr as $key => $post) {
-                        array_push($savedPosts, $savedPostsArr[$key]['post']);
-                    };
-
-                    $_SESSION['saved_posts'] = $savedPosts;
-                }
-
-                $_SESSION['user_id'] = $user['id'];
-                $_SESSION['username'] = $user['name'];
-                $_SESSION['role'] = $user['role'];
-
-                $this->security->regenerateCsrf();
-
-                $this->helpers->setPopup('Sesion iniciada');
-
-                header('Location: /');
-
-                return;
+            if(!$savedPostsArr) {
+                $_SESSION['saved_posts'] = [];
             } else {
-                $errors['error'] = 'Credenciales invalidas';
+                foreach ($savedPostsArr as $key => $post) {
+                    array_push($savedPosts, $savedPostsArr[$key]['post']);
+                };
+
+                $_SESSION['saved_posts'] = $savedPosts;
             }
-        } else {
-            $errors['error'] = 'Credenciales invalidas';
+
+            $_SESSION['user_id'] = $user['id'];
+            $_SESSION['username'] = $user['name'];
+            $_SESSION['role'] = $user['role'];
+
+            $this->security->regenerateCsrf();
+
+            $this->helpers->setPopup('Sesion iniciada');
+
+            header('Location: /');
+
+            return;
         }
 
         // Return errors if any
         if (!empty($errors)) {
-            $this->helpers->view('users.login', ['request' => $request, 'errors' => $errors]);
+            $this->helpers->view('users.login', [
+                'request' => $request,
+                'errors' => $errors
+            ]);
 
             return;
         }
@@ -115,6 +154,8 @@ class AuthController extends Controller
 
         // Restart session for guest functionalities
         session_start();
+
+        $this->security->regenerateCsrf();
 
         $this->helpers->setPopup('Sesión cerrada');
 
