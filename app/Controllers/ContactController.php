@@ -2,16 +2,19 @@
 
 namespace App\Controllers;
 
+use App\Models\Blog;
 use App\Models\Contact;
+use App\Helpers\Helpers;
+use App\Helpers\Security;
 use App\Controllers\Controller;
 
 class ContactController extends Controller
 {
     protected $contact;
 
-    public function __construct(Contact $contact)
+    public function __construct(Security $security, Helpers $helpers, Blog $blog, Contact $contact)
     {
-        parent::__construct();
+        parent::__construct($security, $helpers, $blog);
 
         $this->contact = $contact;
     }

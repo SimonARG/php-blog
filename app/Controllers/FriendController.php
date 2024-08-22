@@ -2,16 +2,19 @@
 
 namespace App\Controllers;
 
+use App\Models\Blog;
 use App\Models\Friend;
+use App\Helpers\Helpers;
+use App\Helpers\Security;
 use App\Controllers\Controller;
 
 class FriendController extends Controller
 {
     protected $friend;
 
-    public function __construct(Friend $friend)
+    public function __construct(Security $security, Helpers $helpers, Blog $blog, Friend $friend)
     {
-        parent::__construct();
+        parent::__construct($security, $helpers, $blog);
         
         $this->friend = $friend;
     }

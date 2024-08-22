@@ -2,16 +2,19 @@
 
 namespace App\Controllers;
 
+use App\Models\Blog;
 use App\Models\Link;
+use App\Helpers\Helpers;
+use App\Helpers\Security;
 use App\Controllers\Controller;
 
 class LinkController extends Controller
 {
     protected $link;
 
-    public function __construct(Link $link)
+    public function __construct(Security $security, Helpers $helpers, Blog $blog, Link $link)
     {
-        parent::__construct();
+        parent::__construct($security, $helpers, $blog);
 
         $this->link = $link;
     }

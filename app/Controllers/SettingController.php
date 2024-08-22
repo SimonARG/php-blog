@@ -3,6 +3,8 @@
 namespace App\Controllers;
 
 use App\Models\Blog;
+use App\Helpers\Helpers;
+use App\Helpers\Security;
 use App\Services\BlogService;
 use App\Controllers\Controller;
 
@@ -11,9 +13,9 @@ class SettingController extends Controller
     protected $blog;
     protected $service;
 
-    public function __construct(Blog $blog, BlogService $blogservice)
+    public function __construct(Security $security, Helpers $helpers, Blog $blog, BlogService $blogservice)
     {
-        parent::__construct();
+        parent::__construct($security, $helpers, $blog);
 
         $this->blog = $blog;
         $this->service = $blogservice;

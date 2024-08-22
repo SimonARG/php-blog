@@ -1,40 +1,56 @@
 <?php
 
-require_once __DIR__ . '/../app/bootstrap.php';
+namespace Database;
+
+require __DIR__ . '/../vendor/autoload.php';
+
+use Database\Migrations\CreateUsersTable;
+use Database\Migrations\CreatePostsTable;
+use Database\Migrations\CreateRolesTable;
+use Database\Migrations\CreateRoleUserTable;
+use Database\Migrations\CreateCommentsTable;
+use Database\Migrations\CreateSavedPostsTable;
+use Database\Migrations\CreateReportedResourcesTable;
+use Database\Migrations\CreateConsequencesTable;
+use Database\Migrations\CreateReportsTable;
+use Database\Migrations\CreateModActionsTable;
+use Database\Migrations\CreateConfigTable;
+use Database\Migrations\CreateContactTable;
+use Database\Migrations\CreateFriendsTable;
+use Database\Migrations\CreateLinksTable;
 
 echo "Do you want to migrate (1: up, 2: down): ";
 $handle = fopen("php://stdin", "r");
 $choice = trim(fgets($handle));
 
 $migrations = [
-    'CreateUsersTable' => __DIR__ . '/migrations/1_create_users_table.php',
-    'CreatePostsTable' => __DIR__ . '/migrations/2_create_posts_table.php',
-    'CreateRolesTable' => __DIR__ . '/migrations/3_create_roles_table.php',
-    'CreateRoleUserTable' => __DIR__ . '/migrations/4_create_role_user_table.php',
-    'CreateCommentsTable' => __DIR__ . '/migrations/5_create_comments_table.php',
-    'CreateSavedPostsTable' => __DIR__ . '/migrations/6_create_saved_posts_table.php',
-    'CreateReportedResourcesTable' => __DIR__ . '/migrations/7_create_reported_resources_table.php',
-    'CreateConsequencesTable' => __DIR__ . '/migrations/8_create_consequences_table.php',
-    'CreateReportsTable' => __DIR__ . '/migrations/9_create_reports_table.php',
-    'CreateModActionsTable' => __DIR__ . '/migrations/10_create_mod_actions_table.php',
-    'CreateConfigTable' => __DIR__ . '/migrations/11_create_config_table.php',
-    'CreateContactTable' => __DIR__ . '/migrations/12_create_contact_table.php',
-    'CreateFriendsTable' => __DIR__ . '/migrations/13_create_friends_table.php',
-    'CreateLinksTable' => __DIR__ . '/migrations/14_create_links_table.php'
+    new CreateUsersTable(),
+    new CreatePostsTable(),
+    new CreateRolesTable(),
+    new CreateRoleUserTable(),
+    new CreateCommentsTable(),
+    new CreateSavedPostsTable(),
+    new CreateReportedResourcesTable(),
+    new CreateConsequencesTable(),
+    new CreateReportsTable(),
+    new CreateModActionsTable(),
+    new CreateConfigTable(),
+    new CreateContactTable(),
+    new CreateFriendsTable(),
+    new CreateLinksTable(),
 ];
 
-foreach ($migrations as $migrationClass => $filePath) {
-    require_once $filePath;
-    $migration = new $migrationClass();
+foreach ($migrations as $migration) {
+    $migrationClassName = get_class($migration);
 
     switch ($choice) {
         case '1':
             $migration->up();
-            echo "$migrationClass migrated up successfully.\n";
+            echo "$migrationClassName migrated up successfully.\n";
             break;
         case '2':
             $migration->down();
-            echo "$migrationClass migrated down successfully.\n";
+            echo "$migrationClassName migrated down successfully.\n";
             break;
         default:
             echo "Invalid choice.\n";

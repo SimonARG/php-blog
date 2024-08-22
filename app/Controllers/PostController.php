@@ -2,10 +2,13 @@
 
 namespace App\Controllers;
 
+use App\Models\Blog;
 use App\Models\Post;
 use App\Models\Comment;
-use App\Controllers\Controller;
+use App\Helpers\Helpers;
+use App\Helpers\Security;
 use App\Services\PostService;
+use App\Controllers\Controller;
 use League\CommonMark\GithubFlavoredMarkdownConverter;
 
 class PostController extends Controller
@@ -14,9 +17,9 @@ class PostController extends Controller
     protected $comment;
     protected $service;
 
-    public function __construct(Post $post, Comment $comment, PostService $postservice)
+    public function __construct(Security $security, Helpers $helpers, Blog $blog, Post $post, Comment $comment, PostService $postservice)
     {
-        parent::__construct();
+        parent::__construct($security, $helpers, $blog);
 
         $this->post = $post;
         $this->comment = $comment;

@@ -2,15 +2,15 @@
 
 require_once __DIR__ . '/../vendor/autoload.php';
 
-use App\Seeders\PostSeeder;
-use App\Seeders\RoleSeeder;
-use App\Seeders\UserSeeder;
-use App\Seeders\CommentSeeder;
-use App\Seeders\ReportsSeeder;
-use App\Seeders\RoleUserSeeder;
-use App\Seeders\ConsequencesSeeder;
-use App\Seeders\ReportedResourcesSeeder;
-use App\Seeders\ConfigSeeder;
+use Database\Seeders\PostSeeder;
+use Database\Seeders\RoleSeeder;
+use Database\Seeders\UserSeeder;
+use Database\Seeders\CommentSeeder;
+use Database\Seeders\ReportsSeeder;
+use Database\Seeders\RoleUserSeeder;
+use Database\Seeders\ConsequencesSeeder;
+use Database\Seeders\ReportedResourcesSeeder;
+use Database\Seeders\ConfigSeeder;
 
 echo "Which seeder do you want to run? (1: All, 2: Users, 3: Posts, 4: Roles, 5: Comments, 6: Role_User, 7: Consequences, 8: Config): ";
 $handle = fopen("php://stdin", "r");

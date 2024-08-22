@@ -2,9 +2,12 @@
 
 namespace App\Controllers;
 
+use App\Models\Blog;
 use App\Models\Post;
 use App\Models\User;
 use App\Models\Comment;
+use App\Helpers\Helpers;
+use App\Helpers\Security;
 use App\Controllers\Controller;
 use League\CommonMark\GithubFlavoredMarkdownConverter;
 
@@ -14,9 +17,9 @@ class SearchController extends Controller
     protected $comment;
     protected $user;
 
-    public function __construct(Post $post, Comment $comment, User $user)
+    public function __construct(Security $security, Helpers $helpers, Blog $blog, Post $post, Comment $comment, User $user)
     {
-        parent::__construct();
+        parent::__construct($security, $helpers, $blog);
         
         $this->post = $post;
         $this->comment = $comment;

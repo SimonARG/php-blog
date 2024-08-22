@@ -2,8 +2,12 @@
 
 namespace App\Controllers;
 
+use App\Models\Blog;
 use App\Models\Report;
 use App\Models\Comment;
+use App\Helpers\Helpers;
+use App\Helpers\Security;
+use App\Controllers\Controller;
 
 class ReportController extends Controller
 {
@@ -11,9 +15,9 @@ class ReportController extends Controller
     protected $report;
     protected $reportsPerPage;
 
-    public function __construct(Comment $comment, Report $report)
+    public function __construct(Security $security, Helpers $helpers, Blog $blog, Comment $comment, Report $report)
     {
-        parent::__construct();
+        parent::__construct($security, $helpers, $blog);
 
         $this->comment = $comment;
         $this->report = $report;

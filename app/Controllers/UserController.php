@@ -2,9 +2,13 @@
 
 namespace App\Controllers;
 
+use App\Models\Blog;
 use App\Models\Post;
 use App\Models\User;
 use App\Models\Comment;
+use App\Helpers\Helpers;
+use App\Helpers\Security;
+use App\Controllers\Controller;
 
 class UserController extends Controller
 {
@@ -12,9 +16,9 @@ class UserController extends Controller
     protected $post;
     protected $comment;
 
-    public function __construct(User $user, Post $post, Comment $comment)
+    public function __construct(Security $security, Helpers $helpers, Blog $blog, User $user, Post $post, Comment $comment)
     {
-        parent::__construct();
+        parent::__construct($security, $helpers, $blog);
         
         $this->user = $user;
         $this->post = $post;
