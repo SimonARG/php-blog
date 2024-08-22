@@ -9,11 +9,11 @@ class AuthController extends Controller
 {
     protected $user;
 
-    public function __construct()
+    public function __construct(User $user)
     {
         parent::__construct();
 
-        $this->user = new User();
+        $this->user = $user;
     }
 
     public function login(): void

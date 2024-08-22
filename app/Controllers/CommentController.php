@@ -12,12 +12,12 @@ class CommentController extends Controller
     protected $comment;
     protected $post;
 
-    public function __construct()
+    public function __construct(Post $post, Comment $comment)
     {
         parent::__construct();
 
-        $this->comment = new Comment();
-        $this->post = new Post();
+        $this->comment = $comment;
+        $this->post = $post;
     }
 
     function sanitizeComment($comment)

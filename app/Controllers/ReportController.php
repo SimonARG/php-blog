@@ -11,14 +11,14 @@ class ReportController extends Controller
     protected $report;
     protected $reportsPerPage;
 
-    public function __construct()
+    public function __construct(Comment $comment, Report $report)
     {
         parent::__construct();
 
-        $this->reportsPerPage = $GLOBALS['config']['reports_per_page'];
+        $this->comment = $comment;
+        $this->report = $report;
 
-        $this->comment = new Comment();
-        $this->report = new Report();
+        $this->reportsPerPage = $GLOBALS['config']['reports_per_page'];
     }
 
     public function index(array $request): void

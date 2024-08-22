@@ -9,11 +9,11 @@ class LinkController extends Controller
 {
     protected $link;
 
-    public function __construct()
+    public function __construct(Link $link)
     {
         parent::__construct();
 
-        $this->link = new Link();
+        $this->link = $link;
     }
 
     public function index(): void

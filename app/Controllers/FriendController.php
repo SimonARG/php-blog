@@ -9,11 +9,11 @@ class FriendController extends Controller
 {
     protected $friend;
 
-    public function __construct()
+    public function __construct(Friend $friend)
     {
         parent::__construct();
         
-        $this->friend = new Friend();
+        $this->friend = $friend;
     }
 
     public function index(): void

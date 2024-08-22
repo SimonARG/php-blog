@@ -12,12 +12,13 @@ class UserController extends Controller
     protected $post;
     protected $comment;
 
-    public function __construct()
+    public function __construct(User $user, Post $post, Comment $comment)
     {
         parent::__construct();
-        $this->user = new User();
-        $this->post = new Post();
-        $this->comment = new Comment();
+        
+        $this->user = $user;
+        $this->post = $post;
+        $this->comment = $comment;
     }
 
     public function create(): void

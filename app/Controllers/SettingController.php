@@ -11,12 +11,12 @@ class SettingController extends Controller
     protected $blog;
     protected $service;
 
-    public function __construct()
+    public function __construct(Blog $blog, BlogService $blogservice)
     {
         parent::__construct();
 
-        $this->blog = new Blog();
-        $this->service = new BlogService();
+        $this->blog = $blog;
+        $this->service = $blogservice;
     }
 
     public function about(): void

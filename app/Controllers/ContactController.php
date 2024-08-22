@@ -9,11 +9,11 @@ class ContactController extends Controller
 {
     protected $contact;
 
-    public function __construct()
+    public function __construct(Contact $contact)
     {
         parent::__construct();
 
-        $this->contact = new Contact();
+        $this->contact = $contact;
     }
 
     public function index(): void

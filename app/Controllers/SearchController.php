@@ -14,12 +14,13 @@ class SearchController extends Controller
     protected $comment;
     protected $user;
 
-    public function __construct()
+    public function __construct(Post $post, Comment $comment, User $user)
     {
         parent::__construct();
-        $this->post = new Post();
-        $this->comment = new Comment();
-        $this->user = new User();
+        
+        $this->post = $post;
+        $this->comment = $comment;
+        $this->user = $user;
     }
 
     public function search(): void

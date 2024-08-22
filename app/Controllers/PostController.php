@@ -14,13 +14,13 @@ class PostController extends Controller
     protected $comment;
     protected $service;
 
-    public function __construct()
+    public function __construct(Post $post, Comment $comment, PostService $postservice)
     {
         parent::__construct();
 
-        $this->post = new Post();
-        $this->comment = new Comment();
-        $this->service = new PostService();
+        $this->post = $post;
+        $this->comment = $comment;
+        $this->service = $postservice;
     }
 
     public function index(): void
