@@ -82,12 +82,12 @@ class Comment extends Model
         return $result ? $result : false;
     }
 
-    public function update(array $data, int $id): object|bool
+    public function update(string $comment, int $id): object|bool
     {
         $sql = "UPDATE comments SET body = :body WHERE id = :id";
 
         $result = $this->db->query($sql, [
-            ':body' => $data['body'],
+            ':body' => $comment,
             ':id' => $id,
         ]);
 
