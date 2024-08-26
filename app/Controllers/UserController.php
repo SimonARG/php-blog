@@ -10,8 +10,9 @@ use App\Helpers\Helpers;
 use App\Helpers\Security;
 use App\Controllers\Controller;
 use App\Controllers\AuthController;
+use App\Interfaces\CrudInterface;
 
-class UserController extends Controller
+class UserController extends Controller implements CrudInterface
 {
     protected $user;
     protected $post;

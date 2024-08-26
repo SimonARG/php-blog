@@ -9,9 +9,10 @@ use App\Helpers\Helpers;
 use App\Helpers\Security;
 use App\Services\PostService;
 use App\Controllers\Controller;
+use App\Interfaces\CrudInterface;
 use League\CommonMark\GithubFlavoredMarkdownConverter;
 
-class PostController extends Controller
+class PostController extends Controller implements CrudInterface
 {
     protected $post;
     protected $comment;
