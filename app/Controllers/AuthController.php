@@ -2,21 +2,24 @@
 
 namespace App\Controllers;
 
-use App\Models\User;
 use App\Models\Blog;
+use App\Models\User;
 use App\Helpers\Helpers;
 use App\Helpers\Security;
+use App\Services\AuthService;
 use App\Controllers\Controller;
 
 class AuthController extends Controller
 {
     protected $user;
+    protected $service;
 
-    public function __construct(Security $security, Helpers $helpers, Blog $blog, User $user)
+    public function __construct(Security $security, Helpers $helpers, Blog $blog, User $user, AuthService $authService)
     {
         parent::__construct($security, $helpers, $blog);
 
         $this->user = $user;
+        $this->service = $authService;
     }
 
     public function login(): void
@@ -36,27 +39,14 @@ class AuthController extends Controller
             return;
         }
 
-        // Initialize variables
-        $errors = [];
-        $email = '';
-        $password = '';
+        // Sanitize & validate
+        $result = $this->service->sanitizeAndValidate($request);
 
-        // Check if email is missing, sanitize & validate
-        if (empty($request['email'])) {
-            $errors['email'] = 'El E-Mail es necesario';
-        } else {
-            $email = filter_var($request['email'], FILTER_SANITIZE_EMAIL);
-            if (!filter_var($email, FILTER_VALIDATE_EMAIL)) {
-                $errors['email'] = 'E-Mail inválido';
-            }
-        }
+        $cleanRequest = $result['sanitized_request'];
+        $errors = $result['errors'];
 
-        // Check if password is missing
-        if (empty($request['password'])) {
-            $errors['password'] = 'La contraseña es necesaria';
-        } else {
-            $password = $request['password'];
-        }
+        $password = $cleanRequest['password'];
+        $email = $cleanRequest['email'];
 
         if (!empty($errors)) {
             $this->helpers->view('users.login', [
@@ -103,19 +93,7 @@ class AuthController extends Controller
                 return;
             }
 
-            $savedPostsArr = $this->user->getSavedPostsIds($user['id']);
-
-            $savedPosts = [];
-
-            if(!$savedPostsArr) {
-                $_SESSION['saved_posts'] = [];
-            } else {
-                foreach ($savedPostsArr as $key => $post) {
-                    array_push($savedPosts, $savedPostsArr[$key]['post']);
-                };
-
-                $_SESSION['saved_posts'] = $savedPosts;
-            }
+            $this->service->getSavedPosts($user);
 
             $_SESSION['user_id'] = $user['id'];
             $_SESSION['username'] = $user['name'];
