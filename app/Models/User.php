@@ -290,13 +290,21 @@ class User extends Model
         return $result ? $result : false;
     }
 
-    public function delete(int $id): object|bool
+    public function hardDelete(): array|bool
     {
-        $sql = "DELETE * FROM users WHERE id = :id;";
+        $sql = "SELECT id FROM users WHERE deleted_at IS NOT NULL";
 
-        $result = $this->db->query($sql, [':id' => $id]);
+        $deletionList = $this->db->fetchAll($sql);
 
-        return $result ? $result : false;
+        $sql = "SELECT thumb FROM users WHERE deleted_at IS NOT NULL";
+
+        $avatarList = $this->db->fetchAll($sql);
+
+        $sql = "DELETE FROM users WHERE deleted_at IS NOT NULL";
+
+        $result = $this->db->query($sql);
+
+        return $result ? [$deletionList, $avatarList] : false;
     }
 
     public function changeRole(int $userId, int $roleId): int
