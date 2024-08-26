@@ -1627,6 +1627,16 @@ input:-webkit-autofill:active{
   border-bottom: none;
 }
 
+.single > .user > .delete {
+  display: flex;
+  justify-content: center;
+}
+
+.single > .user > .delete > input {
+  border: 1px solid white;
+  padding: .2rem .6rem;
+}
+
 .single > .user > .posts {
   margin-top: .6rem;
 }

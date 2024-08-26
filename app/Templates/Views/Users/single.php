@@ -54,12 +54,6 @@ $currUrl = (empty($_SERVER['HTTPS']) ? 'http' : 'https') . "://$_SERVER[HTTP_HOS
     <h1><?= $user['name'] ?></h1>
     <h2><?= 'Registrado desde ' . $user['created_at'] ?></h2>
 
-    <form action="/user/delete/<?= $user['id'] ?>" method="POST">
-      <input type="hidden" name="csrf" value="<?= $_SESSION['csrf'] ?? '' ?>">
-
-      <input type="submit" value="Eliminar perfil">
-    </form>
-
     <?php if (!($banned || $guest)): ?>
       <div class="report-holder">
         <div class="report-btn btn">Reportar usuario</div>
@@ -79,6 +73,14 @@ $currUrl = (empty($_SERVER['HTTPS']) ? 'http' : 'https') . "://$_SERVER[HTTP_HOS
     <?php if ($user['updated_at']): ?>
       <h2><?= 'Actualizado en ' . $user['updated_at'] ?></h2>
     <?php endif ?>
+
+    <?php if (!($guest) && ($_SESSION['user_id'] == $user['id'] || $elevated)): ?>
+    <form class="delete" action="/user/delete/<?= $user['id'] ?>" method="POST">
+      <input type="hidden" name="csrf" value="<?= $_SESSION['csrf'] ?? '' ?>">
+
+      <input class="btn" type="submit" value="Eliminar perfil">
+    </form>
+    <?php endif; ?>
 
     <div class="posts">
       <a href="<?= '/search/user/posts/' . $user['id'] ?>"><?= 'Posts: ' . $user['posts'] ?></a>
