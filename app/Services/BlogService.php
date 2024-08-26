@@ -8,9 +8,9 @@ class BlogService
 {
     protected $helpers;
 
-    public function __construct()
+    public function __construct(Helpers $helpers)
     {
-        $this->helpers = new Helpers();
+        $this->helpers = $helpers;
     }
 
     public function handleImg(array $thumb): array

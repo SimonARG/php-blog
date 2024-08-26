@@ -40,8 +40,8 @@ if (!isset($_SESSION['role'])) {
 
 $container->add('App\Controllers\Controller', function() {
     $security = new Security();
-    $helpers = new Helpers();
     $blog = new Blog();
+    $helpers = new Helpers($blog, $security);
     
     return new Controller($security, $helpers, $blog);
 });
@@ -49,8 +49,8 @@ $container->add('App\Controllers\Controller', function() {
 $container->add('App\Controllers\AuthController', function() {
     $user = new User();
     $security = new Security();
-    $helpers = new Helpers();
     $blog = new Blog();
+    $helpers = new Helpers($blog, $security);
     
     return new AuthController($security, $helpers, $blog, $user);
 });
@@ -59,8 +59,8 @@ $container->add('App\Controllers\CommentController', function() {
     $post = new Post();
     $comment = new Comment();
     $security = new Security();
-    $helpers = new Helpers();
     $blog = new Blog();
+    $helpers = new Helpers($blog, $security);
     
     return new CommentController($security, $helpers, $blog, $post, $comment);
 });
@@ -68,8 +68,8 @@ $container->add('App\Controllers\CommentController', function() {
 $container->add('App\Controllers\ContactController', function() {
     $contact = new Contact();
     $security = new Security();
-    $helpers = new Helpers();
     $blog = new Blog();
+    $helpers = new Helpers($blog, $security);
     
     return new ContactController($security, $helpers, $blog, $contact);
 });
@@ -77,8 +77,8 @@ $container->add('App\Controllers\ContactController', function() {
 $container->add('App\Controllers\FriendController', function() {
     $friend = new Friend();
     $security = new Security();
-    $helpers = new Helpers();
     $blog = new Blog();
+    $helpers = new Helpers($blog, $security);
     
     return new FriendController($security, $helpers, $blog, $friend);
 });
@@ -86,8 +86,8 @@ $container->add('App\Controllers\FriendController', function() {
 $container->add('App\Controllers\LinkController', function() {
     $link = new Link();
     $security = new Security();
-    $helpers = new Helpers();
     $blog = new Blog();
+    $helpers = new Helpers($blog, $security);
     
     return new LinkController($security, $helpers, $blog, $link);
 });
@@ -95,9 +95,9 @@ $container->add('App\Controllers\LinkController', function() {
 $container->add('App\Controllers\PostController', function() {
     $post = new Post();
     $security = new Security();
-    $helpers = new Helpers();
     $blog = new Blog();
-    $service = new PostService();
+    $helpers = new Helpers($blog, $security);
+    $service = new PostService($helpers);
     $comment = new Comment();
     
     return new PostController($security, $helpers, $blog, $post, $comment, $service);
@@ -106,8 +106,8 @@ $container->add('App\Controllers\PostController', function() {
 $container->add('App\Controllers\ReportController', function() {
     $report = new Report();
     $security = new Security();
-    $helpers = new Helpers();
     $blog = new Blog();
+    $helpers = new Helpers($blog, $security);
     $comment = new Comment();
     
     return new ReportController($security, $helpers, $blog, $comment, $report);
@@ -115,8 +115,8 @@ $container->add('App\Controllers\ReportController', function() {
 
 $container->add('App\Controllers\SearchController', function() {
     $security = new Security();
-    $helpers = new Helpers();
     $blog = new Blog();
+    $helpers = new Helpers($blog, $security);
     $post = new Post();
     $comment = new Comment();
     $user = new User();
@@ -126,17 +126,17 @@ $container->add('App\Controllers\SearchController', function() {
 
 $container->add('App\Controllers\SettingController', function() {
     $security = new Security();
-    $helpers = new Helpers();
     $blog = new Blog();
-    $blogService = new BlogService();
+    $helpers = new Helpers($blog, $security);
+    $blogService = new BlogService($helpers);
     
     return new SettingController($security, $helpers, $blog, $blogService);
 });
 
 $container->add('App\Controllers\UserController', function() {
     $security = new Security();
-    $helpers = new Helpers();
     $blog = new Blog();
+    $helpers = new Helpers($blog, $security);
     $post = new Post();
     $comment = new Comment();
     $user = new User();
