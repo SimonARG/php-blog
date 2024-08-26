@@ -276,6 +276,29 @@ class User extends Model
         return $result ? $result : false;
     }
 
+    public function softDelete(int $id): object|bool
+    {
+        $currentTime = date('Y-m-d H:i:s');
+
+        $sql = "UPDATE users SET deleted_at = :deleted_at WHERE id = :id";
+
+        $result = $this->db->query($sql, [
+            ':deleted_at' => $currentTime,
+            ':id' => $id
+        ]);
+
+        return $result ? $result : false;
+    }
+
+    public function delete(int $id): object|bool
+    {
+        $sql = "DELETE * FROM users WHERE id = :id;";
+
+        $result = $this->db->query($sql, [':id' => $id]);
+
+        return $result ? $result : false;
+    }
+
     public function changeRole(int $userId, int $roleId): int
     {
         $sql = "UPDATE role_user SET role_id = :role_id WHERE user_id = :user_id;";

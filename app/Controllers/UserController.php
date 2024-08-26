@@ -9,20 +9,23 @@ use App\Models\Comment;
 use App\Helpers\Helpers;
 use App\Helpers\Security;
 use App\Controllers\Controller;
+use App\Controllers\AuthController;
 
 class UserController extends Controller
 {
     protected $user;
     protected $post;
     protected $comment;
+    protected $auth;
 
-    public function __construct(Security $security, Helpers $helpers, Blog $blog, User $user, Post $post, Comment $comment)
+    public function __construct(Security $security, Helpers $helpers, Blog $blog, User $user, Post $post, Comment $comment, AuthController $authController)
     {
         parent::__construct($security, $helpers, $blog);
 
         $this->user = $user;
         $this->post = $post;
         $this->comment = $comment;
+        $this->auth = $authController;
     }
 
     public function create(): void
@@ -127,23 +130,10 @@ class UserController extends Controller
 
     public function update(int $id, array $request): void
     {
-        // Get values for view
-        $user = $this->user->getUserById($id);
-        $lastPostId = $this->user->getLatestUserPostId($id);
-        $lastCommentId = $this->user->getLatestUserCommentId($id);
-        $lastCommentPostId = $this->comment->getPostIdForComment($lastCommentId['id']);
-        $savedPosts = $this->user->getSavedPostsCount($id)['posts'];
-        $user = $this->helpers->formatDates($user);
-
         if (!$this->security->verifyCsrf($request['csrf'] ?? '')) {
             $this->helpers->setPopup('Error de seguridad');
 
-            $this->helpers->view('users.single', [
-                'user' => $user,
-                'lastPostId' => $lastPostId,
-                'lastCommentPostId' => $lastCommentPostId,
-                'savedPosts' => $savedPosts
-            ]);
+            header('Location: /user/' . $id);
 
             return;
         }
@@ -151,15 +141,18 @@ class UserController extends Controller
         if(!$this->security->verifyIdentity($id)) {
             $this->helpers->setPopup('Solo puedes editar tu propio perfil');
 
-            $this->helpers->view('users.single', [
-                'user' => $user,
-                'lastPostId' => $lastPostId,
-                'lastCommentPostId' => $lastCommentPostId,
-                'savedPosts' => $savedPosts
-            ]);
+            header('Location: /user/' . $id);
 
             return;
         }
+
+        // Get values for view
+        $user = $this->user->getUserById($id);
+        $lastPostId = $this->user->getLatestUserPostId($id);
+        $lastCommentId = $this->user->getLatestUserCommentId($id);
+        $lastCommentPostId = $this->comment->getPostIdForComment($lastCommentId['id']);
+        $savedPosts = $this->user->getSavedPostsCount($id)['posts'];
+        $user = $this->helpers->formatDates($user);
 
         $errors = [];
 
@@ -281,6 +274,41 @@ class UserController extends Controller
             'lastCommentPostId' => $lastCommentPostId,
             'savedPosts' => $savedPosts
         ]);
+
+        return;
+    }
+
+    public function delete(int $id, array $request): void
+    {
+        if (!$this->security->verifyCsrf($request['csrf'] ?? '')) {
+            $this->helpers->setPopup('Error de seguridad');
+
+            header('Location: /user/' . $id);
+
+            return;
+        }
+
+        if(!$this->security->verifyIdentity($id)) {
+            $this->helpers->setPopup('Solo puedes eliminar tu propio perfil');
+
+            header('Location: /user/' . $id);
+
+            return;
+        }
+
+        $result = $this->user->softDelete($id);
+
+        if (!$this->security->isElevatedUser()) {
+            $this->auth->logout();
+
+            $this->helpers->setPopup('Cuenta eliminada');
+
+            return;
+        }
+
+        $this->helpers->setPopup('Cuenta eliminada');
+
+        header('Location: /');
 
         return;
     }

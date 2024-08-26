@@ -54,6 +54,12 @@ $currUrl = (empty($_SERVER['HTTPS']) ? 'http' : 'https') . "://$_SERVER[HTTP_HOS
     <h1><?= $user['name'] ?></h1>
     <h2><?= 'Registrado desde ' . $user['created_at'] ?></h2>
 
+    <form action="/user/delete/<?= $user['id'] ?>" method="POST">
+      <input type="hidden" name="csrf" value="<?= $_SESSION['csrf'] ?? '' ?>">
+
+      <input type="submit" value="Eliminar perfil">
+    </form>
+
     <?php if (!($banned || $guest)): ?>
       <div class="report-holder">
         <div class="report-btn btn">Reportar usuario</div>

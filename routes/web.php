@@ -15,6 +15,7 @@ return [
     // Users
     '/user/{id}' => UserController::class . '@show',
     '/user/update/{id}' => UserController::class . '@update',
+    '/user/delete/{id}' => UserController::class . '@delete',
     '/user/saved/save' => UserController::class . '@save',
     '/user/saved/delete' => UserController::class . '@deleteSaved',
     '/user/role/{id}' => UserController::class . '@changeRole',

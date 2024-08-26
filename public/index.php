@@ -140,8 +140,9 @@ $container->add('App\Controllers\UserController', function() {
     $post = new Post();
     $comment = new Comment();
     $user = new User();
+    $authController = new AuthController($security, $helpers, $blog, $user);
     
-    return new UserController($security, $helpers, $blog, $user, $post, $comment);
+    return new UserController($security, $helpers, $blog, $user, $post, $comment, $authController);
 });
 
 // Initialize Router

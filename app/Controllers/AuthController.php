@@ -85,6 +85,15 @@ class AuthController extends Controller
         if (!password_verify($password, $user['password'])) {
             $errors['login'] = 'Credenciales invalidas';
         } else {
+            // If account is soft-deleted
+            if (!empty($user['deleted_at'])) {
+                $this->helpers->setPopup('La cuenta ' . $user['name'] . ' ha sido eliminada. Para restaurarla, contacte a un administrador.');
+
+                header('Location: /login');
+
+                return;
+            }
+
             // If user is banned
             if ($user['role'] == 'banned') {
                 $this->helpers->setPopup('La cuenta ' . $user['name'] . ' se encuentra banneada');
