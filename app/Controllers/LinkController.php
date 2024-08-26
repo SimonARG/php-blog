@@ -7,8 +7,9 @@ use App\Models\Link;
 use App\Helpers\Helpers;
 use App\Helpers\Security;
 use App\Controllers\Controller;
+use App\Interfaces\BlogInfoInterface;
 
-class LinkController extends Controller
+class LinkController extends Controller implements BlogInfoInterface
 {
     protected $link;
 

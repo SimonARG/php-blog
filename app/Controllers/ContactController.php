@@ -7,8 +7,9 @@ use App\Models\Contact;
 use App\Helpers\Helpers;
 use App\Helpers\Security;
 use App\Controllers\Controller;
+use App\Interfaces\BlogInfoInterface;
 
-class ContactController extends Controller
+class ContactController extends Controller implements BlogInfoInterface
 {
     protected $contact;
 

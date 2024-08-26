@@ -7,8 +7,9 @@ use App\Models\Friend;
 use App\Helpers\Helpers;
 use App\Helpers\Security;
 use App\Controllers\Controller;
+use App\Interfaces\BlogInfoInterface;
 
-class FriendController extends Controller
+class FriendController extends Controller implements BlogInfoInterface
 {
     protected $friend;
 
