@@ -20,7 +20,7 @@ class SearchController extends Controller
     public function __construct(Security $security, Helpers $helpers, Blog $blog, Post $post, Comment $comment, User $user)
     {
         parent::__construct($security, $helpers, $blog);
-        
+
         $this->post = $post;
         $this->comment = $comment;
         $this->user = $user;
@@ -140,7 +140,7 @@ class SearchController extends Controller
             $this->helpers->setPopup('No hay resultados');
 
             header('Location: /');
-            
+
             return;
         }
 
@@ -171,7 +171,7 @@ class SearchController extends Controller
             'totalPages' => $totalPages,
             'totalPosts' => $totalPosts
         ]);
-        
+
         return;
     }
 }

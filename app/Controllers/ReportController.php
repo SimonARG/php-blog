@@ -218,7 +218,7 @@ class ReportController extends Controller
 
             return;
         }
-        
+
         $reviewerId = $request['reviewer-id'];
 
         // Set as reviewed and write reviewer_id

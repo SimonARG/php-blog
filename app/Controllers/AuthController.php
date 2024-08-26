@@ -88,9 +88,9 @@ class AuthController extends Controller
             // If user is banned
             if ($user['role'] == 'banned') {
                 $this->helpers->setPopup('La cuenta ' . $user['name'] . ' se encuentra banneada');
-    
+
                 header('Location: /login');
-    
+
                 return;
             }
 

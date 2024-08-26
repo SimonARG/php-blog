@@ -15,7 +15,7 @@ class FriendController extends Controller
     public function __construct(Security $security, Helpers $helpers, Blog $blog, Friend $friend)
     {
         parent::__construct($security, $helpers, $blog);
-        
+
         $this->friend = $friend;
     }
 

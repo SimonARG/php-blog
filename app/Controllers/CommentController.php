@@ -23,7 +23,7 @@ class CommentController extends Controller
         $this->post = $post;
     }
 
-    function sanitizeComment($comment)
+    public function sanitizeComment($comment)
     {
         // Remove HTML tags
         $comment = strip_tags($comment);
@@ -37,7 +37,7 @@ class CommentController extends Controller
     public function store(array $request): void
     {
         $postId = $request['post_id'];
-        
+
         if (!$this->security->verifyCsrf($request['csrf'] ?? '')) {
             $this->helpers->setPopup('Error de seguridad');
 
@@ -86,20 +86,20 @@ class CommentController extends Controller
             $post = $this->post->getPostById($postId);
 
             $converter = new GithubFlavoredMarkdownConverter();
-    
+
             $convertedContent = $converter->convert($post['body']);
             $post['body'] = $convertedContent->getContent();
-    
+
             // Get the current page from the query parameters, default to 1 if not set
             $currentPage = isset($_GET['page']) ? (int)$_GET['page'] : 1;
-    
+
             $comments = $this->comment->getCommentsForPost($postId, $currentPage);
-    
+
             $post = $this->helpers->formatDates($post);
-    
+
             if ($comments) {
                 $comments = $this->helpers->formatDates($comments);
-    
+
                 $this->helpers->view('posts.single', [
                     'post' => $post,
                     'comments' => $comments,
@@ -108,7 +108,7 @@ class CommentController extends Controller
 
                 return;
             }
-    
+
             $this->helpers->view('posts.single', [
                 'post' => $post,
                 'errors' => $errors
@@ -188,20 +188,20 @@ class CommentController extends Controller
             $post = $this->post->getPostById($postId);
 
             $converter = new GithubFlavoredMarkdownConverter();
-    
+
             $convertedContent = $converter->convert($post['body']);
             $post['body'] = $convertedContent->getContent();
-    
+
             // Get the current page from the query parameters, default to 1 if not set
             $currentPage = isset($_GET['page']) ? (int)$_GET['page'] : 1;
-    
+
             $comments = $this->comment->getCommentsForPost($postId, $currentPage);
-    
+
             $post = $this->helpers->formatDates($post);
-    
+
             if ($comments) {
                 $comments = $this->helpers->formatDates($comments);
-    
+
                 $this->helpers->view('posts.single', [
                     'post' => $post,
                     'comments' => $comments,
@@ -210,7 +210,7 @@ class CommentController extends Controller
 
                 return;
             }
-    
+
             $this->helpers->view('posts.single', [
                 'post' => $post,
                 'errors' => $errors
@@ -218,7 +218,7 @@ class CommentController extends Controller
 
             return;
         }
-        
+
         if ($comment == $oldComment['body']) {
             $this->helpers->setPopup('El nuevo comentario es identico al original');
 
