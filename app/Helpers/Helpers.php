@@ -10,15 +10,15 @@ use League\CommonMark\GithubFlavoredMarkdownConverter;
 
 class Helpers
 {
-    protected $blogModel;
+    protected $blog;
     protected $blogConfig;
     protected $security;
 
-    public function __construct()
+    public function __construct(Blog $blog, Security $security)
     {
-        $this->blogModel = new Blog();
-        $this->security = new Security();
-        $this->blogConfig = $this->blogModel->getBlogConfig();
+        $this->blog = $blog;
+        $this->security = $security;
+        $this->blogConfig = $this->blog->getBlogConfig();
     }
 
     public function view(string $viewName, array $data = []): void
