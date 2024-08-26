@@ -298,14 +298,6 @@ class PostController extends Controller implements CrudInterface
             return;
         }
 
-        if (!$this->security->verifyIdentity($id)) {
-            $this->helpers->setPopup('Solo puedes editar tus propios posts');
-
-            header('Location: /');
-
-            return;
-        }
-
         if (!$this->security->canPost()) {
             $this->helpers->setPopup('Operacion no autorizada');
 

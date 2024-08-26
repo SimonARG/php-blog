@@ -32,6 +32,8 @@ class UserController extends Controller implements CrudInterface
     public function create(): void
     {
         $this->helpers->view('users.create');
+
+        return;
     }
 
     public function store(array $request): void
