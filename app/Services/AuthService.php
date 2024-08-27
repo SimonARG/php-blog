@@ -3,16 +3,13 @@
 namespace App\Services;
 
 use App\Models\User;
-use App\Helpers\Helpers;
 
 class AuthService
 {
-    protected $helpers;
     protected $user;
 
-    public function __construct(Helpers $helpers, User $user)
+    public function __construct(User $user)
     {
-        $this->helpers = $helpers;
         $this->user = $user;
     }
 

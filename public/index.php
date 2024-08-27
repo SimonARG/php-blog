@@ -29,6 +29,7 @@ use App\Controllers\CommentController;
 use App\Controllers\ContactController;
 use App\Controllers\SettingController;
 use App\Services\AuthService;
+use App\Services\CommentService;
 use PharIo\Manifest\Author;
 
 session_start();
@@ -53,7 +54,7 @@ $container->add('App\Controllers\AuthController', function() {
     $security = new Security();
     $blog = new Blog();
     $helpers = new Helpers($blog, $security);
-    $authService = new AuthService($helpers, $user);
+    $authService = new AuthService($user);
     
     return new AuthController($security, $helpers, $blog, $user, $authService);
 });
@@ -64,8 +65,9 @@ $container->add('App\Controllers\CommentController', function() {
     $security = new Security();
     $blog = new Blog();
     $helpers = new Helpers($blog, $security);
+    $commentService = new CommentService();
     
-    return new CommentController($security, $helpers, $blog, $post, $comment);
+    return new CommentController($security, $helpers, $blog, $post, $comment, $commentService);
 });
 
 $container->add('App\Controllers\ContactController', function() {
@@ -143,7 +145,7 @@ $container->add('App\Controllers\UserController', function() {
     $post = new Post();
     $comment = new Comment();
     $user = new User();
-    $authService = new AuthService($helpers, $user);
+    $authService = new AuthService($user);
     $authController = new AuthController($security, $helpers, $blog, $user, $authService);
     
     return new UserController($security, $helpers, $blog, $user, $post, $comment, $authController);

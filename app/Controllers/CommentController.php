@@ -8,30 +8,22 @@ use App\Models\Comment;
 use App\Helpers\Helpers;
 use App\Helpers\Security;
 use App\Controllers\Controller;
+use App\Services\CommentService;
 use League\CommonMark\GithubFlavoredMarkdownConverter;
 
 class CommentController extends Controller
 {
     protected $comment;
     protected $post;
+    protected $service;
 
-    public function __construct(Security $security, Helpers $helpers, Blog $blog, Post $post, Comment $comment)
+    public function __construct(Security $security, Helpers $helpers, Blog $blog, Post $post, Comment $comment, CommentService $commentService)
     {
         parent::__construct($security, $helpers, $blog);
 
         $this->comment = $comment;
         $this->post = $post;
-    }
-
-    public function sanitizeComment($comment)
-    {
-        // Remove HTML tags
-        $comment = strip_tags($comment);
-
-        // Convert special characters to HTML entities
-        $comment = htmlspecialchars($comment, ENT_QUOTES | ENT_HTML5, 'UTF-8');
-
-        return $comment;
+        $this->service = $commentService;
     }
 
     public function store(array $request): void
@@ -59,10 +51,18 @@ class CommentController extends Controller
 
         $errors = [];
 
-        // Sanitize
-        $comment = $this->sanitizeComment($comment);
-        $userId = $this->sanitizeComment($userId);
-        $postId = $this->sanitizeComment($postId);
+        $data = [
+            'body' => $comment,
+            'user_id' => $userId,
+            'post_id' => $postId
+        ];
+
+        // Sanitize and validate
+        $cleanData = $this->service->sanitize($data);
+
+        $comment = $cleanData['body'];
+        $userId = $cleanData['user_id'];
+        $postId = $cleanData['post_id'];
 
         if (!is_string($userId) || !is_string($postId)) {
             $this->helpers->setPopup('Error de seguridad');
@@ -70,15 +70,6 @@ class CommentController extends Controller
             header('Location: /post/' . $postId . '#comment-1');
 
             return;
-        }
-
-        // Validate
-        if (!is_string($comment)) {
-            $errors['body_error'] = 'Error de seguridad';
-        } elseif (strlen($comment) < 1) {
-            $errors['body_error'] = 'El comentario es demasiado corto';
-        } elseif (strlen($comment) > 1600) {
-            $errors['body_error'] = 'El comentario es demasiado largo';
         }
 
         // Return errors if any
@@ -161,10 +152,18 @@ class CommentController extends Controller
 
         $errors = [];
 
-        // Sanitize
-        $comment = $this->sanitizeComment($comment);
-        $userId = $this->sanitizeComment($userId);
-        $postId = $this->sanitizeComment($postId);
+        $data = [
+            'body' => $comment,
+            'user_id' => $userId,
+            'post_id' => $postId
+        ];
+
+        // Sanitize and validate
+        $cleanData = $this->service->sanitize($data);
+
+        $comment = $cleanData['body'];
+        $userId = $cleanData['user_id'];
+        $postId = $cleanData['post_id'];
 
         if (!is_string($userId) || !is_string($postId)) {
             $this->helpers->setPopup('Error de seguridad');
@@ -172,15 +171,6 @@ class CommentController extends Controller
             header('Location: /post/' . $postId . '#comment-1');
 
             return;
-        }
-
-        // Validate
-        if (!is_string($comment)) {
-            $errors['body_error'] = 'Error de seguridad';
-        } elseif (strlen($comment) < 1) {
-            $errors['body_error'] = 'El comentario es demasiado corto';
-        } elseif (strlen($comment) > 1600) {
-            $errors['body_error'] = 'El comentario es demasiado largo';
         }
 
         // Return errors if any
