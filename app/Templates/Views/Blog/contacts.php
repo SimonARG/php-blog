@@ -5,7 +5,7 @@
     <?php foreach ($contacts as $key => $contact) : ?>
       <div class="contact">
         <?php if ($admin): ?>
-          <form class="delete-contact" method="POST" action="/admin/contact/delete/<?= $contact['id'] ?>">
+          <form class="delete-contact" method="POST" action="/admin/contacts/delete/<?= $contact['id'] ?>">
             <input type="hidden" name="csrf" value="<?= $_SESSION['csrf'] ?? '' ?>">
 
             <button type="submit"><span class="material-symbols-rounded btn">delete</span></button>
@@ -23,7 +23,7 @@
         <?php endif; ?>
 
         <?php if ($admin): ?>
-          <form class="update" method="POST" action="/admin/contact/update/<?= $contact['id'] ?>">
+          <form class="update" method="POST" action="/admin/contacts/update/<?= $contact['id'] ?>">
             <input type="hidden" name="csrf" value="<?= $_SESSION['csrf'] ?? '' ?>">
             
             <span class="material-symbols-rounded btn close-edit">close</span>
@@ -53,7 +53,7 @@
 </div>
 
 <?php if ($admin): ?>
-  <form class="new-contact" method="POST" action="/admin/contact/store">
+  <form class="new-contact" method="POST" action="/admin/contacts/store">
     <input type="hidden" name="csrf" value="<?= $_SESSION['csrf'] ?? '' ?>">
 
     <span class="material-symbols-rounded btn">close</span>

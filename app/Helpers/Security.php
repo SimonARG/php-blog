@@ -74,12 +74,12 @@ class Security
         return;
     }
 
-    public function verifyCsrf($csrf): int
+    public function verifyCsrf($csrf): bool
     {
         if (empty($csrf) || !($csrf === $_SESSION['csrf'])) {
-            return 0;
+            return false;
         }
 
-        return 1;
+        return true;
     }
 }

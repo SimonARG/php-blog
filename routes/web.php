@@ -60,10 +60,10 @@ return [
     '/admin/report/reset/{id}' => ReportController::class . '@reset',
     '/admin/report/review/{id}' => ReportController::class . '@review',
     // Contact
-    '/contact' => ContactController::class . '@index',
-    '/admin/contact/store' => ContactController::class . '@store',
-    '/admin/contact/update/{id}' => ContactController::class . '@update',
-    '/admin/contact/delete/{id}' => ContactController::class . '@delete',
+    '/contacts' => ContactController::class . '@index',
+    '/admin/contacts/store' => ContactController::class . '@store',
+    '/admin/contacts/update/{id}' => ContactController::class . '@update',
+    '/admin/contacts/delete/{id}' => ContactController::class . '@delete',
     // Friend
     '/friends' => FriendController::class . '@index',
     '/admin/friends/store' => FriendController::class . '@store',

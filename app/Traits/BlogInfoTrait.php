@@ -21,7 +21,7 @@ trait BlogInfoTrait
     {
         $modelName = $this->getModelName();
         
-        if (!$this->checkSecurity($modelName)) {
+        if (!$this->checkSecurity($modelName, $request)) {
             return;
         }
 
@@ -35,7 +35,7 @@ trait BlogInfoTrait
     {
         $modelName = $this->getModelName();
         
-        if (!$this->checkSecurity($modelName)) {
+        if (!$this->checkSecurity($modelName, $request)) {
             return;
         }
 
@@ -49,7 +49,7 @@ trait BlogInfoTrait
     {
         $modelName = $this->getModelName();
         
-        if (!$this->checkSecurity($modelName)) {
+        if (!$this->checkSecurity($modelName, $request)) {
             return;
         }
 
@@ -64,7 +64,7 @@ trait BlogInfoTrait
         return strtolower(str_replace('Controller', '', $className));
     }
 
-    private function checkSecurity(string $modelName): bool
+    private function checkSecurity(string $modelName, array $request): bool
     {
         if (!$this->security->verifyCsrf($request['csrf'] ?? '')) {
             $this->helpers->setPopup('Error de seguridad');

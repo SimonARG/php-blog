@@ -14,7 +14,7 @@
           <a href="/">Inicio</a>
         </li>
         <li>
-          <a href="/contact">Contacto</a>
+          <a href="/contacts">Contacto</a>
         </li>
         <li>
           <a href="/friends">Otros Blogs</a>

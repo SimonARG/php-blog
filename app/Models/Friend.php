@@ -19,7 +19,7 @@ class Friend extends Model
         return $result ? $result : 0;
     }
 
-    public function store(array $data): object|bool
+    public function store(array $data): bool
     {
         $sql = "INSERT INTO friends (title, url, comment) VALUES (:title, :url, :comment);";
         $result = $this->db->query($sql, [
@@ -28,10 +28,10 @@ class Friend extends Model
             ':comment' => $data['comment']
         ]);
 
-        return $result ? $result : 0;
+        return $result ? true : false;
     }
 
-    public function update(int $id, array $data): object|bool
+    public function update(int $id, array $data): bool
     {
         $sql = "UPDATE friends SET title = :title, url = :url, comment = :comment WHERE id = :id;";
         $result = $this->db->query($sql, [
@@ -41,14 +41,14 @@ class Friend extends Model
             ':id' => $id
         ]);
 
-        return $result ? $result : false;
+        return $result ? true : false;
     }
 
-    public function delete(int $id): object|bool
+    public function delete(int $id): bool
     {
         $sql = "DELETE FROM friends WHERE id = :id;";
         $result = $this->db->query($sql, [':id' => $id]);
 
-        return $result ? $result : false;
+        return $result ? true : false;
     }
 }

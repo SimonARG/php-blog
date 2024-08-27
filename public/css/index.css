@@ -1,6 +1,6 @@
 :root {
   font-size: 16px;
-  --black-panel-h: rgb(141, 141, 141);
+  --black-panel-h: rgb(170, 131, 131);
   --solid-h: rgb(70, 70, 70);
   --blue: rgb(45, 45, 180);
   --red: rgb(178, 46, 46);
@@ -1937,6 +1937,7 @@ input:-webkit-autofill:active{
   margin-bottom: .6rem;
   width: 100%;
   padding: 0 3rem;
+  position: relative;
 }
 
 .contacts-container hr {
