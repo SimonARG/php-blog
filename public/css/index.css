@@ -2749,6 +2749,25 @@ footer a:hover {
   .editor-tabs > span {
     font-size: 1.7rem;
   }
+  .settings-container > form > label {
+    font-size: .96rem;
+  }
+  input[type="color"] {
+    border: 1px solid white;
+    width: calc(1.1rem* 1.4 + .2rem* 2 + 2px);
+    height: calc(1.1rem* 1.4 + .2rem* 2 + 2px);
+  }
+  .settings-container {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 1rem;
+  }
+  .settings-container > form {
+    display: flex;
+    border: 1px solid white;
+    justify-content: center;
+    margin: 0;
+  }
 }
 
 /* Extra large screens */
