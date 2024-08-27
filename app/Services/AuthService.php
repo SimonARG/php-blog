@@ -32,7 +32,7 @@ class AuthService
     public function sanitizeAndValidate(array $request): array
     {
         $errors = [];
-        
+
         if (empty($request['password'])) {
             $errors['password'] = 'La contraseña es necesaria';
         }
@@ -53,7 +53,7 @@ class AuthService
         ];
     }
 
-    public function getSavedPosts(array $user)
+    public function getSavedPosts(array $user): void
     {
         $savedPostsArr = $this->user->getSavedPostsIds($user['id']);
 
