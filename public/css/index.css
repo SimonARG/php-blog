@@ -2063,6 +2063,7 @@ input:-webkit-autofill:active{
   align-items: center;
   margin-bottom: .6rem;
   width: 100%;
+  position: relative
 }
 
 .friends-container > div > a {
@@ -2186,6 +2187,7 @@ input:-webkit-autofill:active{
   align-items: center;
   margin-bottom: .6rem;
   width: 100%;
+  position: relative;
 }
 
 .links-container > div > a {
@@ -2562,9 +2564,38 @@ footer a:hover {
     width: 70%;
   }
   .single > .post > .body {
-    width: 85%;
+    width: 95%;
     font-size: .9rem;
     margin: 0 auto 1.5rem auto;
+  }
+  .single > .post > .btns {
+    gap: 6px;
+  }
+  .single > .post > .btns > * {
+    font-size: .95rem;
+  }
+  .single > .comments > .new-comment input[type=submit] {
+    font-size: .95rem;
+  }
+  .single > .comments > div {
+    font-size: .85rem;
+  }
+  .single > .comments > .comment > .arrow {
+    font-size: 1.3rem;
+  }
+  .single .comment-avatar {
+    margin-right: 1rem;
+  }
+  .single .comment .body-col {
+    font-size: .8rem;
+    hyphens: auto;
+    word-wrap: break-word;
+    padding: .2rem 2rem .6rem 2rem;
+  }
+  .single .comment-footer > div {
+    display: flex;
+    align-items: center;
+    justify-content: center;
   }
 }
 
