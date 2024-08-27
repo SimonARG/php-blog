@@ -1437,8 +1437,8 @@ input:-webkit-autofill:active{
   background-color: black;
   border: 1px solid white;
   box-shadow: 0 0 10px 7px rgba(0, 0, 0, 0.644);
-  font-size: 1.7rem;
-  padding: 1rem 1rem;
+  font-size: 1.6rem;
+  padding: .6rem;
   transition: top .3s ease-in-out;
 }
 
@@ -2466,6 +2466,9 @@ footer a:hover {
   :root {
     font-size: 18px;
   }
+  .popup-container {
+    font-size: 1.4rem;
+  }
   .report-form {
     font-size: 1.15rem;
   }
@@ -2606,7 +2609,8 @@ footer a:hover {
   }
   .friends-container .add-friend,
   .contacts-container .add-contact,
-  .links-container .add-link {
+  .links-container .add-link,
+  .about-container > div > .edit {
     font-size: 1.8rem;
   }
   .links-container > div,
@@ -2630,6 +2634,36 @@ footer a:hover {
   }
   .friends-container > div > div {
     font-size: .9rem;
+  }
+  .new-link, .link .update,
+  .new-friend, .friend .update,
+  .new-contact, .contact .update {
+    min-width: 40vw;
+    width: fit-content;
+  }
+  .link .update > h1, .new-link > h1,
+  .friend .update > h1, .new-friend > h1,
+  .contact .update > h1, .new-contact > h1 {
+    font-size: 1.5rem;
+  }
+  .new-link > div, .link .update > div,
+  .new-friend > div, .friend .update > div,
+  .new-contact > div, .contact .update > div {
+    font-size: 1.1rem;
+  }
+  .new-friend > input[type="submit"], .friend .update > input[type="submit"],
+  .new-link > input[type="submit"], .link .update > input[type="submit"],
+  .new-contact > input[type="submit"], .contact .update > input[type="submit"] {
+    font-size: 1.2rem;
+  }
+  .about-container .body-preview,
+  .about-container > form > textarea {
+    font-size: .83rem;
+    padding: 8px;
+  }
+  .about-container > form > div > .btn {
+    padding: .2rem .5rem;
+    font-size: 1rem;
   }
 }
 
