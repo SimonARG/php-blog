@@ -1211,7 +1211,6 @@ header {
 .auth-container {
   padding: 1rem 1rem 1.6rem 1rem;
   background-color: var(--panel-bg);
-  height: 100vh;
   margin-bottom: 2px;
 }
 
@@ -1244,6 +1243,10 @@ header {
 
 .login input {
   margin-bottom: 2rem;
+}
+
+.auth-container.login form {
+  margin-bottom: 18rem;
 }
 
 /*
@@ -1638,29 +1641,29 @@ input:-webkit-autofill:active{
   padding: .2rem .6rem;
 }
 
-.single > .user > .posts {
+.single > .user > div > .posts {
   margin-top: .6rem;
 }
 
-.single > .user > .saved-posts {
+.single > .user > div > .saved-posts {
   display: flex;
 }
 
-.single > .user > .posts > a,
-.single > .user > .comments > a,
-.single > .user > .saved-posts {
+.single > .user > div > .posts > a,
+.single > .user > div > .comments > a,
+.single > .user > div > .saved-posts {
   margin-bottom: .4rem;
   cursor: pointer;
 }
 
-.single > .user > .posts > a:hover,
-.single > .user > .comments > a:hover,
-.single > .user > .saved-posts:hover {
+.single > .user > div > .posts > a:hover,
+.single > .user > div > .comments > a:hover,
+.single > .user > div > .saved-posts:hover {
   text-decoration: underline 1px;
 }
 
-.single > .user > .posts,
-.single > .user > .comments {
+.single > .user > div > .posts,
+.single > .user > div > .comments {
   display: flex;
   justify-content: space-between;
 }
@@ -2519,6 +2522,9 @@ footer a:hover {
     gap: 1.2rem;
     padding: .7rem;
   }
+  .index > .post {
+    padding: .6rem 1rem 1rem 1rem;
+  }
   .index > .post > .menu > .dropdown {
     font-size: 1rem;
   }
@@ -2543,7 +2549,7 @@ footer a:hover {
     margin: .3rem auto .7rem auto;
   }
   .index > .post > .post-container hr {
-    margin-bottom: 0;
+    margin-bottom: 6px;
   }
   .continue {
     font-size: .8rem;
@@ -2664,6 +2670,50 @@ footer a:hover {
   .about-container > form > div > .btn {
     padding: .2rem .5rem;
     font-size: 1rem;
+  }
+  .auth-container > form {
+    width: 50%;
+    margin: 0 auto;
+  }
+  .auth input {
+    margin-bottom: .2rem;
+    font-size: 1.1rem;
+    padding: .4rem .4rem;
+  }
+  .auth input[type=submit] {
+    margin-top: 1.8rem;
+  }
+  .auth span {
+    margin-bottom: 1.3rem;
+  }
+  .index > .results {
+    text-align: center;
+  }
+  .single > .user > .role > div,
+  .single > .user > .role > .change-role > ul > li {
+    font-size: .8rem;
+  }
+  .single > .user > h1 {
+    font-size: 1.35rem;
+  }
+  .single .user-avatar {
+    width: 20vw;
+    height: 20vw;
+  }
+  .single > .user .avatar-label, .single > .user .report-btn {
+    width: 20vw;
+    padding: .2rem 0;
+  }
+  .single > .user > h2 {
+    font-size: .86rem;
+    font-weight: 200;
+  }
+  .single > .user form.user > input {
+    width: 35%;
+    margin: 0 auto .4rem auto;
+  }
+  .single > .user > .info {
+    padding: 0 3rem;
   }
 }
 

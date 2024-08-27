@@ -82,22 +82,24 @@ $currUrl = (empty($_SERVER['HTTPS']) ? 'http' : 'https') . "://$_SERVER[HTTP_HOS
     </form>
     <?php endif; ?>
 
-    <div class="posts">
-      <a href="<?= '/search/user/posts/' . $user['id'] ?>"><?= 'Posts: ' . $user['posts'] ?></a>
-      <?php if ($lastPostId): ?>
-        <a href="/post/<?= $lastPostId['id'] ?>">Ver ultimo post</a>
-      <?php endif ?>
-    </div>
+    <div class="info">
+      <div class="posts">
+        <a href="<?= '/search/user/posts/' . $user['id'] ?>"><?= 'Posts: ' . $user['posts'] ?></a>
+        <?php if ($lastPostId): ?>
+          <a href="/post/<?= $lastPostId['id'] ?>">Ver ultimo post</a>
+        <?php endif ?>
+      </div>
 
-    <?php if (!($guest) && $_SESSION['user_id'] == $user['id'] && $savedPosts > 0): ?>
-      <a class="saved-posts" href="<?= '/search/user/saved/' . $user['id'] ?>"><?= 'Posts guardados: ' . $savedPosts ?></a>
-    <?php endif; ?>
+      <?php if (!($guest) && $_SESSION['user_id'] == $user['id'] && $savedPosts > 0): ?>
+        <a class="saved-posts" href="<?= '/search/user/saved/' . $user['id'] ?>"><?= 'Posts guardados: ' . $savedPosts ?></a>
+      <?php endif; ?>
 
-    <div class="comments">
-      <div><?= 'Comentarios: ' . $user['comments'] ?></div>
-      <?php if ($lastCommentPostId): ?>
-        <a href="<?= '/post/' . $lastCommentPostId['post_id'] . '#comment-1' ?>">Ver ultimo comentario</a>
-      <?php endif ?>
+      <div class="comments">
+        <div><?= 'Comentarios: ' . $user['comments'] ?></div>
+        <?php if ($lastCommentPostId): ?>
+          <a href="<?= '/post/' . $lastCommentPostId['post_id'] . '#comment-1' ?>">Ver ultimo comentario</a>
+        <?php endif ?>
+      </div>
     </div>
 
     <?php if (!($guest) && ($_SESSION['user_id'] == $user['id'] || $elevated)): ?>
