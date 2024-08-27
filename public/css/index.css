@@ -2604,6 +2604,33 @@ footer a:hover {
     align-items: center;
     justify-content: center;
   }
+  .friends-container .add-friend,
+  .contacts-container .add-contact,
+  .links-container .add-link {
+    font-size: 1.8rem;
+  }
+  .links-container > div,
+  .friends-container > div,
+  .contacts-container > div {
+    margin-bottom: .3rem;
+  }
+  .friend .edit,
+  .link .edit,
+  .contact .edit,
+  .delete-link > button > span,
+  .delete-contact > button > span,
+  .delete-friend > button > span {
+    font-size: 1.5rem;
+  }
+  .contacts-container > div > a,
+  .contacts-container > div > .email,
+  .links-container > div > a,
+  .friends-container > div > a {
+    font-size: 1.1rem;
+  }
+  .friends-container > div > div {
+    font-size: .9rem;
+  }
 }
 
 /* Extra large screens */
