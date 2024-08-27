@@ -2715,6 +2715,40 @@ footer a:hover {
   .single > .user > .info {
     padding: 0 3rem;
   }
+  .create-post > form, .edit-post > form {
+    width: 80%;
+    margin: 0 auto;
+  }
+  .new-post-form > input[type=text], .update-post-form > input[type=text] {
+    margin-bottom: 1rem;
+    font-size: 1rem;
+    padding: .2rem .4rem;
+  }
+  .new-post-form .file-up-btn, .update-post-form .file-up-btn {
+    padding: .1rem .5rem;
+    font-size: 1.2rem;
+  }
+  .new-post-form .file-up-field, .update-post-form .file-up-field {
+    border-left: none;
+    width: 100%;
+    padding: 0rem .4rem;
+    font-size: .9rem;
+  }
+  .new-post-form textarea, .update-post-form textarea {
+    min-height: 200px;
+    font-size: .9rem;
+    padding: .5rem .4rem;
+    width: 100%;
+  }
+  .preview.body-preview {
+    font-size: .9rem;
+  }
+  .tab > label, .tab > span {
+    padding: .4rem .4rem;
+  }
+  .editor-tabs > span {
+    font-size: 1.7rem;
+  }
 }
 
 /* Extra large screens */
