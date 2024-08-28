@@ -147,7 +147,7 @@ class Blog extends Model
 
     public function updatePopupBgColor(string $color): bool
     {
-        $sql = "UPDATE config SET popup = :color;";
+        $sql = "UPDATE config SET popup_bg = :color;";
         $result = $this->db->query($sql, [":color" => $color]);
 
         return $result ? true : false;

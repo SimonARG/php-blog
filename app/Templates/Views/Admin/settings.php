@@ -103,4 +103,37 @@
       <input class="btn" type="submit" value="&gt;">
     </div>
   </form>
+
+  <form action="/admin/settings/main-scrollbar" method="POST">
+    <input type="hidden" name="csrf" value="<?= $_SESSION['csrf'] ?? '' ?>">
+    
+    <label for="main-scrollbar">Cambiar color de panel activo:</label>
+    
+    <div>
+      <input type="color" id="main-scrollbar" name="color" <?php if ($blogConfig['main_scrollbar']) : ?> value="<?= $blogConfig['main_scrollbar'] ?>" <?php endif; ?>>
+      <input class="btn" type="submit" value="&gt;">
+    </div>
+  </form>
+
+  <form action="/admin/settings/input-scrollbar" method="POST">
+    <input type="hidden" name="csrf" value="<?= $_SESSION['csrf'] ?? '' ?>">
+    
+    <label for="input-scrollbar">Cambiar color de panel activo:</label>
+    
+    <div>
+      <input type="color" id="input-scrollbar" name="color" <?php if ($blogConfig['input_scrollbar']) : ?> value="<?= $blogConfig['input_scrollbar'] ?>" <?php endif; ?>>
+      <input class="btn" type="submit" value="&gt;">
+    </div>
+  </form>
+
+  <form action="/admin/settings/popup-bg" method="POST">
+    <input type="hidden" name="csrf" value="<?= $_SESSION['csrf'] ?? '' ?>">
+    
+    <label for="popup-bg">Cambiar color de panel activo:</label>
+    
+    <div>
+      <input type="color" id="popup-bg" name="color" <?php if ($blogConfig['popup_bg']) : ?> value="<?= $blogConfig['popup_bg'] ?>" <?php endif; ?>>
+      <input class="btn" type="submit" value="&gt;">
+    </div>
+  </form>
 </div>
