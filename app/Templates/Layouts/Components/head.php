@@ -47,7 +47,8 @@
     .single > .post .poster a,
     .single > .user > .posts > a:hover,
     .single > .user > .comments > a:hover,
-    .single > .user > .saved-posts:hover {
+    .single > .user > .saved-posts:hover,
+    div.body-preview {
       color: <?= $blogConfig['text_color'] ?>;
     }
   </style>
