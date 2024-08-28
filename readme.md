@@ -5,17 +5,20 @@ This is a PHP-based monolithic blog back-end and front-end that allows you to cu
 
 > [!IMPORTANT]
 > Make sure you have the latest versions of PHP and MySQL installed.
+> Make sure that PHP is able to run from the command prompt.
+> Make sure that MySQL is working properly and create .
 
 1. Download the project [as a .zip](https://github.com/SimonARG/php-blog/archive/refs/heads/main.zip).
 2. Unzip download contents into Apache's `htdocs` folder.
-3. Run `setup.bat` in order to create `.env` file.
+3. Run `setup.bat` in order to create the `.env` file.
 4. Open the `.env` file and fill the values with your SQL database's information.
 5. Run `initialize.bat` in order to seed the initial configuration.
-6. Configure your Apache server as you wish, and head to the root URL in a web browser.
-7. Log-in as `email: admin@gmail.com password: admin`
-8. Head to the `configuration` menu from the sidebar.
-9. Configure the UI to your liking.
-10. Start blogging!
+6. In `intialize.bat`, first run the `migrations` using the `up` function, then the `seeders` and choose `seed init`.
+7. Configure your Apache server as you wish, and head to the root URL in a web browser.
+8. Log-in as `email: admin@gmail.com password: admin`.
+9. Head to the `configuration` menu from the sidebar.
+10. Configure the UI to your liking.
+11. Start blogging!
 
 ## Usage:
 
