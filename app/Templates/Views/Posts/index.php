@@ -47,78 +47,86 @@ $currUrl = $actual_link = (empty($_SERVER['HTTPS']) ? 'http' : 'https') . "://$_
 ?>
 
 <div class="index">
-  <?php foreach ($posts as $index => $post) : ?>
-    <?php if ($canReport): ?>
-      <?php require __DIR__ . '/../../Layouts/Components/report.php'; ?>
-    <?php endif; ?>
-
-    <div class="post <?= 'post-' . $index + 1 ?>">
-      <?php if(!($banned || $guest)): ?>
-          <div class="menu">
-            <div class="arrow">⯈</div>
-
-            <ul class="dropdown">
-              <?php if(($post['username'] == $_SESSION['username']) || $elevated): ?>
-                <li>
-                  <a href="<?= '/post/edit/' . $post['id'] ?>">Editar</a>
-                </li>
-
-                <li>
-                  <form action="/post/delete/<?= $post['id'] ?>" method="POST">
-                    <input type="hidden" name="csrf" value="<?= $_SESSION['csrf'] ?? '' ?>">
-
-                    <input type="hidden" name="post_id" value="<?= $post['id'] ?>">
-                    <input type="submit" value="Eliminar">
-                  </form>
-                </li>
-              <?php endif; ?>
-
-              <li>
-                <div class="report-btn">Reportar</div>
-              </li>
-
-              <?php if(!in_array($post['id'], $_SESSION['saved_posts'])) : ?>
-                <li>
-                  <form method="POST" action="/user/saved/save">
-                    <input type="hidden" name="csrf" value="<?= $_SESSION['csrf'] ?? '' ?>">
-
-                    <input type="hidden" name="post_id" value="<?= $post['id'] ?>">
-                    <input type="hidden" name="user_id" value="<?= $_SESSION['user_id'] ?>">
-                    <input type="hidden" name="curr_page" value="<?= $currentPage ?? 1 ?>">
-                    <input type="submit" value="Guardar">
-                  </form>
-                </li>
-              <?php endif; ?>
-            </ul>
-          </div>
-        <?php endif; ?>
-      <div class="post-container">
-        <a href="/post/<?= $post['id'] ?>">
-          <div class="date"><?= htmlspecialchars($post['created_at']) ?></div>
-          <h1 class="title"><?= htmlspecialchars($post['title']) ?></h1>
-          <h2 class="subtitle"><?= htmlspecialchars($post['subtitle']) ?></h2>
-        </a>
-          <div class="poster"><span>Posted by </span><a class="link" href="<?='/user/' . $post['user_id'] ?>"><?= htmlspecialchars($post['username']) ?></a></div>
-        <a href="/post/<?= $post['id'] ?>">
-          <div class="thumb">
-            <img class="no-select" src="<?='/imgs/thumbs/' . htmlspecialchars($post['thumb']) ?>" alt="miniatura">
-          </div>
-          <div class="body body-preview"><?= truncateHTML(($post['body']), 160, "...") ?></div>
-          <hr>
-        </a>
-      </div>
-
-      <div>
-        <a class="continue" href="/post/<?= $post['id'] ?>">Continuar leyendo...</a>
-      </div>
-      <?php if($post['comments'] > 0): ?>
-        <a class="comment-count" href="/post/<?= $post['id'] . '#comment-1' ?>">
-          <span class="material-symbols-rounded">comment</span>
-          <div><?= $post['comments'] ?></div>
-        </a>
+  <?php if (!empty($posts)): ?>
+    <?php foreach ($posts as $index => $post) : ?>
+      <?php if ($canReport): ?>
+        <?php require __DIR__ . '/../../Layouts/Components/report.php'; ?>
       <?php endif; ?>
-    </div>
-  <?php endforeach; ?>
+
+      <div class="post <?= 'post-' . $index + 1 ?>">
+        <?php if(!($banned || $guest)): ?>
+            <div class="menu">
+              <div class="arrow">⯈</div>
+
+              <ul class="dropdown">
+                <?php if(($post['username'] == $_SESSION['username']) || $elevated): ?>
+                  <li>
+                    <a href="<?= '/post/edit/' . $post['id'] ?>">Editar</a>
+                  </li>
+
+                  <li>
+                    <form action="/post/delete/<?= $post['id'] ?>" method="POST">
+                      <input type="hidden" name="csrf" value="<?= $_SESSION['csrf'] ?? '' ?>">
+
+                      <input type="hidden" name="post_id" value="<?= $post['id'] ?>">
+                      <input type="submit" value="Eliminar">
+                    </form>
+                  </li>
+                <?php endif; ?>
+
+                <li>
+                  <div class="report-btn">Reportar</div>
+                </li>
+
+                <?php if(!in_array($post['id'], $_SESSION['saved_posts'])) : ?>
+                  <li>
+                    <form method="POST" action="/user/saved/save">
+                      <input type="hidden" name="csrf" value="<?= $_SESSION['csrf'] ?? '' ?>">
+
+                      <input type="hidden" name="post_id" value="<?= $post['id'] ?>">
+                      <input type="hidden" name="user_id" value="<?= $_SESSION['user_id'] ?>">
+                      <input type="hidden" name="curr_page" value="<?= $currentPage ?? 1 ?>">
+                      <input type="submit" value="Guardar">
+                    </form>
+                  </li>
+                <?php endif; ?>
+              </ul>
+            </div>
+          <?php endif; ?>
+        <div class="post-container">
+          <a href="/post/<?= $post['id'] ?>">
+            <div class="date"><?= htmlspecialchars($post['created_at']) ?></div>
+            <h1 class="title"><?= htmlspecialchars($post['title']) ?></h1>
+            <h2 class="subtitle"><?= htmlspecialchars($post['subtitle']) ?></h2>
+          </a>
+            <div class="poster"><span>Posted by </span><a class="link" href="<?='/user/' . $post['user_id'] ?>"><?= htmlspecialchars($post['username']) ?></a></div>
+          <a href="/post/<?= $post['id'] ?>">
+            <div class="thumb">
+              <img class="no-select" src="<?='/imgs/thumbs/' . htmlspecialchars($post['thumb']) ?>" alt="miniatura">
+            </div>
+            <div class="body body-preview"><?= truncateHTML(($post['body']), 160, "...") ?></div>
+            <hr>
+          </a>
+        </div>
+
+        <div>
+          <a class="continue" href="/post/<?= $post['id'] ?>">Continuar leyendo...</a>
+        </div>
+        <?php if($post['comments'] > 0): ?>
+          <a class="comment-count" href="/post/<?= $post['id'] . '#comment-1' ?>">
+            <span class="material-symbols-rounded">comment</span>
+            <div><?= $post['comments'] ?></div>
+          </a>
+        <?php endif; ?>
+      </div>
+    <?php endforeach; ?>
+  <?php else: ?>
+    <div class="filler"></div>
+    <div class="filler"></div>
+    <div class="filler"></div>
+  <?php endif; ?>
 </div>
 
-<?php require __DIR__ . '/../../Layouts/Components/pagination.php' ?>
+<?php if (!empty($totalPages)): ?>
+  <?php require __DIR__ . '/../../Layouts/Components/pagination.php' ?>
+<?php endif; ?>

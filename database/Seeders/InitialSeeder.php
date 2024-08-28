@@ -29,6 +29,6 @@ class InitialSeeder extends Seeder
             ':avatar' => 'avatar.jpg'
         ]);
 
-        $this->user->setRole(15, 'admin');
+        $this->user->setRole(1, 'admin');
     }
 }

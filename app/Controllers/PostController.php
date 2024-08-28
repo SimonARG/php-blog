@@ -35,6 +35,12 @@ class PostController extends Controller implements CrudInterface
         // Get the posts for the current page
         $posts = $this->post->getPosts($currentPage);
 
+        if (!$posts) {
+            $this->helpers->view('posts.index');
+
+            return;
+        }
+
         // Get the total number of posts to calculate pagination
         $totalPosts = $this->post->getPostCount();
 
