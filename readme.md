@@ -17,9 +17,10 @@ This is a PHP-based monolithic blog back-end and front-end that allows you to cu
 7. In `intialize.bat`, first run the `migrations` using the `up` function, then the `seeders` and choose the `IntialSeeder`.
 8. Configure your Apache server as you wish, and head to the root URL in a web browser.
 9. Log-in as `email: admin@gmail.com password: admin`.
-10. Head to the `configuration` menu from the sidebar.
-11. Configure the UI to your liking.
-12. Start blogging!
+10. Go to your profile in the sidebar and change your password to a secure one.
+11. Head to the `configuration` menu from the sidebar.
+12. Configure the UI to your liking.
+13. Start blogging!
 
 ## Usage:
 
