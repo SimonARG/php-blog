@@ -45,6 +45,12 @@ class ReportController extends Controller
             $reports = $this->report->getAllReportsSortUnreviewed($currentPage);
         }
 
+        if (!($reports)) {
+            $this->helpers->view('admin.reports');
+
+            return;
+        }
+
         $totalReports = $this->report->getReportCount();
 
         $totalPages = ceil($totalReports / $this->reportsPerPage);
