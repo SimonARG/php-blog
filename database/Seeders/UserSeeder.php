@@ -31,8 +31,8 @@ class UserSeeder extends Seeder
         $password = password_hash('admin', PASSWORD_DEFAULT);
 
         $this->db->query($sql, [
-            ':name' => 'admingod',
-            ':email' => 'admingod@gmail.com',
+            ':name' => 'admin',
+            ':email' => 'admin@gmail.com',
             ':password' => $password,
             ':avatar' => '1.webp'
         ]);
