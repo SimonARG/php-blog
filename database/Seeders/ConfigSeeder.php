@@ -13,7 +13,7 @@ class ConfigSeeder extends Seeder
 
     public function run()
     {
-        $sql = "INSERT INTO config (title, icon, bg_color, text_color, panel_color, panel_hover, panel_active, text_dim, info, main_scrollbar, popup_bg) VALUES (:title, :icon, :bg_color, :text_color, :panel_color, :panel_hover, :panel_active, :text_dim, :info, :main_scrollbar, :popup_bg)";
+        $sql = "INSERT INTO config (title, icon, bg_color, text_color, panel_color, panel_hover, panel_active, text_dim, info, main_scrollbar, popup_bg) VALUES (:title, :icon, :bg_color, :text_color, :panel_color, :panel_hover, :panel_active, :text_dim, :info, :main_scrollbar, :popup_bg);";
         $this->db->query($sql, [
             ':title' => 'BLOG',
             ':icon' => 'favicon.png',

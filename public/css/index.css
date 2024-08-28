@@ -483,10 +483,6 @@ body {
   width: 2px;
 }
 
-.body-container::-webkit-scrollbar-thumb {
-  background-color: white;
-} 
-
 .material-symbols-rounded {
   font-variation-settings:
   'FILL' 0,
@@ -1466,7 +1462,6 @@ input:-webkit-autofill:active{
   top: 110%;
   left: 50%;
   transform: translate(-50%, -50%);
-  background-color: black;
   border: 1px solid white;
   box-shadow: 0 0 10px 7px rgba(0, 0, 0, 0.644);
   font-size: 1.6rem;

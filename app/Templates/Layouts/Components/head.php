@@ -51,5 +51,11 @@
     div.body-preview {
       color: <?= $blogConfig['text_color'] ?>;
     }
+    .body-container::-webkit-scrollbar-thumb {
+      background-color: <?= htmlspecialchars($blogConfig['main_scrollbar'] ?? '') ?>;
+    }
+    .popup-container {
+      background-color: <?= htmlspecialchars($blogConfig['popup_bg'] ?? '') ?>;
+    }
   </style>
 </head>
