@@ -365,4 +365,91 @@ class SettingController extends Controller
 
         return;
     }
+
+    public function updateMainScrollbarColor(array $request): void
+    {
+        if (!$this->security->verifyCsrf($request['csrf'] ?? '')) {
+            $this->helpers->setPopup('Error de seguridad');
+
+            header('Location: /');
+
+            return;
+        }
+
+        if (!$this->security->isAdmin()) {
+            $this->helpers->setPopup('Operacion no autorizada');
+
+            header('Location: /');
+
+            return;
+        }
+
+        $color = $request['color'];
+
+        $this->blog->updateMainScrollbarColor($color);
+
+        $this->helpers->setPopup('Color de la scrollbar principal actualizado');
+
+        header('Location: /admin/settings');
+
+        return;
+    }
+
+    public function updateInputScrollbarColor(array $request): void
+    {
+        if (!$this->security->verifyCsrf($request['csrf'] ?? '')) {
+            $this->helpers->setPopup('Error de seguridad');
+
+            header('Location: /');
+
+            return;
+        }
+
+        if (!$this->security->isAdmin()) {
+            $this->helpers->setPopup('Operacion no autorizada');
+
+            header('Location: /');
+
+            return;
+        }
+
+        $color = $request['color'];
+
+        $this->blog->updateInputScrollbarColor($color);
+
+        $this->helpers->setPopup('Color de la scrollbar de input actualizado');
+
+        header('Location: /admin/settings');
+
+        return;
+    }
+
+    public function updatePopupBgColor(array $request): void
+    {
+        if (!$this->security->verifyCsrf($request['csrf'] ?? '')) {
+            $this->helpers->setPopup('Error de seguridad');
+
+            header('Location: /');
+
+            return;
+        }
+
+        if (!$this->security->isAdmin()) {
+            $this->helpers->setPopup('Operacion no autorizada');
+
+            header('Location: /');
+
+            return;
+        }
+
+        $color = $request['color'];
+
+        $this->blog->updatePopupBgColor($color);
+
+        $this->helpers->setPopup('Color del popup actualizado');
+
+        header('Location: /admin/settings');
+
+        return;
+    }
 }

@@ -128,4 +128,28 @@ class Blog extends Model
 
         return $result ? 1 : 0;
     }
+
+    public function updateMainScrollbarColor(string $color): bool
+    {
+        $sql = "UPDATE config SET main_scrollbar = :color;";
+        $result = $this->db->query($sql, [":color" => $color]);
+
+        return $result ? true : false;
+    }
+
+    public function updateInputScrollbarColor(string $color): bool
+    {
+        $sql = "UPDATE config SET input_scrollbar = :color;";
+        $result = $this->db->query($sql, [":color" => $color]);
+
+        return $result ? true : false;
+    }
+
+    public function updatePopupBgColor(string $color): bool
+    {
+        $sql = "UPDATE config SET popup = :color;";
+        $result = $this->db->query($sql, [":color" => $color]);
+
+        return $result ? true : false;
+    }
 }
