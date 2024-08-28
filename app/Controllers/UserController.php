@@ -206,12 +206,10 @@ class UserController extends Controller implements CrudInterface
             } elseif (!preg_match('/^(?=.*[A-Z])(?=.*[a-z])(?=.*\d)(?=.*[\W_]).+$/', $newPassword)) {
                 $errors['new_password_error'] = 'La contraseña no cumple los requisitos';
             }
-
-            $newPassword = password_hash($newPassword, PASSWORD_DEFAULT);
         }
 
         // Validate new password confirmation
-        if ($newPassword != $newPasswordRepeat) {
+        if (!($newPassword == $newPasswordRepeat)) {
             $errors['new_password_r_error'] = 'Las contraseñas no coinciden';
         }
 
@@ -261,6 +259,8 @@ class UserController extends Controller implements CrudInterface
 
             return;
         }
+
+        $newPassword = password_hash($newPassword, PASSWORD_DEFAULT);
 
         $dbEntry['name'] = $name;
         $dbEntry['email'] = $email;

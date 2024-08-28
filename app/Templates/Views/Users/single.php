@@ -121,7 +121,7 @@ $currUrl = (empty($_SERVER['HTTPS']) ? 'http' : 'https') . "://$_SERVER[HTTP_HOS
         <hr>
 
         <label for="password">Contraseña Actual</label>
-        <input required minlength="8" type="password" id="password" name="password" <?php if (isset($errors['password_error'])): ?> placeholder="<?= $errors['password_error'] ?>" class="ph-error" <?php endif; ?>>
+        <input required type="password" id="password" name="password" <?php if (isset($errors['password_error'])): ?> placeholder="<?= $errors['password_error'] ?>" class="ph-error" <?php endif; ?>>
 
         <input type="hidden" name="method" value="PATCH">
         <input class="avatar-input" type="file" hidden name="avatar" id="avatar">
