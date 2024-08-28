@@ -137,14 +137,6 @@ class Blog extends Model
         return $result ? true : false;
     }
 
-    public function updateInputScrollbarColor(string $color): bool
-    {
-        $sql = "UPDATE config SET input_scrollbar = :color;";
-        $result = $this->db->query($sql, [":color" => $color]);
-
-        return $result ? true : false;
-    }
-
     public function updatePopupBgColor(string $color): bool
     {
         $sql = "UPDATE config SET popup_bg = :color;";

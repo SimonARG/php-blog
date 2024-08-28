@@ -395,35 +395,6 @@ class SettingController extends Controller
         return;
     }
 
-    public function updateInputScrollbarColor(array $request): void
-    {
-        if (!$this->security->verifyCsrf($request['csrf'] ?? '')) {
-            $this->helpers->setPopup('Error de seguridad');
-
-            header('Location: /');
-
-            return;
-        }
-
-        if (!$this->security->isAdmin()) {
-            $this->helpers->setPopup('Operacion no autorizada');
-
-            header('Location: /');
-
-            return;
-        }
-
-        $color = $request['color'];
-
-        $this->blog->updateInputScrollbarColor($color);
-
-        $this->helpers->setPopup('Color de la scrollbar de input actualizado');
-
-        header('Location: /admin/settings');
-
-        return;
-    }
-
     public function updatePopupBgColor(array $request): void
     {
         if (!$this->security->verifyCsrf($request['csrf'] ?? '')) {

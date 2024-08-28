@@ -53,8 +53,7 @@ return [
     '/admin/settings/text' => SettingController::class . '@updateTextColor',
     '/admin/settings/text-dim' => SettingController::class . '@updateTextDim',
     '/admin/settings/icon' => SettingController::class . '@updateIcon',
-    '/admin/settings/main-scrollbar' => SettingController::class . '@updateMainScrollbar',
-    '/admin/settings/input-scrollbar' => SettingController::class . '@updateInputScrollbar',
+    '/admin/settings/main-scrollbar' => SettingController::class . '@updateMainScrollbarColor',
     '/admin/settings/popup-bg' => SettingController::class . '@updatePopupBgColor',
     // Moderation
     '/admin/reports' => ReportController::class . '@index',

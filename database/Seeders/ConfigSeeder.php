@@ -13,7 +13,7 @@ class ConfigSeeder extends Seeder
 
     public function run()
     {
-        $sql = "INSERT INTO config (title, icon, bg_color, text_color, panel_color, panel_hover, panel_active, text_dim, info) VALUES (:title, :icon, :bg_color, :text_color, :panel_color, :panel_hover, :panel_active, :text_dim, :info)";
+        $sql = "INSERT INTO config (title, icon, bg_color, text_color, panel_color, panel_hover, panel_active, text_dim, info, main_scrollbar, popup_bg) VALUES (:title, :icon, :bg_color, :text_color, :panel_color, :panel_hover, :panel_active, :text_dim, :info, :main_scrollbar, :popup_bg)";
         $this->db->query($sql, [
             ':title' => 'BLOG',
             ':icon' => 'favicon.png',
@@ -23,7 +23,9 @@ class ConfigSeeder extends Seeder
             ':panel_hover' => 'rgba(146, 146, 146, 0.24)',
             ':panel_active' => 'rgba(175, 175, 175, 0.24)',
             ':text_dim' => 'rgb(196, 196, 196)',
-            ':info' => '...'
+            ':info' => '...',
+            ':main_scrollbar' => 'rgb(255, 255, 255)',
+            ':popup_bg' => 'rgb(0, 0, 0)'
         ]);
     }
 }

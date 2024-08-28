@@ -18,6 +18,8 @@ class CreateConfigTable
             panel_hover VARCHAR(60),
             panel_active VARCHAR(60),
             text_dim VARCHAR(60),
+            main_scrollbar VARCHAR(60),
+            popup_bg VARCHAR(60),
             info VARCHAR(4000)
         )";
 
