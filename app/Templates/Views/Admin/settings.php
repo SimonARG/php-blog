@@ -107,7 +107,7 @@
   <form action="/admin/settings/main-scrollbar" method="POST">
     <input type="hidden" name="csrf" value="<?= $_SESSION['csrf'] ?? '' ?>">
     
-    <label for="main-scrollbar">Cambiar color de panel activo:</label>
+    <label for="main-scrollbar">Cambiar color de la scrollbar:</label>
     
     <div>
       <input type="color" id="main-scrollbar" name="color" <?php if ($blogConfig['main_scrollbar']) : ?> value="<?= $blogConfig['main_scrollbar'] ?>" <?php endif; ?>>
@@ -118,7 +118,7 @@
   <form action="/admin/settings/popup-bg" method="POST">
     <input type="hidden" name="csrf" value="<?= $_SESSION['csrf'] ?? '' ?>">
     
-    <label for="popup-bg">Cambiar color de panel activo:</label>
+    <label for="popup-bg">Cambiar color de los popups:</label>
     
     <div>
       <input type="color" id="popup-bg" name="color" <?php if ($blogConfig['popup_bg']) : ?> value="<?= $blogConfig['popup_bg'] ?>" <?php endif; ?>>
