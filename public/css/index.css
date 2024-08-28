@@ -1017,7 +1017,7 @@ header {
 }
 
 .single > .comments > .comment > .dropdown form {
-  max-height: 100%;
+  height: max(4.3rem, 50%);
 }
 
 .single > .comments .dropdown textarea {
@@ -1025,13 +1025,13 @@ header {
   width: 100%;
   background-color: var(--panel-h);
   margin-bottom: .2rem;
-  min-height: 4.4rem;
+  height: 100%;
   resize: none;
 }
 
 .single > .comments .dropdown textarea::-webkit-scrollbar,
 .single > .comments > .new-comment textarea::-webkit-scrollbar {
-  width: 1rem;
+  width: .8rem;
 }
 
 .single > .comments .dropdown textarea::-webkit-scrollbar-track,
@@ -1356,6 +1356,35 @@ header {
   font-size: 1.1rem;
   padding: .5rem .4rem;
   width: 100%;
+}
+
+.new-post-form textarea::-webkit-scrollbar,
+.update-post-form textarea::-webkit-scrollbar {
+  width: .8rem;
+}
+
+.new-post-form textarea::-webkit-scrollbar-track,
+.update-post-form textarea::-webkit-scrollbar-track {
+  background-color: transparent;
+}
+
+.new-post-form textarea::-webkit-scrollbar-thumb,
+.update-post-form textarea::-webkit-scrollbar-thumb {
+  background-color: var(--panel-a);
+  border-radius: 10px;
+  background-clip: padding-box;
+  border: 3px solid transparent;
+  cursor: grab;
+}
+
+.new-post-form textarea::-webkit-scrollbar-thumb:hover,
+.update-post-form textarea::-webkit-scrollbar-thumb:hover {
+  background-color: var(--black-panel-h);
+}
+
+.new-post-form textarea::-webkit-scrollbar-corner,
+.update-post-form textarea::-webkit-scrollbar-corner {
+  background-color: transparent;
 }
 
 .formatting-help {
@@ -2335,12 +2364,27 @@ input:-webkit-autofill:active{
 }
 
 .about-container > form > textarea::-webkit-scrollbar {
+  width: .8rem;
+}
+
+.about-container > form > textarea::-webkit-scrollbar-track {
   background-color: transparent;
-  width: 2px;
 }
 
 .about-container > form > textarea::-webkit-scrollbar-thumb {
-  background-color: white;
+  background-color: var(--panel-a);
+  border-radius: 10px;
+  background-clip: padding-box;
+  border: 3px solid transparent;
+  cursor: grab;
+}
+
+.about-container > form > textarea::-webkit-scrollbar-thumb:hover {
+  background-color: var(--black-panel-h);
+}
+
+.about-container > form > textarea::-webkit-scrollbar-corner {
+  background-color: transparent;
 }
 
 .about-container > form > div {
@@ -2589,6 +2633,10 @@ footer a:hover {
   }
   .single > .post > .btns > * {
     font-size: .95rem;
+  }
+  .single > .comments > .new-comment textarea {
+    font-size: .85rem;
+    min-height: 7rem;
   }
   .single > .comments > .new-comment input[type=submit] {
     font-size: .95rem;
