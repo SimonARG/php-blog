@@ -17,15 +17,15 @@ class ConfigSeeder extends Seeder
         $this->db->query($sql, [
             ':title' => 'BLOG',
             ':icon' => 'favicon.png',
-            ':bg_color' => 'rgb(79, 79, 79)',
-            ':text_color' => 'rgb(255, 61, 249)',
+            ':bg_color' => '#4F4F4F',
+            ':text_color' => '#FF3DF9',
             ':panel_color' => '#000000',
-            ':panel_hover' => 'rgba(146, 146, 146, 0.24)',
-            ':panel_active' => 'rgba(254, 180, 244, 0.24)',
-            ':text_dim' => 'rgb(254, 180, 244)',
+            ':panel_hover' => '#929292',
+            ':panel_active' => '#FEB4F4',
+            ':text_dim' => '#FEB4F4',
             ':info' => '...',
-            ':main_scrollbar' => 'rgb(255, 61, 249)',
-            ':popup_bg' => 'rgb(0, 0, 0)'
+            ':main_scrollbar' => '#FF3DF9',
+            ':popup_bg' => '#000000'
         ]);
     }
 }
